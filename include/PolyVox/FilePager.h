@@ -111,11 +111,15 @@ namespace PolyVox
 				pChunk->setData(buffer, fileSizeInBytes);
 				delete[] buffer;*/
 
-				fread(pChunk->getData(), sizeof(uint8_t), pChunk->getDataSizeInBytes(), pFile);
-
-				if (ferror(pFile))
-				{
-					POLYVOX_THROW(std::runtime_error, "Error reading in chunk data, even though a file exists.");
+				size_t count  = pChunk->getDataSizeInBytes();
+				size_t read = fread(pChunk->getData(), sizeof(uint8_t), count, pFile);
+				if (read != count) {
+					if (feof(pFile)) {
+						POLYVOX_THROW(std::runtime_error, "Error reading in chunk data, unexpexted EOF.");
+					} else if (ferror(pFile))
+					{
+						POLYVOX_THROW(std::runtime_error, "Error reading in chunk data, even though a file exists.");
+					}
 				}
 
 				fclose(pFile);

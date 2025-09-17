@@ -103,10 +103,10 @@ protected:
 
 		setShader(shader);
 
-		QTime time;
-		time.start();
+		QElapsedTimer timer;
+		timer.start();
 		//openGLWidget.setVolume(&volData);
-		cout << endl << "Time taken = " << time.elapsed() / 1000.0f << "s" << endl << endl;
+		cout << endl << "Time taken = " << timer.elapsed() / 1000.0f << "s" << endl << endl;
 
 		const int32_t extractedRegionSize = 32;
 		int meshCounter = 0;
