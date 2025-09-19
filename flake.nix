@@ -2,12 +2,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       { self, ... }:
       {
+        imports = [ inputs.treefmt-nix.flakeModule ];
         systems = [
           "x86_64-linux"
           "aarch64-linux"
@@ -41,6 +43,14 @@
               ];
 
               buildInputs = [ (with pkgs.libsForQt5; env "qt-env-${qtbase.version}" [ ]) ];
+            };
+            treefmt = {
+              projectRootFile = "README.md";
+              programs = {
+                clang-format = {
+                  enable = true;
+                };
+              };
             };
           };
       }
