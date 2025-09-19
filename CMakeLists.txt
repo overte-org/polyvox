@@ -20,7 +20,8 @@
 # 3. This notice may not be removed or altered from any source
 # distribution.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.24)
+cmake_policy(VERSION 3.24...3.31)
 
 PROJECT(PolyVox)
 
@@ -62,12 +63,8 @@ if(MSVC AND (MSVC_VERSION LESS 1600))
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-IF(CMAKE_COMPILER_IS_GNUCXX) #Maybe "OR MINGW"
-	ADD_DEFINITIONS(-std=c++0x) #Enable C++0x mode
-ENDIF()
-if(CMAKE_CXX_COMPILER MATCHES "clang")
-	ADD_DEFINITIONS(-std=c++0x) #Enable C++0x mode
-endif()
+SET(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_CXX_STANDARD_REQUIRED On)
 
 ADD_SUBDIRECTORY(library)
 

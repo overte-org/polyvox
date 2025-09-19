@@ -77,11 +77,11 @@ namespace PolyVox
 	{
 	public:
 		///Constructor
-		Array<noOfDims, ElementType>();
+		Array();
 		///Constructor
-		Array<noOfDims, ElementType>(const uint32_t (&pDimensions)[noOfDims]);
+		Array(const uint32_t (&pDimensions)[noOfDims]);
 		///Destructor
-		~Array<noOfDims, ElementType>();
+		~Array();
 
 		///Subarray access
 		SubArray<noOfDims-1, ElementType> operator[](uint32_t uIndex);
@@ -101,7 +101,7 @@ namespace PolyVox
 		uint32_t getDimension(uint32_t uDimension);
 
 	private:
-		Array<noOfDims, ElementType>(const Array<noOfDims, ElementType>& rhs);
+		Array(const Array<noOfDims, ElementType>& rhs);
 
 		Array<noOfDims, ElementType>& operator=(const Array<noOfDims, ElementType>& rhs);
 
@@ -117,11 +117,11 @@ namespace PolyVox
 	class Array<1, ElementType>
 	{
 	public:
-		Array<1, ElementType>();
+		Array();
 
-		Array<1, ElementType>(const uint32_t (&pDimensions)[1]);
+		Array(const uint32_t (&pDimensions)[1]);
 
-		~Array<1, ElementType>();
+		~Array();
 
 		ElementType& operator[] (uint32_t uIndex);
 
@@ -136,7 +136,7 @@ namespace PolyVox
 		void swap(Array<1, ElementType>& rhs);
 
 	private:
-		Array<1, ElementType>(const Array<1, ElementType>& rhs);
+		Array(const Array<1, ElementType>& rhs);
 
 		Array<1, ElementType>& operator=(const Array<1, ElementType>& rhs);
 
