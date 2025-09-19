@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __OpenGLExample_OpenGLVertexBufferObjectSupport_H__
@@ -28,15 +28,16 @@ freely, subject to the following restrictions:
 
 #include "glew/glew.h"
 
-struct OpenGLSurfaceMesh
-{
-	GLulong noOfIndices;
-	GLuint indexBuffer;
-	GLuint vertexBuffer;
-	const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>* sourceMesh;
+struct OpenGLSurfaceMesh {
+  GLulong noOfIndices;
+  GLuint indexBuffer;
+  GLuint vertexBuffer;
+  const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> *sourceMesh;
 };
 
-OpenGLSurfaceMesh BuildOpenGLSurfaceMesh(const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& mesh);
-void renderRegionVertexBufferObject(const OpenGLSurfaceMesh& openGLSurfaceMesh, unsigned int uLodLevel);
+OpenGLSurfaceMesh BuildOpenGLSurfaceMesh(
+    const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &mesh);
+void renderRegionVertexBufferObject(const OpenGLSurfaceMesh &openGLSurfaceMesh,
+                                    unsigned int uLodLevel);
 
 #endif //__OpenGLExample_OpenGLVertexBufferObjectSupport_H__

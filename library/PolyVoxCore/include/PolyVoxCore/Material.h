@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_Material_H__
@@ -30,67 +30,56 @@ freely, subject to the following restrictions:
 
 #include <cassert>
 
-namespace PolyVox
-{
-	///This class represents a voxel storing only a material.
-	////////////////////////////////////////////////////////////////////////////////
-	/// Detailed description...
-	///
-	/// \sa Density, MaterialDensityPair
-	////////////////////////////////////////////////////////////////////////////////
+namespace PolyVox {
+/// This class represents a voxel storing only a material.
+////////////////////////////////////////////////////////////////////////////////
+///  Detailed description...
+///
+///  \sa Density, MaterialDensityPair
+////////////////////////////////////////////////////////////////////////////////
 
-	// int32_t template parameter is a dummy, required as the compiler expects to be able to declare an
-	// instance of VoxelType::DensityType without knowing that VoxelType doesn't actually have a density.
-	template <typename Type>
-	class Material
-	{
-	public:
-		Material() : m_uMaterial(0) {}
-		Material(Type uMaterial) : m_uMaterial(uMaterial) {}
+// int32_t template parameter is a dummy, required as the compiler expects to be
+// able to declare an instance of VoxelType::DensityType without knowing that
+// VoxelType doesn't actually have a density.
+template <typename Type> class Material {
+public:
+  Material() : m_uMaterial(0) {}
+  Material(Type uMaterial) : m_uMaterial(uMaterial) {}
 
-		bool operator==(const Material& rhs) const
-		{
-			return (m_uMaterial == rhs.m_uMaterial);
-		};
+  bool operator==(const Material &rhs) const {
+    return (m_uMaterial == rhs.m_uMaterial);
+  };
 
-		bool operator!=(const Material& rhs) const
-		{
-			return !(*this == rhs);
-		}
+  bool operator!=(const Material &rhs) const { return !(*this == rhs); }
 
-		/// \return The current material value of the voxel
-		Type getMaterial() const { return m_uMaterial; }
-		/**
-		 * Set the material value of the voxel
-		 * 
-		 * \param uMaterial The material to set to
-		 */
-		void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
+  /// \return The current material value of the voxel
+  Type getMaterial() const { return m_uMaterial; }
+  /**
+   * Set the material value of the voxel
+   *
+   * \param uMaterial The material to set to
+   */
+  void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
 
-	private:
-		Type m_uMaterial;
-	};
+private:
+  Type m_uMaterial;
+};
 
-	typedef Material<uint8_t> Material8;
-	typedef Material<uint16_t> Material16;
+typedef Material<uint8_t> Material8;
+typedef Material<uint16_t> Material16;
 
-	template<typename Type>
-	class DefaultIsQuadNeeded< Material<Type> >
-	{
-	public:
-		bool operator()(Material<Type> back, Material<Type> front, uint32_t& materialToUse)
-		{
-			if((back.getMaterial() > 0) && (front.getMaterial() == 0))
-			{
-				materialToUse = static_cast<uint32_t>(back.getMaterial());
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-	};
-}
+template <typename Type> class DefaultIsQuadNeeded<Material<Type>> {
+public:
+  bool operator()(Material<Type> back, Material<Type> front,
+                  uint32_t &materialToUse) {
+    if ((back.getMaterial() > 0) && (front.getMaterial() == 0)) {
+      materialToUse = static_cast<uint32_t>(back.getMaterial());
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+} // namespace PolyVox
 
 #endif //__PolyVox_Material_H__

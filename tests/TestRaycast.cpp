@@ -33,81 +33,79 @@ freely, subject to the following restrictions:
 
 using namespace PolyVox;
 
-// This is the callback functor which is called by the raycast() function for every voxel it touches.
-// It's primary purpose is to tell the raycast whether or not to continue (i.e. it tests whether the
-// ray has hit a solid voxel). Because the instance of this class is passed to the raycast() function
-// by reference we can also use it to encapsulate some state. We're testing this by counting the total
-// number of voxels touched.
-class RaycastTestFunctor
-{
+// This is the callback functor which is called by the raycast() function for
+// every voxel it touches. It's primary purpose is to tell the raycast whether
+// or not to continue (i.e. it tests whether the ray has hit a solid voxel).
+// Because the instance of this class is passed to the raycast() function by
+// reference we can also use it to encapsulate some state. We're testing this by
+// counting the total number of voxels touched.
+class RaycastTestFunctor {
 public:
-	RaycastTestFunctor()
-		:m_uTotalVoxelsTouched(0)
-	{
-	}
+  RaycastTestFunctor() : m_uTotalVoxelsTouched(0) {}
 
-	bool operator()(const SimpleVolume<int8_t>::Sampler& sampler)
-	{
-		m_uTotalVoxelsTouched++;
+  bool operator()(const SimpleVolume<int8_t>::Sampler &sampler) {
+    m_uTotalVoxelsTouched++;
 
-		return sampler.getVoxel() <= 0;
-	}
+    return sampler.getVoxel() <= 0;
+  }
 
-	uint32_t m_uTotalVoxelsTouched;
+  uint32_t m_uTotalVoxelsTouched;
 };
 
-void TestRaycast::testExecute()
-{
-	const int32_t uVolumeSideLength = 32;
+void TestRaycast::testExecute() {
+  const int32_t uVolumeSideLength = 32;
 
-	//Create a hollow volume, with solid sides on x and y but with open ends in z.
-	SimpleVolume<int8_t> volData(Region(Vector3DInt32(0,0,0), Vector3DInt32(uVolumeSideLength-1, uVolumeSideLength-1, uVolumeSideLength-1)));
-	for (int32_t z = 0; z < uVolumeSideLength; z++)
-	{
-		for (int32_t y = 0; y < uVolumeSideLength; y++)
-		{
-			for (int32_t x = 0; x < uVolumeSideLength; x++)
-			{
-				if((x == 0) || (x == uVolumeSideLength-1) || (y == 0) || (y == uVolumeSideLength-1))
-				{
-					volData.setVoxelAt(x, y, z, 100);
-				}
-				else
-				{
-					volData.setVoxelAt(x, y, z, -100);
-				}				
-			}
-		}
-	}
+  // Create a hollow volume, with solid sides on x and y but with open ends in
+  // z.
+  SimpleVolume<int8_t> volData(
+      Region(Vector3DInt32(0, 0, 0),
+             Vector3DInt32(uVolumeSideLength - 1, uVolumeSideLength - 1,
+                           uVolumeSideLength - 1)));
+  for (int32_t z = 0; z < uVolumeSideLength; z++) {
+    for (int32_t y = 0; y < uVolumeSideLength; y++) {
+      for (int32_t x = 0; x < uVolumeSideLength; x++) {
+        if ((x == 0) || (x == uVolumeSideLength - 1) || (y == 0) ||
+            (y == uVolumeSideLength - 1)) {
+          volData.setVoxelAt(x, y, z, 100);
+        } else {
+          volData.setVoxelAt(x, y, z, -100);
+        }
+      }
+    }
+  }
 
-	//Cast rays from the centre. Roughly 2/3 should escape.
-	Vector3DFloat start (uVolumeSideLength / 2, uVolumeSideLength / 2, uVolumeSideLength / 2);
-	
-	// For demonstration purposes we are using the same function object for all raycasts.
-	// Therefore, the state it maintains (total voxels touched) is accumulated over all raycsts.
-	RaycastTestFunctor raycastTestFunctor;
+  // Cast rays from the centre. Roughly 2/3 should escape.
+  Vector3DFloat start(uVolumeSideLength / 2, uVolumeSideLength / 2,
+                      uVolumeSideLength / 2);
 
-	// We could have counted the total number of hits in the same way as the total number of voxels
-	// touched, but for demonstration and testing purposes we are making use of the raycast return value
-	// and counting them seperatly in this variable.
-	int hits = 0;
+  // For demonstration purposes we are using the same function object for all
+  // raycasts. Therefore, the state it maintains (total voxels touched) is
+  // accumulated over all raycsts.
+  RaycastTestFunctor raycastTestFunctor;
 
-	// Cast a large number of random rays
-	for(int ct = 0; ct < 1000000; ct++)
-	{
-		RaycastResult result = raycastWithDirection(&volData, start, randomUnitVectors[ct % 1024] * 1000.0f, raycastTestFunctor);
+  // We could have counted the total number of hits in the same way as the total
+  // number of voxels touched, but for demonstration and testing purposes we are
+  // making use of the raycast return value and counting them seperatly in this
+  // variable.
+  int hits = 0;
 
-		if(result == RaycastResults::Interupted)
-		{
-			hits++;
-		}
-	}	
+  // Cast a large number of random rays
+  for (int ct = 0; ct < 1000000; ct++) {
+    RaycastResult result = raycastWithDirection(
+        &volData, start, randomUnitVectors[ct % 1024] * 1000.0f,
+        raycastTestFunctor);
 
-	// Check the number of hits.
-	QCOMPARE(hits, 687494);
+    if (result == RaycastResults::Interupted) {
+      hits++;
+    }
+  }
 
-	// Check the total number of voxels touched
-	QCOMPARE(raycastTestFunctor.m_uTotalVoxelsTouched, static_cast<uint32_t>(486219343));
+  // Check the number of hits.
+  QCOMPARE(hits, 687494);
+
+  // Check the total number of voxels touched
+  QCOMPARE(raycastTestFunctor.m_uTotalVoxelsTouched,
+           static_cast<uint32_t>(486219343));
 }
 
 QTEST_MAIN(TestRaycast)

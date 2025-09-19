@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_LowPassFilter_H__
@@ -28,33 +28,32 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/RawVolume.h" //Is this desirable?
 #include "PolyVoxCore/Region.h"
 
-namespace PolyVox
-{
-	template< typename SrcVolumeType, typename DstVolumeType, typename AccumulationType>
-	class LowPassFilter
-	{
-	public:
-		LowPassFilter(SrcVolumeType* pVolSrc, Region regSrc, DstVolumeType* pVolDst, Region regDst, uint32_t uKernelSize);
+namespace PolyVox {
+template <typename SrcVolumeType, typename DstVolumeType,
+          typename AccumulationType>
+class LowPassFilter {
+public:
+  LowPassFilter(SrcVolumeType *pVolSrc, Region regSrc, DstVolumeType *pVolDst,
+                Region regDst, uint32_t uKernelSize);
 
-		void execute();
-		void executeSAT();
+  void execute();
+  void executeSAT();
 
-	private:
-		//Source data
-		SrcVolumeType* m_pVolSrc;
-		Region m_regSrc;
+private:
+  // Source data
+  SrcVolumeType *m_pVolSrc;
+  Region m_regSrc;
 
-		//Destination data
-		DstVolumeType* m_pVolDst;
-		Region m_regDst;
+  // Destination data
+  DstVolumeType *m_pVolDst;
+  Region m_regDst;
 
-		//Kernel size
-		uint32_t m_uKernelSize;
-	};
+  // Kernel size
+  uint32_t m_uKernelSize;
+};
 
-}//namespace PolyVox
+} // namespace PolyVox
 
 #include "PolyVoxCore/LowPassFilter.inl"
 
 #endif //__PolyVox_LowPassFilter_H__
-

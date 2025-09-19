@@ -26,12 +26,11 @@ freely, subject to the following restrictions:
 
 #include <QObject>
 
-class TestAmbientOcclusionGenerator: public QObject
-{
-	Q_OBJECT
-	
-	private slots:
-		void testExecute();
+class TestAmbientOcclusionGenerator : public QObject {
+  Q_OBJECT
+
+private slots:
+  void testExecute();
 };
 
 #endif

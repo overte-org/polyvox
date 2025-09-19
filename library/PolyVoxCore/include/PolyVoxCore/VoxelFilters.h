@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_VoxelFilters_H__
@@ -26,10 +26,9 @@ freely, subject to the following restrictions:
 
 #include "Impl/TypeDef.h"
 
-namespace PolyVox
-{
-	template< typename VolumeType >
-	float computeSmoothedVoxel(typename VolumeType::Sampler& volIter);
+namespace PolyVox {
+template <typename VolumeType>
+float computeSmoothedVoxel(typename VolumeType::Sampler &volIter);
 }
 
 #include "PolyVoxCore/VoxelFilters.inl"

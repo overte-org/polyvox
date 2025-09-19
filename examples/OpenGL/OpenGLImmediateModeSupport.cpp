@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #include "OpenGLImmediateModeSupport.h"
@@ -29,35 +29,36 @@ freely, subject to the following restrictions:
 using namespace PolyVox;
 using namespace std;
 
-void renderRegionImmediateMode(PolyVox::SurfaceMesh<PositionMaterialNormal>& mesh, unsigned int uLodLevel)
-{
-	const vector<PositionMaterialNormal>& vecVertices = mesh.getVertices();
-	const vector<uint32_t>& vecIndices = mesh.getIndices();
+void renderRegionImmediateMode(
+    PolyVox::SurfaceMesh<PositionMaterialNormal> &mesh,
+    unsigned int uLodLevel) {
+  const vector<PositionMaterialNormal> &vecVertices = mesh.getVertices();
+  const vector<uint32_t> &vecIndices = mesh.getIndices();
 
-	int beginIndex = mesh.m_vecLodRecords[uLodLevel].beginIndex;
-	int endIndex = mesh.m_vecLodRecords[uLodLevel].endIndex;
+  int beginIndex = mesh.m_vecLodRecords[uLodLevel].beginIndex;
+  int endIndex = mesh.m_vecLodRecords[uLodLevel].endIndex;
 
-	glBegin(GL_TRIANGLES);
-	//for(vector<PolyVox::uint32_t>::const_iterator iterIndex = vecIndices.begin(); iterIndex != vecIndices.end(); ++iterIndex)
-	for(int index = beginIndex; index < endIndex; ++index)
-	{
-		const PositionMaterialNormal& vertex = vecVertices[vecIndices[index]];
-		const Vector3DFloat& v3dVertexPos = vertex.getPosition();
-		//const Vector3DFloat v3dRegionOffset(uRegionX * g_uRegionSideLength, uRegionY * g_uRegionSideLength, uRegionZ * g_uRegionSideLength);
-		const Vector3DFloat v3dFinalVertexPos = v3dVertexPos + static_cast<Vector3DFloat>(mesh.m_Region.getLowerCorner());
+  glBegin(GL_TRIANGLES);
+  // for(vector<PolyVox::uint32_t>::const_iterator iterIndex =
+  // vecIndices.begin(); iterIndex != vecIndices.end(); ++iterIndex)
+  for (int index = beginIndex; index < endIndex; ++index) {
+    const PositionMaterialNormal &vertex = vecVertices[vecIndices[index]];
+    const Vector3DFloat &v3dVertexPos = vertex.getPosition();
+    // const Vector3DFloat v3dRegionOffset(uRegionX * g_uRegionSideLength,
+    // uRegionY * g_uRegionSideLength, uRegionZ * g_uRegionSideLength);
+    const Vector3DFloat v3dFinalVertexPos =
+        v3dVertexPos +
+        static_cast<Vector3DFloat>(mesh.m_Region.getLowerCorner());
 
+    uint8_t material = static_cast<uint8_t>(vertex.getMaterial() + 0.5);
 
+    OpenGLColour colour = convertMaterialIDToColour(material);
 
-
-		uint8_t material = static_cast<uint8_t>(vertex.getMaterial() + 0.5);
-
-		OpenGLColour colour = convertMaterialIDToColour(material);
-
-		glColor3f(colour.red, colour.green, colour.blue);
-		glNormal3f(vertex.getNormal().getX(), vertex.getNormal().getY(), vertex.getNormal().getZ());
-		glVertex3f(v3dFinalVertexPos.getX(), v3dFinalVertexPos.getY(), v3dFinalVertexPos.getZ());
-
-
-	}
-	glEnd();
+    glColor3f(colour.red, colour.green, colour.blue);
+    glNormal3f(vertex.getNormal().getX(), vertex.getNormal().getY(),
+               vertex.getNormal().getZ());
+    glVertex3f(v3dFinalVertexPos.getX(), v3dFinalVertexPos.getY(),
+               v3dFinalVertexPos.getZ());
+  }
+  glEnd();
 }

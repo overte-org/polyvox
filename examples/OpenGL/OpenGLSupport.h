@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __OpenGLExample_OpenGLSupport_H__
@@ -28,11 +28,10 @@ freely, subject to the following restrictions:
 
 #include "glew/glew.h"
 
-struct OpenGLColour
-{
-	GLfloat red;
-	GLfloat green;
-	GLfloat blue;
+struct OpenGLColour {
+  GLfloat red;
+  GLfloat green;
+  GLfloat blue;
 };
 
 OpenGLColour convertMaterialIDToColour(uint8_t materialID);

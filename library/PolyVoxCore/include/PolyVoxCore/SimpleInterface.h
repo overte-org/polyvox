@@ -18,29 +18,31 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_SimpleInterface_H__
 #define __PolyVox_SimpleInterface_H__
 
 #include "PolyVoxCore/CubicSurfaceExtractorWithNormals.h"
+#include "PolyVoxCore/MarchingCubesSurfaceExtractor.h"
 #include "PolyVoxCore/MaterialDensityPair.h"
 #include "PolyVoxCore/SimpleVolume.h"
-#include "PolyVoxCore/MarchingCubesSurfaceExtractor.h"
 
-namespace PolyVox
-{
-	//The PolyVox simple interface only exposes one voxel type and one volume type. But if you like you can
-	//adjust these typedefs and rebuild the library in order to modify which one volume and voxel is exposed.
-	typedef SimpleVolume<MaterialDensityPair88> Volume;
-	typedef SurfaceMesh<PositionMaterialNormal> Mesh;
+namespace PolyVox {
+// The PolyVox simple interface only exposes one voxel type and one volume type.
+// But if you like you can adjust these typedefs and rebuild the library in
+// order to modify which one volume and voxel is exposed.
+typedef SimpleVolume<MaterialDensityPair88> Volume;
+typedef SurfaceMesh<PositionMaterialNormal> Mesh;
 
-	/// \deprecated
-	POLYVOX_DEPRECATED void extractCubicMesh(Volume& volume, const Region& region, Mesh& resultMesh);
-	/// \deprecated
-	POLYVOX_DEPRECATED void extractSmoothMesh(Volume& volume, const Region& region, Mesh& resultMesh);
+/// \deprecated
+POLYVOX_DEPRECATED void extractCubicMesh(Volume &volume, const Region &region,
+                                         Mesh &resultMesh);
+/// \deprecated
+POLYVOX_DEPRECATED void extractSmoothMesh(Volume &volume, const Region &region,
+                                          Mesh &resultMesh);
 
-}
+} // namespace PolyVox
 
 #endif //__PolyVox_SimpleInterface_H__

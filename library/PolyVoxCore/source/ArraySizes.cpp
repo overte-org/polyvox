@@ -18,38 +18,30 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #include "PolyVoxCore/ArraySizes.h"
 
-namespace PolyVox
-{	
-	/**
-    \param uSize The size of the first dimension.
-    */
-	ArraySizes::ArraySizes(uint32_t uSize) 
-	{ 
-		m_pSizes[0]=uSize;
-	}
+namespace PolyVox {
+/**
+\param uSize The size of the first dimension.
+*/
+ArraySizes::ArraySizes(uint32_t uSize) { m_pSizes[0] = uSize; }
 
-	/**
-    This class only directly implements one dimensional sizes. Higher numbers
-	of dimensions are implemented via the ArraySisesImpl class. This function
-	create an object of the next dimensionality up.
-    \param uSize The size of the next dimension.
-    \return A higher dimension version of this class.
-    */
-	ArraySizesImpl<2> ArraySizes::operator () (uint32_t uSize) 
-	{ 
-		return ArraySizesImpl<2>(m_pSizes, uSize);
-	}
-
-	/**
-    \return The array of integers corresponding to this object.
-    */
-	ArraySizes::operator UIntArray1 () const
-	{
-		return m_pSizes;
-	}
+/**
+This class only directly implements one dimensional sizes. Higher numbers
+of dimensions are implemented via the ArraySisesImpl class. This function
+create an object of the next dimensionality up.
+\param uSize The size of the next dimension.
+\return A higher dimension version of this class.
+*/
+ArraySizesImpl<2> ArraySizes::operator()(uint32_t uSize) {
+  return ArraySizesImpl<2>(m_pSizes, uSize);
 }
+
+/**
+\return The array of integers corresponding to this object.
+*/
+ArraySizes::operator UIntArray1() const { return m_pSizes; }
+} // namespace PolyVox

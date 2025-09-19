@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_OpenGLWidget_H__
@@ -29,9 +29,9 @@ freely, subject to the following restrictions:
 #include <QGLWidget>
 #include <QTimer>
 
+#include "PolyVoxCore/Impl/Utility.h"
 #include "PolyVoxCore/LargeVolume.h"
 #include "PolyVoxCore/SurfaceMesh.h"
-#include "PolyVoxCore/Impl/Utility.h"
 
 #include "OpenGLImmediateModeSupport.h"
 #include "OpenGLVertexBufferObjectSupport.h"
@@ -39,45 +39,48 @@ freely, subject to the following restrictions:
 
 const int32_t g_uVolumeSideLength = 128;
 
-class OpenGLWidget : public QGLWidget
- {
+class OpenGLWidget : public QGLWidget {
 
- public:
-     OpenGLWidget(QWidget *parent);
+public:
+  OpenGLWidget(QWidget *parent);
 
-	 void setVolume(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>* volData);
+  void setVolume(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44> *volData);
 
-	 void mouseMoveEvent(QMouseEvent* event);
-	 void mousePressEvent(QMouseEvent* event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
 
- protected:
-     void initializeGL();
-     void resizeGL(int w, int h);
-     void paintGL();
+protected:
+  void initializeGL();
+  void resizeGL(int w, int h);
+  void paintGL();
 
- private:
-	 void setupProjectionMatrix(void);
-	QPoint m_LastFrameMousePos;
-	QPoint m_CurrentMousePos;
+private:
+  void setupProjectionMatrix(void);
+  QPoint m_LastFrameMousePos;
+  QPoint m_CurrentMousePos;
 
-	int m_xRotation;
-	int m_yRotation;
+  int m_xRotation;
+  int m_yRotation;
 
-	QTimer *timer;
+  QTimer *timer;
 
-	 bool m_bUseOpenGLVertexBufferObjects;
+  bool m_bUseOpenGLVertexBufferObjects;
 
-	 //Creates a volume 128x128x128
-	PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>* m_volData;
+  // Creates a volume 128x128x128
+  PolyVox::LargeVolume<PolyVox::MaterialDensityPair44> *m_volData;
 
-	//Rather than storing one big mesh, the volume is broken into regions and a mesh is stored for each region
-	std::map<PolyVox::Vector3DUint8, OpenGLSurfaceMesh> m_mapOpenGLSurfaceMeshes;
-	std::map<PolyVox::Vector3DUint8, polyvox_shared_ptr<PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> > > m_mapSurfaceMeshes;
+  // Rather than storing one big mesh, the volume is broken into regions and a
+  // mesh is stored for each region
+  std::map<PolyVox::Vector3DUint8, OpenGLSurfaceMesh> m_mapOpenGLSurfaceMeshes;
+  std::map<
+      PolyVox::Vector3DUint8,
+      polyvox_shared_ptr<PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>>>
+      m_mapSurfaceMeshes;
 
-	unsigned int m_uRegionSideLength;
-	unsigned int m_uVolumeWidthInRegions;
-	unsigned int m_uVolumeHeightInRegions;
-	unsigned int m_uVolumeDepthInRegions;
- };
+  unsigned int m_uRegionSideLength;
+  unsigned int m_uVolumeWidthInRegions;
+  unsigned int m_uVolumeHeightInRegions;
+  unsigned int m_uVolumeDepthInRegions;
+};
 
 #endif //__PolyVox_OpenGLWidget_H__

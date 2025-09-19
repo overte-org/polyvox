@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_SurfaceMesh_H__
@@ -36,68 +36,70 @@ freely, subject to the following restrictions:
 #include <set>
 #include <vector>
 
-namespace PolyVox
-{
-	class LodRecord
-	{
-	public:
-		int beginIndex;
-		int endIndex; //Let's put it just past the end STL style
-	};
+namespace PolyVox {
+class LodRecord {
+public:
+  int beginIndex;
+  int endIndex; // Let's put it just past the end STL style
+};
 
-	template <typename VertexType>
-	class SurfaceMesh
-	{
-	public:
-	   SurfaceMesh();
-	   ~SurfaceMesh();	   
+template <typename VertexType> class SurfaceMesh {
+public:
+  SurfaceMesh();
+  ~SurfaceMesh();
 
-	   const std::vector<uint32_t>& getIndices(void) const;
-	   uint32_t getNoOfIndices(void) const;
-	   uint32_t getNoOfNonUniformTrianges(void) const;
-	   uint32_t getNoOfUniformTrianges(void) const;
-	   uint32_t getNoOfVertices(void) const;	   
-	   std::vector<VertexType>& getRawVertexData(void); //FIXME - this should be removed
-	   const std::vector<VertexType>& getVertices(void) const;
+  const std::vector<uint32_t> &getIndices(void) const;
+  uint32_t getNoOfIndices(void) const;
+  uint32_t getNoOfNonUniformTrianges(void) const;
+  uint32_t getNoOfUniformTrianges(void) const;
+  uint32_t getNoOfVertices(void) const;
+  std::vector<VertexType> &
+  getRawVertexData(void); // FIXME - this should be removed
+  const std::vector<VertexType> &getVertices(void) const;
 
-	   void addTriangle(uint32_t index0, uint32_t index1, uint32_t index2);
-	   void addTriangleCubic(uint32_t index0, uint32_t index1, uint32_t index2);
-	   uint32_t addVertex(const VertexType& vertex);
-	   void clear(void);
-	   bool isEmpty(void) const;
+  void addTriangle(uint32_t index0, uint32_t index1, uint32_t index2);
+  void addTriangleCubic(uint32_t index0, uint32_t index1, uint32_t index2);
+  uint32_t addVertex(const VertexType &vertex);
+  void clear(void);
+  bool isEmpty(void) const;
 
-	   void scaleVertices(float amount);
-	   void translateVertices(const Vector3DFloat& amount);
+  void scaleVertices(float amount);
+  void translateVertices(const Vector3DFloat &amount);
 
-	   //THESE FUNCTIONS TO BE REMOVED IN THE FUTURE. OR AT LEAST MOVED OUT OF THIS CLASS INTO FREE FUNCTIONS.
-	   //THEY ARE CAUSING PROBLEMS WITH THE SWIG BINDINGS. THE FUNCTIONS REGARDING NORMALS MAKE NO SENSE WHEN
-	   //A VERTEX MIGHT NOT HAVE NORMALS. THE EXTRACT SUBSET FUNCTION SHOULD MAYBE BE APPLICATION CODE, AT ANY
-	   //RATE THE STD::SET CAUSES PROBLEMS WITH SWIG. IF YOU UNCOMMENT ANY OF THESE FUNCTIONS, PLEASE POST ON
-	   //THE FORUM SO WE CAN KNOW THE FUNCTIONALITY IS STILL NEEDED IN SOME FORM.
-	   //void sumNearbyNormals(bool bNormaliseResult = true);
-	   //polyvox_shared_ptr< SurfaceMesh<VertexType> > extractSubset(std::set<uint8_t> setMaterials);
-	   //void generateAveragedFaceNormals(bool bNormalise, bool bIncludeEdgeVertices = false);
+  // THESE FUNCTIONS TO BE REMOVED IN THE FUTURE. OR AT LEAST MOVED OUT OF THIS
+  // CLASS INTO FREE FUNCTIONS. THEY ARE CAUSING PROBLEMS WITH THE SWIG
+  // BINDINGS. THE FUNCTIONS REGARDING NORMALS MAKE NO SENSE WHEN A VERTEX MIGHT
+  // NOT HAVE NORMALS. THE EXTRACT SUBSET FUNCTION SHOULD MAYBE BE APPLICATION
+  // CODE, AT ANY RATE THE STD::SET CAUSES PROBLEMS WITH SWIG. IF YOU UNCOMMENT
+  // ANY OF THESE FUNCTIONS, PLEASE POST ON THE FORUM SO WE CAN KNOW THE
+  // FUNCTIONALITY IS STILL NEEDED IN SOME FORM. void sumNearbyNormals(bool
+  // bNormaliseResult = true); polyvox_shared_ptr< SurfaceMesh<VertexType> >
+  // extractSubset(std::set<uint8_t> setMaterials); void
+  // generateAveragedFaceNormals(bool bNormalise, bool bIncludeEdgeVertices =
+  // false);
 
-	   int noOfDegenerateTris(void);
-	   void removeDegenerateTris(void);
-	   void removeUnusedVertices(void);
+  int noOfDegenerateTris(void);
+  void removeDegenerateTris(void);
+  void removeUnusedVertices(void);
 
-	   Region m_Region;
+  Region m_Region;
 
-	   int32_t m_iTimeStamp;
+  int32_t m_iTimeStamp;
 
-	   int32_t m_iNoOfLod0Tris;
-	
-	public:		
-		std::vector<uint32_t> m_vecTriangleIndices;
-		std::vector<VertexType> m_vecVertices;
+  int32_t m_iNoOfLod0Tris;
 
-		std::vector<LodRecord> m_vecLodRecords;
-	};	
+public:
+  std::vector<uint32_t> m_vecTriangleIndices;
+  std::vector<VertexType> m_vecVertices;
 
-	template <typename VertexType>
-	polyvox_shared_ptr< SurfaceMesh<VertexType> > extractSubset(SurfaceMesh<VertexType>& inputMesh, std::set<uint8_t> setMaterials);
-}
+  std::vector<LodRecord> m_vecLodRecords;
+};
+
+template <typename VertexType>
+polyvox_shared_ptr<SurfaceMesh<VertexType>>
+extractSubset(SurfaceMesh<VertexType> &inputMesh,
+              std::set<uint8_t> setMaterials);
+} // namespace PolyVox
 
 #include "PolyVoxCore/SurfaceMesh.inl"
 

@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_VolumeResampler_H__
@@ -26,32 +26,30 @@ freely, subject to the following restrictions:
 
 #include <cmath>
 
-namespace PolyVox
-{
-	template< typename SrcVolumeType, typename DstVolumeType>
-	class VolumeResampler
-	{
-	public:
-		VolumeResampler(SrcVolumeType* pVolSrc, Region regSrc, DstVolumeType* pVolDst, Region regDst);
+namespace PolyVox {
+template <typename SrcVolumeType, typename DstVolumeType>
+class VolumeResampler {
+public:
+  VolumeResampler(SrcVolumeType *pVolSrc, Region regSrc, DstVolumeType *pVolDst,
+                  Region regDst);
 
-		void execute();
+  void execute();
 
-	private:
-		void resampleSameSize();
-		void resampleArbitrary();
+private:
+  void resampleSameSize();
+  void resampleArbitrary();
 
-		//Source data
-		SrcVolumeType* m_pVolSrc;
-		Region m_regSrc;
+  // Source data
+  SrcVolumeType *m_pVolSrc;
+  Region m_regSrc;
 
-		//Destination data
-		DstVolumeType* m_pVolDst;
-		Region m_regDst;
-	};
+  // Destination data
+  DstVolumeType *m_pVolDst;
+  Region m_regDst;
+};
 
-}//namespace PolyVox
+} // namespace PolyVox
 
 #include "PolyVoxCore/VolumeResampler.inl"
 
 #endif
-

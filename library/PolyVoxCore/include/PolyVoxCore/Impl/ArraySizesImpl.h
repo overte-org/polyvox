@@ -18,7 +18,7 @@ appreciated but is not required.
 misrepresented as being the original software.
 
 3. This notice may not be removed or altered from any source
-distribution. 	
+distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_ArraySizesImpl_H__
@@ -26,35 +26,32 @@ distribution.
 
 #include "PolyVoxCore/Impl/TypeDef.h"
 
-namespace PolyVox
-{
-	/*
-	This class provides the implementation details behind ArraySizes. It is actually
-	quite similar to ArraySizes, but an important difference is that it is templatised
-	whereas ArraySizes is not. This allows us to use a recursive template pattern without
-	exposing the use of templates to the user.
+namespace PolyVox {
+/*
+This class provides the implementation details behind ArraySizes. It is actually
+quite similar to ArraySizes, but an important difference is that it is
+templatised whereas ArraySizes is not. This allows us to use a recursive
+template pattern without exposing the use of templates to the user.
 
-	It is based on the following article: http://www.drdobbs.com/cpp/184401319
-	*/
-	template <uint32_t N>
-	class ArraySizesImpl
-	{
-		typedef const uint32_t (&UIntArrayN)[N];
+It is based on the following article: http://www.drdobbs.com/cpp/184401319
+*/
+template <uint32_t N> class ArraySizesImpl {
+  typedef const uint32_t (&UIntArrayN)[N];
 
-		friend class ArraySizes;
-		friend class ArraySizesImpl<N-1>;
+  friend class ArraySizes;
+  friend class ArraySizesImpl<N - 1>;
 
-	public:
-		ArraySizesImpl<N+1> operator () (uint32_t uSize);
+public:
+  ArraySizesImpl<N + 1> operator()(uint32_t uSize);
 
-		operator UIntArrayN () const;
+  operator UIntArrayN() const;
 
-	private:
-		ArraySizesImpl(const uint32_t (&pSizes)[N-1], uint32_t uSize);
+private:
+  ArraySizesImpl(const uint32_t (&pSizes)[N - 1], uint32_t uSize);
 
-		uint32_t m_pSizes[N];
-	};
-}//namespace PolyVox
+  uint32_t m_pSizes[N];
+};
+} // namespace PolyVox
 
 #include "PolyVoxCore/Impl/ArraySizesImpl.inl"
 

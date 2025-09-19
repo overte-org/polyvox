@@ -29,45 +29,38 @@ freely, subject to the following restrictions:
 
 using namespace PolyVox;
 
-void TestArray::testReadWrite()
-{
-	int width = 5;
-	int height = 10;
-	int depth = 20;
+void TestArray::testReadWrite() {
+  int width = 5;
+  int height = 10;
+  int depth = 20;
 
-	Array<3, int> myArray(ArraySizes(width)(height)(depth));
+  Array<3, int> myArray(ArraySizes(width)(height)(depth));
 
-	int ct = 1;
-	int expectedTotal = 0;
-	for(int z = 0; z < depth; z++)
-	{
-		for(int y = 0; y < height; y++)
-		{
-			for(int x = 0; x < width; x++)
-			{
-				myArray[x][y][z] = ct;
-				expectedTotal += myArray[x][y][z];
-				ct++;
-			}
-		}
-	}
+  int ct = 1;
+  int expectedTotal = 0;
+  for (int z = 0; z < depth; z++) {
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        myArray[x][y][z] = ct;
+        expectedTotal += myArray[x][y][z];
+        ct++;
+      }
+    }
+  }
 
-	ct = 1;
-	int total = 0;
-	for(int z = 0; z < depth; z++)
-	{
-		for(int y = 0; y < height; y++)
-		{
-			for(int x = 0; x < width; x++)
-			{
-				QCOMPARE(myArray[x][y][z], ct);
-				total += myArray[x][y][z];
-				ct++;
-			}
-		}
-	}
+  ct = 1;
+  int total = 0;
+  for (int z = 0; z < depth; z++) {
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        QCOMPARE(myArray[x][y][z], ct);
+        total += myArray[x][y][z];
+        ct++;
+      }
+    }
+  }
 
-	QCOMPARE(total, expectedTotal);
+  QCOMPARE(total, expectedTotal);
 }
 
 QTEST_MAIN(TestArray)

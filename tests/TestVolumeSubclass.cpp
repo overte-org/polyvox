@@ -34,106 +34,107 @@ freely, subject to the following restrictions:
 using namespace PolyVox;
 
 template <typename VoxelType>
-class VolumeSubclass : public BaseVolume<VoxelType>
-{
+class VolumeSubclass : public BaseVolume<VoxelType> {
 public:
-	//There seems to be some descrepency between Visual Studio and GCC about how the following class should be declared.
-	//There is a work around (see also See http://goo.gl/qu1wn) given below which appears to work on VS2010 and GCC, but
-	//which seems to cause internal compiler errors on VS2008 when building with the /Gm 'Enable Minimal Rebuild' compiler
-	//option. For now it seems best to 'fix' it with the preprocessor insstead, but maybe the workaround can be reinstated
-	//in the future
-	//typedef BaseVolume<VoxelType> VolumeOfVoxelType; //Workaround for GCC/VS2010 differences. See http://goo.gl/qu1wn
-	//class Sampler : public VolumeOfVoxelType::template Sampler< VolumeSubclass<VoxelType> >
-	#if defined(_MSC_VER)
-		class Sampler : public BaseVolume<VoxelType>::Sampler< VolumeSubclass<VoxelType> > //This line works on VS2010
-	#else
-		class Sampler : public BaseVolume<VoxelType>::template Sampler< VolumeSubclass<VoxelType> > //This line works on GCC
-	#endif
-	{
-	public:
-		Sampler(VolumeSubclass<VoxelType>* volume)
-			:BaseVolume<VoxelType>::template Sampler< VolumeSubclass<VoxelType> >(volume)
-		{
-			this->mVolume = volume;
-		}
-		//~Sampler();
-	};
+// There seems to be some descrepency between Visual Studio and GCC about how
+// the following class should be declared. There is a work around (see also See
+// http://goo.gl/qu1wn) given below which appears to work on VS2010 and GCC, but
+// which seems to cause internal compiler errors on VS2008 when building with
+// the /Gm 'Enable Minimal Rebuild' compiler option. For now it seems best to
+// 'fix' it with the preprocessor insstead, but maybe the workaround can be
+// reinstated in the future typedef BaseVolume<VoxelType> VolumeOfVoxelType;
+// //Workaround for GCC/VS2010 differences. See http://goo.gl/qu1wn class
+// Sampler : public VolumeOfVoxelType::template Sampler<
+// VolumeSubclass<VoxelType> >
+#if defined(_MSC_VER)
+  class Sampler : public BaseVolume<VoxelType>::Sampler<
+                      VolumeSubclass<VoxelType>> // This line works on VS2010
+#else
+  class Sampler : public BaseVolume<VoxelType>::template Sampler<
+                      VolumeSubclass<VoxelType>> // This line works on GCC
+#endif
+  {
+  public:
+    Sampler(VolumeSubclass<VoxelType> *volume)
+        : BaseVolume<VoxelType>::template Sampler<VolumeSubclass<VoxelType>>(
+              volume) {
+      this->mVolume = volume;
+    }
+    //~Sampler();
+  };
 
-	/// Constructor for creating a fixed size volume.
-	VolumeSubclass(const Region& regValid)
-		:BaseVolume<VoxelType>(regValid)
-	{
-		mVolumeData.resize(ArraySizes(this->getWidth())(this->getHeight())(this->getDepth()));
-	}
-	/// Destructor
-	~VolumeSubclass() {};
+  /// Constructor for creating a fixed size volume.
+  VolumeSubclass(const Region &regValid) : BaseVolume<VoxelType>(regValid) {
+    mVolumeData.resize(
+        ArraySizes(this->getWidth())(this->getHeight())(this->getDepth()));
+  }
+  /// Destructor
+  ~VolumeSubclass() {};
 
-	/// Gets the value used for voxels which are outside the volume
-	VoxelType getBorderValue(void) const { return 0; }
-	/// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
-	VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const
-	{
-		if(this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)))
-		{
-			return mVolumeData[uXPos][uYPos][uZPos];
-		}
-		else
-		{
-			return getBorderValue();
-		}
-	}
-	/// Gets a voxel at the position given by a 3D vector
-	VoxelType getVoxelAt(const Vector3DInt32& v3dPos) const { return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ()); }
+  /// Gets the value used for voxels which are outside the volume
+  VoxelType getBorderValue(void) const { return 0; }
+  /// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
+  VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const {
+    if (this->m_regValidRegion.containsPoint(
+            Vector3DInt32(uXPos, uYPos, uZPos))) {
+      return mVolumeData[uXPos][uYPos][uZPos];
+    } else {
+      return getBorderValue();
+    }
+  }
+  /// Gets a voxel at the position given by a 3D vector
+  VoxelType getVoxelAt(const Vector3DInt32 &v3dPos) const {
+    return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
+  }
 
-	/// Sets the value used for voxels which are outside the volume
-	void setBorderValue(const VoxelType& tBorder) { }
-	/// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
-	bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue)
-	{
-		if(this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)))
-		{
-			mVolumeData[uXPos][uYPos][uZPos] = tValue;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	/// Sets the voxel at the position given by a 3D vector
-	bool setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue) { return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue); }
+  /// Sets the value used for voxels which are outside the volume
+  void setBorderValue(const VoxelType &tBorder) {}
+  /// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
+  bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos,
+                  VoxelType tValue) {
+    if (this->m_regValidRegion.containsPoint(
+            Vector3DInt32(uXPos, uYPos, uZPos))) {
+      mVolumeData[uXPos][uYPos][uZPos] = tValue;
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /// Sets the voxel at the position given by a 3D vector
+  bool setVoxelAt(const Vector3DInt32 &v3dPos, VoxelType tValue) {
+    return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
+  }
 
-	/// Calculates approximatly how many bytes of memory the volume is currently using.
-	uint32_t calculateSizeInBytes(void) { return 0; }
+  /// Calculates approximatly how many bytes of memory the volume is currently
+  /// using.
+  uint32_t calculateSizeInBytes(void) { return 0; }
 
-	/// Deprecated - I don't think we should expose this function? Let us know if you disagree...
-	//void resize(const Region& regValidRegion);
+  /// Deprecated - I don't think we should expose this function? Let us know if
+  /// you disagree...
+  // void resize(const Region& regValidRegion);
 
-private:	
-	Array<3, VoxelType> mVolumeData;
+private:
+  Array<3, VoxelType> mVolumeData;
 };
 
-void TestVolumeSubclass::testExtractSurface()
-{
-	VolumeSubclass<Material8> volumeSubclass(Region(0,0,0,16,16,16));
+void TestVolumeSubclass::testExtractSurface() {
+  VolumeSubclass<Material8> volumeSubclass(Region(0, 0, 0, 16, 16, 16));
 
-	for(int32_t z = 0; z < volumeSubclass.getDepth() / 2; z++)
-	{
-		for(int32_t y = 0; y < volumeSubclass.getHeight(); y++)
-		{
-			for(int32_t x = 0; x < volumeSubclass.getWidth(); x++)
-			{
-				Material8 mat(1);
-				volumeSubclass.setVoxelAt(Vector3DInt32(x,y,z),mat);
-			}
-		}
-	}
+  for (int32_t z = 0; z < volumeSubclass.getDepth() / 2; z++) {
+    for (int32_t y = 0; y < volumeSubclass.getHeight(); y++) {
+      for (int32_t x = 0; x < volumeSubclass.getWidth(); x++) {
+        Material8 mat(1);
+        volumeSubclass.setVoxelAt(Vector3DInt32(x, y, z), mat);
+      }
+    }
+  }
 
-	SurfaceMesh<PositionMaterial> result;
-	CubicSurfaceExtractor< VolumeSubclass<Material8> > cubicSurfaceExtractor(&volumeSubclass, volumeSubclass.getEnclosingRegion(), &result);
-	cubicSurfaceExtractor.execute();
+  SurfaceMesh<PositionMaterial> result;
+  CubicSurfaceExtractor<VolumeSubclass<Material8>> cubicSurfaceExtractor(
+      &volumeSubclass, volumeSubclass.getEnclosingRegion(), &result);
+  cubicSurfaceExtractor.execute();
 
-	QCOMPARE(result.getNoOfVertices(), static_cast<uint32_t>(8));
+  QCOMPARE(result.getNoOfVertices(), static_cast<uint32_t>(8));
 }
 
 QTEST_MAIN(TestVolumeSubclass)

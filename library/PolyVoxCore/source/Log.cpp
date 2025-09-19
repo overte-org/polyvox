@@ -18,12 +18,11 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #include "PolyVoxCore/Log.h"
 
-namespace PolyVox
-{
-	void (*logHandler)(std::string, int severity) = 0;
+namespace PolyVox {
+void (*logHandler)(std::string, int severity) = 0;
 }

@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_Utility_H__
@@ -28,10 +28,9 @@ freely, subject to the following restrictions:
 
 #include <cassert>
 
-namespace PolyVox
-{
-	POLYVOX_API uint8_t logBase2(uint32_t uInput);
-	POLYVOX_API bool isPowerOf2(uint32_t uInput);
-}
+namespace PolyVox {
+POLYVOX_API uint8_t logBase2(uint32_t uInput);
+POLYVOX_API bool isPowerOf2(uint32_t uInput);
+} // namespace PolyVox
 
 #endif

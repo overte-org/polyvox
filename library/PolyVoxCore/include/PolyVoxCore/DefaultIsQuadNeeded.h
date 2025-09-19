@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_DefaultIsQuadNeeded_H__
@@ -26,25 +26,18 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/Impl/TypeDef.h"
 
-namespace PolyVox
-{
-	template<typename VoxelType>
-	class DefaultIsQuadNeeded
-	{
-	public:
-		bool operator()(VoxelType back, VoxelType front, uint32_t& materialToUse)
-		{
-			if((back > 0) && (front == 0))
-			{
-				materialToUse = static_cast<uint32_t>(back);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-	};
-}
+namespace PolyVox {
+template <typename VoxelType> class DefaultIsQuadNeeded {
+public:
+  bool operator()(VoxelType back, VoxelType front, uint32_t &materialToUse) {
+    if ((back > 0) && (front == 0)) {
+      materialToUse = static_cast<uint32_t>(back);
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+} // namespace PolyVox
 
 #endif //__PolyVox_DefaultIsQuadNeeded_H__

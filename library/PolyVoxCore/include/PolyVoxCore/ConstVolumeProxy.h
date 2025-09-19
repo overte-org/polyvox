@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_ConstVolumeProxy_H__
@@ -27,53 +27,45 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/Region.h"
 #include "PolyVoxCore/Vector.h"
 
-namespace PolyVox
-{
-	template <typename VoxelType>
-	class ConstVolumeProxy
-	{
-		//LargeVolume is a friend so it can call the constructor.
-		friend class LargeVolume<VoxelType>;
-	public:
-		VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const
-		{
-			assert(m_regValid.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
-			return m_pVolume.getVoxelAt(uXPos, uYPos, uZPos);
-		}
+namespace PolyVox {
+template <typename VoxelType> class ConstVolumeProxy {
+  // LargeVolume is a friend so it can call the constructor.
+  friend class LargeVolume<VoxelType>;
 
-		VoxelType getVoxelAt(const Vector3DInt32& v3dPos) const
-		{
-			assert(m_regValid.containsPoint(v3dPos));
-			return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
-		}
+public:
+  VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const {
+    assert(m_regValid.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
+    return m_pVolume.getVoxelAt(uXPos, uYPos, uZPos);
+  }
 
-		void setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue) const
-		{
-			assert(m_regValid.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
-			m_pVolume.setVoxelAtConst(uXPos, uYPos, uZPos, tValue);
-		}
+  VoxelType getVoxelAt(const Vector3DInt32 &v3dPos) const {
+    assert(m_regValid.containsPoint(v3dPos));
+    return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
+  }
 
-		void setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue) const
-		{
-			assert(m_regValid.containsPoint(v3dPos));
-			setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
-		}
-	private:
-		//Private constructor, so client code can't abuse this class.
-		ConstVolumeProxy(const LargeVolume<VoxelType>& pVolume, const Region& regValid)
-			:m_pVolume(pVolume)
-			,m_regValid(regValid)
-		{
-		}
+  void setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos,
+                  VoxelType tValue) const {
+    assert(m_regValid.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
+    m_pVolume.setVoxelAtConst(uXPos, uYPos, uZPos, tValue);
+  }
 
-		//Private assignment operator, so client code can't abuse this class.
-		ConstVolumeProxy& operator=(const ConstVolumeProxy& rhs)
-		{
-		}
+  void setVoxelAt(const Vector3DInt32 &v3dPos, VoxelType tValue) const {
+    assert(m_regValid.containsPoint(v3dPos));
+    setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
+  }
 
-		const LargeVolume<VoxelType>& m_pVolume;
-		const Region& m_regValid;
-	};
-}
+private:
+  // Private constructor, so client code can't abuse this class.
+  ConstVolumeProxy(const LargeVolume<VoxelType> &pVolume,
+                   const Region &regValid)
+      : m_pVolume(pVolume), m_regValid(regValid) {}
+
+  // Private assignment operator, so client code can't abuse this class.
+  ConstVolumeProxy &operator=(const ConstVolumeProxy &rhs) {}
+
+  const LargeVolume<VoxelType> &m_pVolume;
+  const Region &m_regValid;
+};
+} // namespace PolyVox
 
 #endif //__PolyVox_ConstVolumeProxy_H__

@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_SurfaceVertex_H__
@@ -31,55 +31,56 @@ freely, subject to the following restrictions:
 #include <bitset>
 #include <vector>
 
-namespace PolyVox
-{	
+namespace PolyVox {
 #ifdef SWIG
 	class PositionMaterial
 #else
-	class POLYVOX_API PositionMaterial
+class POLYVOX_API PositionMaterial
 #endif
-	{
-	public:	
-		PositionMaterial();
-		PositionMaterial(Vector3DFloat positionToSet, float materialToSet);
+{
+public:
+  PositionMaterial();
+  PositionMaterial(Vector3DFloat positionToSet, float materialToSet);
 
-		float getMaterial(void) const;
-		const Vector3DFloat& getPosition(void) const;
+  float getMaterial(void) const;
+  const Vector3DFloat &getPosition(void) const;
 
-		void setMaterial(float materialToSet);
-		void setPosition(const Vector3DFloat& positionToSet);
-	public:		
-		//Nicely fits into four floats.
-		Vector3DFloat position;
-		float material;
-	};	
+  void setMaterial(float materialToSet);
+  void setPosition(const Vector3DFloat &positionToSet);
+
+public:
+  // Nicely fits into four floats.
+  Vector3DFloat position;
+  float material;
+};
 
 #ifdef SWIG
 	class PositionMaterialNormal
 #else
-	class POLYVOX_API PositionMaterialNormal
+class POLYVOX_API PositionMaterialNormal
 #endif
-	{
-	public:	
-		PositionMaterialNormal();
-		PositionMaterialNormal(Vector3DFloat positionToSet, float materialToSet);
-		PositionMaterialNormal(Vector3DFloat positionToSet, Vector3DFloat normalToSet, float materialToSet);	
+{
+public:
+  PositionMaterialNormal();
+  PositionMaterialNormal(Vector3DFloat positionToSet, float materialToSet);
+  PositionMaterialNormal(Vector3DFloat positionToSet, Vector3DFloat normalToSet,
+                         float materialToSet);
 
-		float getMaterial(void) const;
-		const Vector3DFloat& getNormal(void) const;
-		const Vector3DFloat& getPosition(void) const;	
+  float getMaterial(void) const;
+  const Vector3DFloat &getNormal(void) const;
+  const Vector3DFloat &getPosition(void) const;
 
-		void setMaterial(float materialToSet);
-		void setNormal(const Vector3DFloat& normalToSet);
-		void setPosition(const Vector3DFloat& positionToSet);
+  void setMaterial(float materialToSet);
+  void setNormal(const Vector3DFloat &normalToSet);
+  void setPosition(const Vector3DFloat &positionToSet);
 
-	public:		
-		//Nicely fits into seven floats, meaning we
-		//can squeeze in one more for material blending.
-		Vector3DFloat position;
-		Vector3DFloat normal;
-		float material; //FIXME: This shouldn't be float on CPU?
-	};
-}
+public:
+  // Nicely fits into seven floats, meaning we
+  // can squeeze in one more for material blending.
+  Vector3DFloat position;
+  Vector3DFloat normal;
+  float material; // FIXME: This shouldn't be float on CPU?
+};
+} // namespace PolyVox
 
 #endif

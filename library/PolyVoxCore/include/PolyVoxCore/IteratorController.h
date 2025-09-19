@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_IteratorController_H__
@@ -26,20 +26,17 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/Region.h"
 
-namespace PolyVox
-{
-	template <typename IteratorType>
-	class IteratorController
-	{
-	public:
-		void reset(void);
-		bool moveForward(void);
+namespace PolyVox {
+template <typename IteratorType> class IteratorController {
+public:
+  void reset(void);
+  bool moveForward(void);
 
-	public:
-		Region m_regValid;
-		IteratorType* m_Iter;
-	};
-}
+public:
+  Region m_regValid;
+  IteratorType *m_Iter;
+};
+} // namespace PolyVox
 
 #include "PolyVoxCore/IteratorController.inl"
 

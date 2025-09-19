@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __AmbientOcclusionCalculator_H__
@@ -28,54 +28,54 @@ freely, subject to the following restrictions:
 #include "Impl/RandomVectors.h"
 
 #include "PolyVoxCore/Array.h"
-#include "PolyVoxCore/Region.h"
 #include "PolyVoxCore/Raycast.h"
+#include "PolyVoxCore/Region.h"
 
-//These two should not be here!
+// These two should not be here!
 #include "PolyVoxCore/Material.h"
 #include "PolyVoxCore/SimpleVolume.h"
 
 #include <algorithm>
 
-namespace PolyVox
-{
-	/**
-	 * \file
-	 * 
-	 * Ambient occlusion
-	 */
-	
-	template<typename IsVoxelTransparentCallback>
-	class AmbientOcclusionCalculatorRaycastCallback
-	{
-	public:
-		AmbientOcclusionCalculatorRaycastCallback(IsVoxelTransparentCallback isVoxelTransparentCallback) : mIsVoxelTransparentCallback(isVoxelTransparentCallback)
-		{
-		}
+namespace PolyVox {
+/**
+ * \file
+ *
+ * Ambient occlusion
+ */
 
-		bool operator()(const SimpleVolume<uint8_t>::Sampler& sampler)
-		{
-			uint8_t sample = sampler.getVoxel();
-			bool func = mIsVoxelTransparentCallback(sample);
-			return func;
-		}
+template <typename IsVoxelTransparentCallback>
+class AmbientOcclusionCalculatorRaycastCallback {
+public:
+  AmbientOcclusionCalculatorRaycastCallback(
+      IsVoxelTransparentCallback isVoxelTransparentCallback)
+      : mIsVoxelTransparentCallback(isVoxelTransparentCallback) {}
 
-		IsVoxelTransparentCallback mIsVoxelTransparentCallback;
-	};
+  bool operator()(const SimpleVolume<uint8_t>::Sampler &sampler) {
+    uint8_t sample = sampler.getVoxel();
+    bool func = mIsVoxelTransparentCallback(sample);
+    return func;
+  }
 
-	// NOTE: The callback needs to be a functor not a function. I haven't been
-	// able to work the required template magic to get functions working as well.
-	// 
-	// Matt: If you make the function take a "IsVoxelTransparentCallback&&" then
-	// it will forward it on. Works for functors, functions and lambdas.
-	// This will be 'perfect forwarding' using 'universal references'
-	// This will require C++11 rvalue references which is why I haven't made the
-	// change yet.
-	
-	/// Calculate the ambient occlusion for the volume
-	template<typename VolumeType, typename IsVoxelTransparentCallback>
-	void calculateAmbientOcclusion(VolumeType* volInput, Array<3, uint8_t>* arrayResult, Region region, float fRayLength, uint8_t uNoOfSamplesPerOutputElement, IsVoxelTransparentCallback isVoxelTransparentCallback);
-}
+  IsVoxelTransparentCallback mIsVoxelTransparentCallback;
+};
+
+// NOTE: The callback needs to be a functor not a function. I haven't been
+// able to work the required template magic to get functions working as well.
+//
+// Matt: If you make the function take a "IsVoxelTransparentCallback&&" then
+// it will forward it on. Works for functors, functions and lambdas.
+// This will be 'perfect forwarding' using 'universal references'
+// This will require C++11 rvalue references which is why I haven't made the
+// change yet.
+
+/// Calculate the ambient occlusion for the volume
+template <typename VolumeType, typename IsVoxelTransparentCallback>
+void calculateAmbientOcclusion(
+    VolumeType *volInput, Array<3, uint8_t> *arrayResult, Region region,
+    float fRayLength, uint8_t uNoOfSamplesPerOutputElement,
+    IsVoxelTransparentCallback isVoxelTransparentCallback);
+} // namespace PolyVox
 
 #include "PolyVoxCore/AmbientOcclusionCalculator.inl"
 

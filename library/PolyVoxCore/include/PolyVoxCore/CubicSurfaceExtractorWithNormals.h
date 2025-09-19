@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_CubicSurfaceExtractorWithNormals_H__
@@ -29,30 +29,32 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/Array.h"
 #include "PolyVoxCore/SurfaceMesh.h"
 
-namespace PolyVox
-{
-	template<typename VolumeType, typename IsQuadNeeded = DefaultIsQuadNeeded<typename VolumeType::VoxelType> >
-	class CubicSurfaceExtractorWithNormals
-	{
-	public:
-		CubicSurfaceExtractorWithNormals(VolumeType* volData, Region region, SurfaceMesh<PositionMaterialNormal>* result, IsQuadNeeded isQuadNeeded = IsQuadNeeded());
+namespace PolyVox {
+template <typename VolumeType,
+          typename IsQuadNeeded =
+              DefaultIsQuadNeeded<typename VolumeType::VoxelType>>
+class CubicSurfaceExtractorWithNormals {
+public:
+  CubicSurfaceExtractorWithNormals(VolumeType *volData, Region region,
+                                   SurfaceMesh<PositionMaterialNormal> *result,
+                                   IsQuadNeeded isQuadNeeded = IsQuadNeeded());
 
-		void execute();
+  void execute();
 
-	private:
-		IsQuadNeeded m_funcIsQuadNeededCallback;
+private:
+  IsQuadNeeded m_funcIsQuadNeededCallback;
 
-		//The volume data and a sampler to access it.
-		VolumeType* m_volData;
-		typename VolumeType::Sampler m_sampVolume;
+  // The volume data and a sampler to access it.
+  VolumeType *m_volData;
+  typename VolumeType::Sampler m_sampVolume;
 
-		//The surface patch we are currently filling.
-		SurfaceMesh<PositionMaterialNormal>* m_meshCurrent;
+  // The surface patch we are currently filling.
+  SurfaceMesh<PositionMaterialNormal> *m_meshCurrent;
 
-		//Information about the region we are currently processing
-		Region m_regSizeInVoxels;
-	};
-}
+  // Information about the region we are currently processing
+  Region m_regSizeInVoxels;
+};
+} // namespace PolyVox
 
 #include "PolyVoxCore/CubicSurfaceExtractorWithNormals.inl"
 

@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_MarchingCubeTables_H__
@@ -26,10 +26,9 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/Impl/TypeDef.h"
 
-namespace PolyVox
-{
-	extern const POLYVOX_API int edgeTable[256];
-	extern const POLYVOX_API int triTable[256][16];
-}
+namespace PolyVox {
+extern const POLYVOX_API int edgeTable[256];
+extern const POLYVOX_API int triTable[256][16];
+} // namespace PolyVox
 
 #endif

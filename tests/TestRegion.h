@@ -26,12 +26,11 @@ freely, subject to the following restrictions:
 
 #include <QObject>
 
-class TestRegion: public QObject
-{
-	Q_OBJECT
-	
-	private slots:
-		void testEquality();
+class TestRegion : public QObject {
+  Q_OBJECT
+
+private slots:
+  void testEquality();
 };
 
 #endif

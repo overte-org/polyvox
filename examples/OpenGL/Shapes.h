@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __OpenGLExample_Shapes_H__
@@ -27,7 +27,12 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/LargeVolume.h"
 #include "PolyVoxCore/MaterialDensityPair.h"
 
-void createSphereInVolume(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>& volData, float fRadius, uint8_t uValue);
-void createCubeInVolume(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>& volData, PolyVox::Vector3DInt32 lowerCorner, PolyVox::Vector3DInt32 upperCorner, uint8_t uValue);
+void createSphereInVolume(
+    PolyVox::LargeVolume<PolyVox::MaterialDensityPair44> &volData,
+    float fRadius, uint8_t uValue);
+void createCubeInVolume(
+    PolyVox::LargeVolume<PolyVox::MaterialDensityPair44> &volData,
+    PolyVox::Vector3DInt32 lowerCorner, PolyVox::Vector3DInt32 upperCorner,
+    uint8_t uValue);
 
 #endif //__OpenGLExample_Shapes_H__

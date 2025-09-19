@@ -23,21 +23,20 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/SimpleInterface.h"
 
-//DOESN'T BELONG HERE - JUST FOR TESTING!!
+// DOESN'T BELONG HERE - JUST FOR TESTING!!
 #include "PolyVoxCore/Density.h"
 #include "PolyVoxCore/MaterialDensityPair.h"
 
-namespace PolyVox
-{
-	void extractCubicMesh(Volume& volume, const Region& region, Mesh& resultMesh)
-	{
-		CubicSurfaceExtractorWithNormals< SimpleVolume<MaterialDensityPair88> > surfaceExtractor(&volume, region, &resultMesh);
-		surfaceExtractor.execute();
-	}
-
-	void extractSmoothMesh(Volume& volume, const Region& region, Mesh& resultMesh)
-	{
-		MarchingCubesSurfaceExtractor< SimpleVolume<MaterialDensityPair88> > surfaceExtractor(&volume, region, &resultMesh);
-		surfaceExtractor.execute();
-	}
+namespace PolyVox {
+void extractCubicMesh(Volume &volume, const Region &region, Mesh &resultMesh) {
+  CubicSurfaceExtractorWithNormals<SimpleVolume<MaterialDensityPair88>>
+      surfaceExtractor(&volume, region, &resultMesh);
+  surfaceExtractor.execute();
 }
+
+void extractSmoothMesh(Volume &volume, const Region &region, Mesh &resultMesh) {
+  MarchingCubesSurfaceExtractor<SimpleVolume<MaterialDensityPair88>>
+      surfaceExtractor(&volume, region, &resultMesh);
+  surfaceExtractor.execute();
+}
+} // namespace PolyVox

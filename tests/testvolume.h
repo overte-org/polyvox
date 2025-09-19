@@ -26,12 +26,11 @@ freely, subject to the following restrictions:
 
 #include <QObject>
 
-class TestVolume: public QObject
-{
-	Q_OBJECT
-	
-	private slots:
-		void testSize();
+class TestVolume : public QObject {
+  Q_OBJECT
+
+private slots:
+  void testSize();
 };
 
 #endif

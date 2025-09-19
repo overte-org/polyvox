@@ -31,60 +31,54 @@ freely, subject to the following restrictions:
 
 using namespace PolyVox;
 
-void TestLowPassFilter::testExecute()
-{
-	const int32_t g_uVolumeSideLength = 8;
+void TestLowPassFilter::testExecute() {
+  const int32_t g_uVolumeSideLength = 8;
 
-	Region reg(Vector3DInt32(0,0,0), Vector3DInt32(g_uVolumeSideLength-1, g_uVolumeSideLength-1, g_uVolumeSideLength-1));
+  Region reg(Vector3DInt32(0, 0, 0),
+             Vector3DInt32(g_uVolumeSideLength - 1, g_uVolumeSideLength - 1,
+                           g_uVolumeSideLength - 1));
 
-	//Create empty volume
-	RawVolume<Density8> volData(reg);
+  // Create empty volume
+  RawVolume<Density8> volData(reg);
 
-	//Create two solid walls at opposite sides of the volume
-	for (int32_t z = 0; z < g_uVolumeSideLength; z++)
-	{
-		for (int32_t y = 0; y < g_uVolumeSideLength; y++)
-		{
-			for (int32_t x = 0; x < g_uVolumeSideLength; x++)
-			{
-				if(x % 2 == 0)
-				{
-					Density8 voxel(32);
-					volData.setVoxelAt(x, y, z, voxel);
-				}
-			}
-		}
-	}
+  // Create two solid walls at opposite sides of the volume
+  for (int32_t z = 0; z < g_uVolumeSideLength; z++) {
+    for (int32_t y = 0; y < g_uVolumeSideLength; y++) {
+      for (int32_t x = 0; x < g_uVolumeSideLength; x++) {
+        if (x % 2 == 0) {
+          Density8 voxel(32);
+          volData.setVoxelAt(x, y, z, voxel);
+        }
+      }
+    }
+  }
 
-	RawVolume<Density8> resultVolume(reg);
+  RawVolume<Density8> resultVolume(reg);
 
-	LowPassFilter< RawVolume<Density8>, RawVolume<Density8>, Density16 > lowPassfilter(&volData, reg, &resultVolume, reg, 3);
+  LowPassFilter<RawVolume<Density8>, RawVolume<Density8>, Density16>
+      lowPassfilter(&volData, reg, &resultVolume, reg, 3);
 
-	//Test the normal implementation
-	QBENCHMARK {
-		lowPassfilter.execute();
-	}
-	QCOMPARE(resultVolume.getVoxelAt(0,0,0), Density8(4));
-	QCOMPARE(resultVolume.getVoxelAt(1,1,1), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(2,2,2), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(3,3,3), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(4,4,4), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(5,5,5), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(6,6,6), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(7,7,7), Density8(4));
+  // Test the normal implementation
+  QBENCHMARK { lowPassfilter.execute(); }
+  QCOMPARE(resultVolume.getVoxelAt(0, 0, 0), Density8(4));
+  QCOMPARE(resultVolume.getVoxelAt(1, 1, 1), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(2, 2, 2), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(3, 3, 3), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(4, 4, 4), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(5, 5, 5), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(6, 6, 6), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(7, 7, 7), Density8(4));
 
-	//Test the SAT implmentation
-	QBENCHMARK {
-		lowPassfilter.executeSAT();
-	}
-	QCOMPARE(resultVolume.getVoxelAt(0,0,0), Density8(4));
-	QCOMPARE(resultVolume.getVoxelAt(1,1,1), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(2,2,2), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(3,3,3), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(4,4,4), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(5,5,5), Density8(21));
-	QCOMPARE(resultVolume.getVoxelAt(6,6,6), Density8(10));
-	QCOMPARE(resultVolume.getVoxelAt(7,7,7), Density8(4));
+  // Test the SAT implmentation
+  QBENCHMARK { lowPassfilter.executeSAT(); }
+  QCOMPARE(resultVolume.getVoxelAt(0, 0, 0), Density8(4));
+  QCOMPARE(resultVolume.getVoxelAt(1, 1, 1), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(2, 2, 2), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(3, 3, 3), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(4, 4, 4), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(5, 5, 5), Density8(21));
+  QCOMPARE(resultVolume.getVoxelAt(6, 6, 6), Density8(10));
+  QCOMPARE(resultVolume.getVoxelAt(7, 7, 7), Density8(4));
 }
 
 QTEST_MAIN(TestLowPassFilter)

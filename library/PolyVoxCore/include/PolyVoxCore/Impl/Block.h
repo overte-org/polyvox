@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_Block_H__
@@ -30,48 +30,46 @@ freely, subject to the following restrictions:
 #include <limits>
 #include <vector>
 
-namespace PolyVox
-{
-	template <typename VoxelType>
-	class Block
-	{
-		template <typename LengthType>
-		struct RunlengthEntry
-		{
-			LengthType length;
-			VoxelType value;
+namespace PolyVox {
+template <typename VoxelType> class Block {
+  template <typename LengthType> struct RunlengthEntry {
+    LengthType length;
+    VoxelType value;
 
-			//We can parametise the length on anything up to uint32_t.
-			//This lets us experiment with the optimal size in the future.
-			static uint32_t maxRunlength(void) {return (std::numeric_limits<LengthType>::max)();}
-		};
+    // We can parametise the length on anything up to uint32_t.
+    // This lets us experiment with the optimal size in the future.
+    static uint32_t maxRunlength(void) {
+      return (std::numeric_limits<LengthType>::max)();
+    }
+  };
 
-	public:
-		Block(uint16_t uSideLength = 0);
+public:
+  Block(uint16_t uSideLength = 0);
 
-		uint16_t getSideLength(void) const;
-		VoxelType getVoxelAt(uint16_t uXPos, uint16_t uYPos, uint16_t uZPos) const;
-		VoxelType getVoxelAt(const Vector3DUint16& v3dPos) const;
+  uint16_t getSideLength(void) const;
+  VoxelType getVoxelAt(uint16_t uXPos, uint16_t uYPos, uint16_t uZPos) const;
+  VoxelType getVoxelAt(const Vector3DUint16 &v3dPos) const;
 
-		void setVoxelAt(uint16_t uXPos, uint16_t uYPos, uint16_t uZPos, VoxelType tValue);
-		void setVoxelAt(const Vector3DUint16& v3dPos, VoxelType tValue);
+  void setVoxelAt(uint16_t uXPos, uint16_t uYPos, uint16_t uZPos,
+                  VoxelType tValue);
+  void setVoxelAt(const Vector3DUint16 &v3dPos, VoxelType tValue);
 
-		void fill(VoxelType tValue);
-		void initialise(uint16_t uSideLength);
-		uint32_t calculateSizeInBytes(void);
+  void fill(VoxelType tValue);
+  void initialise(uint16_t uSideLength);
+  uint32_t calculateSizeInBytes(void);
 
-	public:
-		void compress(void);
-		void uncompress(void);
+public:
+  void compress(void);
+  void uncompress(void);
 
-		std::vector< RunlengthEntry<uint16_t> > m_vecCompressedData;
-		VoxelType* m_tUncompressedData;
-		uint16_t m_uSideLength;
-		uint8_t m_uSideLengthPower;	
-		bool m_bIsCompressed;
-		bool m_bIsUncompressedDataModified;
-	};
-}
+  std::vector<RunlengthEntry<uint16_t>> m_vecCompressedData;
+  VoxelType *m_tUncompressedData;
+  uint16_t m_uSideLength;
+  uint8_t m_uSideLengthPower;
+  bool m_bIsCompressed;
+  bool m_bIsUncompressedDataModified;
+};
+} // namespace PolyVox
 
 #include "PolyVoxCore/Impl/Block.inl"
 

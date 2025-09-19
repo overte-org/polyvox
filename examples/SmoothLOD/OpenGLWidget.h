@@ -18,7 +18,7 @@ appreciated but is not required.
 misrepresented as being the original software.
 
 3. This notice may not be removed or altered from any source
-distribution. 	
+distribution.
 *******************************************************************************/
 
 #ifndef __BasicExample_OpenGLWidget_H__
@@ -30,45 +30,46 @@ distribution.
 
 #include <QGLWidget>
 
-class OpenGLWidget : public QGLWidget
-{
+class OpenGLWidget : public QGLWidget {
 public:
-	//Constructor
-	OpenGLWidget(QWidget *parent);
+  // Constructor
+  OpenGLWidget(QWidget *parent);
 
-	//Mouse handling
-	void mouseMoveEvent(QMouseEvent* event);
-	void mousePressEvent(QMouseEvent* event);
+  // Mouse handling
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
 
-	//Convert a SrfaceMesh to OpenGL index/vertex buffers
-	void setSurfaceMeshToRender(const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& surfaceMesh);
-	void setSurfaceMeshToRenderLowLOD(const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& surfaceMesh);
+  // Convert a SrfaceMesh to OpenGL index/vertex buffers
+  void setSurfaceMeshToRender(
+      const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &surfaceMesh);
+  void setSurfaceMeshToRenderLowLOD(
+      const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &surfaceMesh);
 
 protected:
-	//Qt OpenGL functions
-	void initializeGL();
-	void resizeGL(int w, int h);
-	void paintGL();
+  // Qt OpenGL functions
+  void initializeGL();
+  void resizeGL(int w, int h);
+  void paintGL();
 
 private:
-	//Index/vertex buffer data
-	GLuint m_uBeginIndex;
-	GLuint m_uEndIndex;
-	//GLuint noOfIndices;
-	GLuint indexBuffer;
-	GLuint vertexBuffer;
+  // Index/vertex buffer data
+  GLuint m_uBeginIndex;
+  GLuint m_uEndIndex;
+  // GLuint noOfIndices;
+  GLuint indexBuffer;
+  GLuint vertexBuffer;
 
-	GLuint m_uBeginIndexLow;
-	GLuint m_uEndIndexLow;
-	//GLuint noOfIndicesLow;
-	GLuint indexBufferLow;
-	GLuint vertexBufferLow;
+  GLuint m_uBeginIndexLow;
+  GLuint m_uEndIndexLow;
+  // GLuint noOfIndicesLow;
+  GLuint indexBufferLow;
+  GLuint vertexBufferLow;
 
-	//Mouse data
-	QPoint m_LastFrameMousePos;
-	QPoint m_CurrentMousePos;
-	int m_xRotation;
-	int m_yRotation;
+  // Mouse data
+  QPoint m_LastFrameMousePos;
+  QPoint m_CurrentMousePos;
+  int m_xRotation;
+  int m_yRotation;
 };
 
 #endif //__BasicExample_OpenGLWidget_H__

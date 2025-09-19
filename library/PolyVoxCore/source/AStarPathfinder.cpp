@@ -18,50 +18,29 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #include "PolyVoxCore/AStarPathfinder.h"
 
 using namespace PolyVox;
 
-namespace PolyVox
-{
-	const Vector3DInt32 arrayPathfinderFaces[6] =
-	{
-		Vector3DInt32(0, 0, -1),
-		Vector3DInt32(0, 0, +1),
-		Vector3DInt32(0, -1, 0),
-		Vector3DInt32(0, +1, 0),
-		Vector3DInt32(-1, 0, 0),
-		Vector3DInt32(+1, 0, 0)
-	};
+namespace PolyVox {
+const Vector3DInt32 arrayPathfinderFaces[6] = {
+    Vector3DInt32(0, 0, -1), Vector3DInt32(0, 0, +1), Vector3DInt32(0, -1, 0),
+    Vector3DInt32(0, +1, 0), Vector3DInt32(-1, 0, 0), Vector3DInt32(+1, 0, 0)};
 
-	const Vector3DInt32 arrayPathfinderEdges[12] =
-	{
-		Vector3DInt32(0, -1, -1),
-		Vector3DInt32(0, -1, +1),
-		Vector3DInt32(0, +1, -1),
-		Vector3DInt32(0, +1, +1),
-		Vector3DInt32(-1, 0, -1),
-		Vector3DInt32(-1, 0, +1),
-		Vector3DInt32(+1, 0, -1),
-		Vector3DInt32(+1, 0, +1),
-		Vector3DInt32(-1, -1, 0),
-		Vector3DInt32(-1, +1, 0),
-		Vector3DInt32(+1, -1, 0),
-		Vector3DInt32(+1, +1, 0)
-	};
+const Vector3DInt32 arrayPathfinderEdges[12] = {
+    Vector3DInt32(0, -1, -1), Vector3DInt32(0, -1, +1),
+    Vector3DInt32(0, +1, -1), Vector3DInt32(0, +1, +1),
+    Vector3DInt32(-1, 0, -1), Vector3DInt32(-1, 0, +1),
+    Vector3DInt32(+1, 0, -1), Vector3DInt32(+1, 0, +1),
+    Vector3DInt32(-1, -1, 0), Vector3DInt32(-1, +1, 0),
+    Vector3DInt32(+1, -1, 0), Vector3DInt32(+1, +1, 0)};
 
-	const Vector3DInt32 arrayPathfinderCorners[8] =
-	{
-		Vector3DInt32(-1, -1, -1),
-		Vector3DInt32(-1, -1, +1),
-		Vector3DInt32(-1, +1, -1),
-		Vector3DInt32(-1, +1, +1),
-		Vector3DInt32(+1, -1, -1),
-		Vector3DInt32(+1, -1, +1),
-		Vector3DInt32(+1, +1, -1),
-		Vector3DInt32(+1, +1, +1)
-	};
-}
+const Vector3DInt32 arrayPathfinderCorners[8] = {
+    Vector3DInt32(-1, -1, -1), Vector3DInt32(-1, -1, +1),
+    Vector3DInt32(-1, +1, -1), Vector3DInt32(-1, +1, +1),
+    Vector3DInt32(+1, -1, -1), Vector3DInt32(+1, -1, +1),
+    Vector3DInt32(+1, +1, -1), Vector3DInt32(+1, +1, +1)};
+} // namespace PolyVox

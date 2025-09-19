@@ -26,12 +26,11 @@ freely, subject to the following restrictions:
 
 #include <QObject>
 
-class TestArray: public QObject
-{
-	Q_OBJECT
-	
-	private slots:
-		void testReadWrite();
+class TestArray : public QObject {
+  Q_OBJECT
+
+private slots:
+  void testReadWrite();
 };
 
 #endif

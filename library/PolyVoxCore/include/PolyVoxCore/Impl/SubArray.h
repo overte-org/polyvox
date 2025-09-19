@@ -26,62 +26,57 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/Impl/TypeDef.h"
 
-namespace PolyVox
-{
-	template <uint32_t noOfDims, typename ElementType> class Array;
+namespace PolyVox {
+template <uint32_t noOfDims, typename ElementType> class Array;
 
-	/*
-	This class forms part of the implementation of the Array class. The operator[]
-	return a SubArray of the next size down, so that multiple []'s can be chained
-	together. It is a seperate class from Array so that it can have a reduced interface,
-	and also so that it never takes ownership of the memory to which it points.
+/*
+This class forms part of the implementation of the Array class. The operator[]
+return a SubArray of the next size down, so that multiple []'s can be chained
+together. It is a seperate class from Array so that it can have a reduced
+interface, and also so that it never takes ownership of the memory to which it
+points.
 
-	It is based on the following article: http://www.drdobbs.com/cpp/184401319
-	*/
-	template <uint32_t noOfDims, typename ElementType>
-	class SubArray
-	{
-		friend class Array<noOfDims+1, ElementType>;
-		friend class SubArray<noOfDims+1, ElementType>;
+It is based on the following article: http://www.drdobbs.com/cpp/184401319
+*/
+template <uint32_t noOfDims, typename ElementType> class SubArray {
+  friend class Array<noOfDims + 1, ElementType>;
+  friend class SubArray<noOfDims + 1, ElementType>;
 
-	public:
-		SubArray<noOfDims-1, ElementType> operator [](uint32_t uIndex);
+public:
+  SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex);
 
-		const SubArray<noOfDims-1, ElementType> operator [](uint32_t uIndex) const;
+  const SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex) const;
 
-	private:
-		SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * pOffsets);
+private:
+  SubArray(ElementType *pElements, uint32_t *pDimensions, uint32_t *pOffsets);
 
-		uint32_t * m_pDimensions;
-		uint32_t * m_pOffsets;
-		uint32_t m_uNoOfElements;
-		ElementType * m_pElements;
-	};
+  uint32_t *m_pDimensions;
+  uint32_t *m_pOffsets;
+  uint32_t m_uNoOfElements;
+  ElementType *m_pElements;
+};
 
-	template <typename ElementType>
-	class SubArray<1, ElementType>
-	{
-		friend class Array<2, ElementType>;
-		friend class SubArray<2, ElementType>;
+template <typename ElementType> class SubArray<1, ElementType> {
+  friend class Array<2, ElementType>;
+  friend class SubArray<2, ElementType>;
 
-	public:
-		ElementType & operator [] (uint32_t uIndex);
+public:
+  ElementType &operator[](uint32_t uIndex);
 
-		const ElementType & operator [] (uint32_t uIndex) const;
+  const ElementType &operator[](uint32_t uIndex) const;
 
-	private:
-		SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * /*pOffsets*/);
+private:
+  SubArray(ElementType *pElements, uint32_t *pDimensions,
+           uint32_t * /*pOffsets*/);
 
-		uint32_t * m_pDimensions;
-		ElementType * m_pElements;
-	};
+  uint32_t *m_pDimensions;
+  ElementType *m_pElements;
+};
 
-	template <typename ElementType>
-	class SubArray<0, ElementType>
-	{
-		//Zero dimensional subarray is meaningless.
-	};
-}//namespace PolyVox
+template <typename ElementType> class SubArray<0, ElementType> {
+  // Zero dimensional subarray is meaningless.
+};
+} // namespace PolyVox
 
 #include "PolyVoxCore/Impl/SubArray.inl"
 

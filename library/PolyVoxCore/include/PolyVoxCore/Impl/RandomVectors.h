@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_RandomVectors_H__
@@ -28,9 +28,8 @@ freely, subject to the following restrictions:
 
 #include "PolyVoxCore/Vector.h"
 
-namespace PolyVox
-{	
-	extern POLYVOX_API const Vector3DFloat randomVectors[];
+namespace PolyVox {
+extern POLYVOX_API const Vector3DFloat randomVectors[];
 }
 
 #endif //__PolyVox_RandomVectors_H__

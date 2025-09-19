@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __OpenGLExample_OpenGLImmediateModeSupport_H__
@@ -28,6 +28,8 @@ freely, subject to the following restrictions:
 
 #include "glew/glew.h"
 
-void renderRegionImmediateMode(PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& mesh, unsigned int uLodLevel);
+void renderRegionImmediateMode(
+    PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &mesh,
+    unsigned int uLodLevel);
 
 #endif //__OpenGLExample_OpenGLImmediateModeSupport_H__

@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
 #ifndef __PolyVox_Log_H__
@@ -28,36 +28,46 @@ freely, subject to the following restrictions:
 
 #include <string>
 
-//Note: The functions in this file are not for the user to call - they are 
-//intended for internal use only. The only exception is that you may set the
-//logHandler pointer to point at your own handling funtion for printing, etc.
+// Note: The functions in this file are not for the user to call - they are
+// intended for internal use only. The only exception is that you may set the
+// logHandler pointer to point at your own handling funtion for printing, etc.
 
-namespace PolyVox
-{
-	////////////////////////////////////////////////////////////////////////////////
-	/// Log levels for filtering logging events
-	////////////////////////////////////////////////////////////////////////////////
-	enum LogSeverity
-	{
-		LS_DEBUG, ///< Only displayed if it is a debug build
-		LS_INFO,
-		LS_WARN,
-		LS_ERROR
-	};	
+namespace PolyVox {
+////////////////////////////////////////////////////////////////////////////////
+/// Log levels for filtering logging events
+////////////////////////////////////////////////////////////////////////////////
+enum LogSeverity {
+  LS_DEBUG, ///< Only displayed if it is a debug build
+  LS_INFO,
+  LS_WARN,
+  LS_ERROR
+};
 
-	POLYVOX_API extern void (*logHandler)(std::string, int severity);
-}
+POLYVOX_API extern void (*logHandler)(std::string, int severity);
+} // namespace PolyVox
 
-//Debug severity messages are only used if we are a debug build
+// Debug severity messages are only used if we are a debug build
 #ifdef _DEBUG
-	#define POLYVOX_LOG_DEBUG(message) if(logHandler){logHandler(message, LS_DEBUG);}
+#define POLYVOX_LOG_DEBUG(message)                                             \
+  if (logHandler) {                                                            \
+    logHandler(message, LS_DEBUG);                                             \
+  }
 #else
-	#define POLYVOX_LOG_DEBUG(message)
+#define POLYVOX_LOG_DEBUG(message)
 #endif
 
-//Other severity levels work in both debug and release
-#define POLYVOX_LOG_INFO(message) if(logHandler){logHandler(message, LS_INFO);}
-#define POLYVOX_LOG_WARN(message) if(logHandler){logHandler(message, LS_WARN);}
-#define POLYVOX_LOG_ERROR(message) if(logHandler){logHandler(message, LS_ERROR);}
+// Other severity levels work in both debug and release
+#define POLYVOX_LOG_INFO(message)                                              \
+  if (logHandler) {                                                            \
+    logHandler(message, LS_INFO);                                              \
+  }
+#define POLYVOX_LOG_WARN(message)                                              \
+  if (logHandler) {                                                            \
+    logHandler(message, LS_WARN);                                              \
+  }
+#define POLYVOX_LOG_ERROR(message)                                             \
+  if (logHandler) {                                                            \
+    logHandler(message, LS_ERROR);                                             \
+  }
 
 #endif

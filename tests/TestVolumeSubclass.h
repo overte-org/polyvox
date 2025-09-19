@@ -26,12 +26,11 @@ freely, subject to the following restrictions:
 
 #include <QObject>
 
-class TestVolumeSubclass: public QObject
-{
-	Q_OBJECT
-	
-	private slots:
-		void testExtractSurface();
+class TestVolumeSubclass : public QObject {
+  Q_OBJECT
+
+private slots:
+  void testExtractSurface();
 };
 
 #endif
