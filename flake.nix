@@ -21,13 +21,23 @@
           {
             packages = rec {
               polyvox = pkgs.callPackage (
-                { stdenv, cmake }:
+                {
+                  stdenv,
+                  cmake,
+                  qt6,
+                }:
                 stdenv.mkDerivation {
                   pname = "polyvox";
-                  version = "${self.dirtyShortRev}";
+                  version = "${self.shortRev or self.dirtyShortRev or "dirty"}";
                   src = ./.;
                   cmakeFlags = [ "-DENABLE_EXAMPLES=OFF" ];
-                  nativeBuildInputs = [ cmake ];
+                  nativeBuildInputs = [
+                    qt6.wrapQtAppsHook
+                    cmake
+                  ];
+                  buildInputs = [
+                    qt6.qtbase
+                  ];
                 }
               ) { };
               default = polyvox;
