@@ -46,8 +46,6 @@ jobs:
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
-      with:
-        modules: qtbase
 
     - name: Set reusable strings
       id: strings
