@@ -24,23 +24,19 @@
 #
 # Also sets LATEST_TEST to point to the output executable of the test for easy
 # ADD_TEST()ing
-MACRO(CREATE_TEST headerfile sourcefile executablename)
-	UNSET(test_moc_SRCS) #clear out the MOCs from previous tests
-	QT4_WRAP_CPP(test_moc_SRCS ${headerfile})
-	LINK_DIRECTORIES(${PolyVoxCore_BINARY_DIR} ${PolyVoxUtil_BINARY_DIR})
-	ADD_EXECUTABLE(${executablename} ${sourcefile} ${test_moc_SRCS})
-	TARGET_LINK_LIBRARIES(${executablename} PolyVoxCore PolyVoxUtil ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY})
+macro(CREATE_TEST headerfile sourcefile executablename)
+	add_executable(${executablename} ${sourcefile})
+	target_include_directories(${executablename} PUBLIC ${PolyVox_SOURCE_DIR}/library/PolyVoxCore/include ${CMAKE_CURRENT_BINARY_DIR})
+	target_link_directories(${executablename} PRIVATE ${PolyVoxCore_BINARY_DIR} ${PolyVoxUtil_BINARY_DIR})
+	target_link_libraries(${executablename} PRIVATE PolyVoxCore PolyVoxUtil Qt::Core Qt::Test)
 	#HACK. This is needed since everything is built in the base dir in Windows. As of 2.8 we should change this.
 	IF(WIN32)
-		SET(LATEST_TEST ${EXECUTABLE_OUTPUT_PATH}/${executablename})
+		set(LATEST_TEST ${EXECUTABLE_OUTPUT_PATH}/${executablename})
 	ELSE(WIN32)
-		SET(LATEST_TEST ${CMAKE_CURRENT_BINARY_DIR}/${executablename})
+		set(LATEST_TEST ${CMAKE_CURRENT_BINARY_DIR}/${executablename})
 	ENDIF(WIN32)
-	SET_PROPERTY(TARGET ${executablename} PROPERTY FOLDER "Tests")
-ENDMACRO(CREATE_TEST)
-
-INCLUDE_DIRECTORIES(${PolyVox_SOURCE_DIR}/PolyVoxCore/include ${CMAKE_CURRENT_BINARY_DIR})
-REMOVE_DEFINITIONS(-DQT_GUI_LIB) #Make sure the tests don't link to the QtGui
+	set_property(TARGET ${executablename} PROPERTY FOLDER "Tests")
+endmacro()
 
 # Test Template. Copy and paste this template for consistant naming.
 # # ClassName tests
@@ -49,54 +45,54 @@ REMOVE_DEFINITIONS(-DQT_GUI_LIB) #Make sure the tests don't link to the QtGui
 # ADD_TEST(ClassNameFeature2Test ${LATEST_TEST} testFeature2)
 
 # Python tests
-IF(BUILD_BINDINGS)
-	ADD_TEST(PythonSurfaceExtractorTest python ${CMAKE_CURRENT_SOURCE_DIR}/TestSurfaceExtractor.py)
-ENDIF()
+if(BUILD_BINDINGS)
+	add_test(NAME PythonSurfaceExtractorTest python ${CMAKE_CURRENT_SOURCE_DIR}/TestSurfaceExtractor.py)
+endif()
 
 # AmbientOcclusionGenerator tests
 CREATE_TEST(TestAmbientOcclusionGenerator.h TestAmbientOcclusionGenerator.cpp TestAmbientOcclusionGenerator)
-ADD_TEST(AmbientOcclusionGeneratorExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME AmbientOcclusionGeneratorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Array tests
 CREATE_TEST(TestArray.h TestArray.cpp TestArray)
-ADD_TEST(ArrayReadWriteTest ${LATEST_TEST} testReadWrite)
+add_test(NAME ArrayReadWriteTest COMMAND ${LATEST_TEST} testReadWrite)
 
 # AStarPathfinder tests
 CREATE_TEST(TestAStarPathfinder.h TestAStarPathfinder.cpp TestAStarPathfinder)
-ADD_TEST(AStarPathfinderExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME AStarPathfinderExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 CREATE_TEST(TestCubicSurfaceExtractor.h TestCubicSurfaceExtractor.cpp TestCubicSurfaceExtractor)
-ADD_TEST(CubicSurfaceExtractorExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME CubicSurfaceExtractorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Low pass filter tests
 CREATE_TEST(TestLowPassFilter.h TestLowPassFilter.cpp TestLowPassFilter)
-ADD_TEST(LowPassFilterExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME LowPassFilterExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # LargeVolume tests
 CREATE_TEST(testvolume.h testvolume.cpp testvolume)
-ADD_TEST(VolumeSizeTest ${LATEST_TEST} testSize)
+add_test(NAME VolumeSizeTest COMMAND ${LATEST_TEST} testSize)
 
 # Material tests
 CREATE_TEST(testmaterial.h testmaterial.cpp testmaterial)
-ADD_TEST(MaterialTestCompile ${LATEST_TEST} testCompile)
+add_test(NAME MaterialTestCompile COMMAND ${LATEST_TEST} testCompile)
 
 # Raycast tests
 CREATE_TEST(TestRaycast.h TestRaycast.cpp TestRaycast)
-ADD_TEST(RaycastExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME RaycastExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Region tests
 CREATE_TEST(TestRegion.h TestRegion.cpp TestRegion)
-ADD_TEST(RegionEqualityTest ${LATEST_TEST} testEquality)
+add_test(NAME RegionEqualityTest COMMAND ${LATEST_TEST} testEquality)
 
 CREATE_TEST(TestSurfaceExtractor.h TestSurfaceExtractor.cpp TestSurfaceExtractor)
-ADD_TEST(SurfaceExtractorExecuteTest ${LATEST_TEST} testExecute)
+add_test(NAME SurfaceExtractorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 #Vector tests
 CREATE_TEST(testvector.h testvector.cpp testvector)
-ADD_TEST(VectorLengthTest ${LATEST_TEST} testLength)
-ADD_TEST(VectorDotProductTest ${LATEST_TEST} testDotProduct)
-ADD_TEST(VectorEqualityTest ${LATEST_TEST} testEquality)
+add_test(NAME VectorLengthTest COMMAND ${LATEST_TEST} testLength)
+add_test(NAME VectorDotProductTest COMMAND ${LATEST_TEST} testDotProduct)
+add_test(NAME VectorEqualityTest COMMAND ${LATEST_TEST} testEquality)
 
 # Volume subclass tests
 CREATE_TEST(TestVolumeSubclass.h TestVolumeSubclass.cpp TestVolumeSubclass)
-ADD_TEST(VolumeSubclassExtractSurfaceTest ${LATEST_TEST} testExtractSurface)
+add_test(NAME VolumeSubclassExtractSurfaceTest COMMAND ${LATEST_TEST} testExtractSurface)

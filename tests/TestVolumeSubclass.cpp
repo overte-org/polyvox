@@ -36,23 +36,19 @@ using namespace PolyVox;
 template <typename VoxelType>
 class VolumeSubclass : public BaseVolume<VoxelType> {
 public:
-// There seems to be some descrepency between Visual Studio and GCC about how
-// the following class should be declared. There is a work around (see also See
-// http://goo.gl/qu1wn) given below which appears to work on VS2010 and GCC, but
-// which seems to cause internal compiler errors on VS2008 when building with
-// the /Gm 'Enable Minimal Rebuild' compiler option. For now it seems best to
-// 'fix' it with the preprocessor insstead, but maybe the workaround can be
-// reinstated in the future typedef BaseVolume<VoxelType> VolumeOfVoxelType;
-// //Workaround for GCC/VS2010 differences. See http://goo.gl/qu1wn class
-// Sampler : public VolumeOfVoxelType::template Sampler<
-// VolumeSubclass<VoxelType> >
-#if defined(_MSC_VER)
-  class Sampler : public BaseVolume<VoxelType>::Sampler<
-                      VolumeSubclass<VoxelType>> // This line works on VS2010
-#else
+  // There seems to be some descrepency between Visual Studio and GCC about how
+  // the following class should be declared. There is a work around (see also
+  // See http://goo.gl/qu1wn) given below which appears to work on VS2010 and
+  // GCC, but which seems to cause internal compiler errors on VS2008 when
+  // building with the /Gm 'Enable Minimal Rebuild' compiler option. For now it
+  // seems best to 'fix' it with the preprocessor insstead, but maybe the
+  // workaround can be reinstated in the future typedef BaseVolume<VoxelType>
+  // VolumeOfVoxelType;
+  // //Workaround for GCC/VS2010 differences. See http://goo.gl/qu1wn class
+  // Sampler : public VolumeOfVoxelType::template Sampler<
+  // VolumeSubclass<VoxelType> >
   class Sampler : public BaseVolume<VoxelType>::template Sampler<
                       VolumeSubclass<VoxelType>> // This line works on GCC
-#endif
   {
   public:
     Sampler(VolumeSubclass<VoxelType> *volume)
