@@ -48,13 +48,8 @@ public:
   // workaround can be reinstated in the future typedef Volume<VoxelType>
   // VolumeOfVoxelType; //Workaround for GCC/VS2010 differences. class Sampler :
   // public VolumeOfVoxelType::template Sampler< RawVolume<VoxelType> >
-#if defined(_MSC_VER)
-  class Sampler : public BaseVolume<VoxelType>::Sampler<
-                      RawVolume<VoxelType>> // This line works on VS2010
-#else
   class Sampler : public BaseVolume<VoxelType>::template Sampler<
                       RawVolume<VoxelType>> // This line works on GCC
-#endif
   {
   public:
     Sampler(RawVolume<VoxelType> *volume);

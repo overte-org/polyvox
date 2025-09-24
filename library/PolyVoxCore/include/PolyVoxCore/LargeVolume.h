@@ -152,7 +152,7 @@ template <typename VoxelType> class ConstVolumeProxy;
 /// volume, const PolyVox::Region& reg)
 /// {
 ///		//This function is being called because part of the data is
-///missing from memory and needs to be supplied. The parameter
+/// missing from memory and needs to be supplied. The parameter
 ///		//'volume' provides access to the volume data, and the parameter
 ///'reg' indicates which region of the volume you need fill.
 /// }
@@ -161,9 +161,9 @@ template <typename VoxelType> class ConstVolumeProxy;
 /// vol, const PolyVox::Region& reg)
 /// {
 ///		//This function is being called because part of the data is
-///about to be removed from memory. The parameter 'volume'
+/// about to be removed from memory. The parameter 'volume'
 ///		//provides access to the volume data, and the parameter 'reg'
-///indicates which region of the volume you need to store.
+/// indicates which region of the volume you need to store.
 /// }
 ///
 ///	LargeVolume<Density>volData(&myDataRequiredHandler,
@@ -219,13 +219,8 @@ public:
   // workaround can be reinstated in the future typedef Volume<VoxelType>
   // VolumeOfVoxelType; //Workaround for GCC/VS2010 differences. class Sampler :
   // public VolumeOfVoxelType::template Sampler< LargeVolume<VoxelType> >
-#if defined(_MSC_VER)
-  class Sampler : public BaseVolume<VoxelType>::Sampler<
-                      LargeVolume<VoxelType>> // This line works on VS2010
-#else
   class Sampler : public BaseVolume<VoxelType>::template Sampler<
                       LargeVolume<VoxelType>> // This line works on GCC
-#endif
   {
   public:
     Sampler(LargeVolume<VoxelType> *volume);
