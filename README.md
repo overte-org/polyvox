@@ -7,7 +7,7 @@ here are the following changes made:
 - [x] add various nix files for testing and development
 - [x] format code with clang-format
 - [x] remove helper code for older MSVC compilers
-- [x] updated to Qt5 testing framework (TODO: update to Qt6)
+- [x] updated testing framework to Qt6
 - [x] upgrade cmake files to support more modern cmake versions
 - [ ] fix examples
 - [ ] maybe restore Doxygen functionality

@@ -44,7 +44,7 @@ IF(WIN32)
 ENDIF()
 
 # Qt is required for building the tests, the example and optionally for bundling the documentation
-FIND_PACKAGE(Qt5 COMPONENTS Core Gui OpenGL Test)
+FIND_PACKAGE(Qt6 COMPONENTS Core Gui OpenGL Test)
 
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED On)
@@ -66,7 +66,7 @@ ENDIF()
 INCLUDE(Packaging.cmake)
 
 OPTION(ENABLE_TESTS "Should the tests be built" ON)
-IF(ENABLE_TESTS AND Qt5Test_FOUND)
+IF(ENABLE_TESTS AND Qt6Test_FOUND)
 	INCLUDE(CTest)
 	MARK_AS_ADVANCED(FORCE BUILD_TESTING)
 	ADD_SUBDIRECTORY(tests)

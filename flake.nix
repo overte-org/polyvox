@@ -42,7 +42,7 @@
                 pkgs.libx11
               ];
 
-              buildInputs = [ (with pkgs.libsForQt5; env "qt-env-${qtbase.version}" [ ]) ];
+              buildInputs = [ (with pkgs.qt6; env "qt-env-${qtbase.version}" [ ]) ];
             };
             treefmt = {
               projectRootFile = "README.md";
