@@ -18,59 +18,50 @@ appreciated but is not required.
 misrepresented as being the original software.
 
 3. This notice may not be removed or altered from any source
-distribution. 	
+distribution.
 *******************************************************************************/
 
 #include <cassert>
 
-namespace PolyVox
-{
-	template <uint32_t noOfDims, typename ElementType>
-	SubArray<noOfDims-1, ElementType> SubArray<noOfDims, ElementType>::operator[](uint32_t uIndex)
-	{
-		assert(uIndex<m_pDimensions[0]);
-		return
-			SubArray<noOfDims-1, ElementType>(&m_pElements[uIndex*m_pOffsets[0]],
-			m_pDimensions+1, m_pOffsets+1);
-	}
+namespace PolyVox {
+template <uint32_t noOfDims, typename ElementType>
+SubArray<noOfDims - 1, ElementType>
+SubArray<noOfDims, ElementType>::operator[](uint32_t uIndex) {
+  assert(uIndex < m_pDimensions[0]);
+  return SubArray<noOfDims - 1, ElementType>(
+      &m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
+}
 
-	template <uint32_t noOfDims, typename ElementType>
-	const SubArray<noOfDims-1, ElementType> SubArray<noOfDims, ElementType>::operator[](uint32_t uIndex) const
-	{
-		assert(uIndex<m_pDimensions[0]);
-		return
-			SubArray<noOfDims-1, ElementType>(&m_pElements[uIndex*m_pOffsets[0]],
-			m_pDimensions+1, m_pOffsets+1);
-	}
+template <uint32_t noOfDims, typename ElementType>
+const SubArray<noOfDims - 1, ElementType>
+SubArray<noOfDims, ElementType>::operator[](uint32_t uIndex) const {
+  assert(uIndex < m_pDimensions[0]);
+  return SubArray<noOfDims - 1, ElementType>(
+      &m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
+}
 
-	template <uint32_t noOfDims, typename ElementType>
-	SubArray<noOfDims, ElementType>::SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * pOffsets)
-		:m_pDimensions(pDimensions)
-		,m_pOffsets(pOffsets)
-		,m_uNoOfElements(0)
-		,m_pElements(pElements)
-	{
-	} 
+template <uint32_t noOfDims, typename ElementType>
+SubArray<noOfDims, ElementType>::SubArray(ElementType *pElements,
+                                          uint32_t *pDimensions,
+                                          uint32_t *pOffsets)
+    : m_pDimensions(pDimensions), m_pOffsets(pOffsets), m_uNoOfElements(0),
+      m_pElements(pElements) {}
 
+template <typename ElementType>
+ElementType &SubArray<1, ElementType>::operator[](uint32_t uIndex) {
+  assert(uIndex < m_pDimensions[0]);
+  return m_pElements[uIndex];
+}
 
-	template <typename ElementType>
-	ElementType& SubArray<1, ElementType>::operator[] (uint32_t uIndex)
-	{
-		assert(uIndex<m_pDimensions[0]);
-		return m_pElements[uIndex];
-	}
+template <typename ElementType>
+const ElementType &SubArray<1, ElementType>::operator[](uint32_t uIndex) const {
+  assert(uIndex < m_pDimensions[0]);
+  return m_pElements[uIndex];
+}
 
-	template <typename ElementType>
-	const ElementType& SubArray<1, ElementType>::operator[] (uint32_t uIndex) const
-	{
-		assert(uIndex<m_pDimensions[0]);
-		return m_pElements[uIndex];
-	}
-
-	template <typename ElementType>
-	SubArray<1, ElementType>::SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * /*pOffsets*/)
-		:m_pDimensions(pDimensions)
-		,m_pElements(pElements)			
-	{
-	}
-}//namespace PolyVox
+template <typename ElementType>
+SubArray<1, ElementType>::SubArray(ElementType *pElements,
+                                   uint32_t *pDimensions,
+                                   uint32_t * /*pOffsets*/)
+    : m_pDimensions(pDimensions), m_pElements(pElements) {}
+} // namespace PolyVox

@@ -51,6 +51,7 @@
                   enable = true;
                 };
               };
+              settings.formatter.clang-format.includes = [ "*.inl" ];
             };
           };
       }

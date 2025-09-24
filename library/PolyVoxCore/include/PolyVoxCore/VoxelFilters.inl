@@ -18,47 +18,72 @@ freely, subject to the following restrictions:
     misrepresented as being the original software.
 
     3. This notice may not be removed or altered from any source
-    distribution. 	
+    distribution.
 *******************************************************************************/
 
-namespace PolyVox
-{
-	template< typename VolumeType >
-	float computeSmoothedVoxel(typename VolumeType::Sampler& volIter)
-	{
-		float sum = 0.0;
+namespace PolyVox {
+template <typename VolumeType>
+float computeSmoothedVoxel(typename VolumeType::Sampler &volIter) {
+  float sum = 0.0;
 
-		if(volIter.peekVoxel1nx1ny1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx1ny0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx1ny1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx0py1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx0py0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx0py1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx1py1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx1py0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1nx1py1pz() != 0) sum += 1.0f;
+  if (volIter.peekVoxel1nx1ny1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx1ny0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx1ny1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx0py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx0py0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx0py1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx1py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx1py0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1nx1py1pz() != 0)
+    sum += 1.0f;
 
-		if(volIter.peekVoxel0px1ny1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px1ny0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px1ny1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px0py1nz() != 0) sum += 1.0f;
-		if(volIter.getVoxel() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px0py1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px1py1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px1py0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel0px1py1pz() != 0) sum += 1.0f;
+  if (volIter.peekVoxel0px1ny1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px1ny0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px1ny1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px0py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.getVoxel() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px0py1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px1py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px1py0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel0px1py1pz() != 0)
+    sum += 1.0f;
 
-		if(volIter.peekVoxel1px1ny1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px1ny0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px1ny1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px0py1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px0py0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px0py1pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px1py1nz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px1py0pz() != 0) sum += 1.0f;
-		if(volIter.peekVoxel1px1py1pz() != 0) sum += 1.0f;
+  if (volIter.peekVoxel1px1ny1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px1ny0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px1ny1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px0py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px0py0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px0py1pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px1py1nz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px1py0pz() != 0)
+    sum += 1.0f;
+  if (volIter.peekVoxel1px1py1pz() != 0)
+    sum += 1.0f;
 
-		sum /= 27.0f;
-		return sum;
-	}
+  sum /= 27.0f;
+  return sum;
 }
+} // namespace PolyVox
