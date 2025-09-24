@@ -27,7 +27,7 @@ namespace PolyVox {
 // following information from the errata on the book website is also relevent:
 //
 //	pages 326-327. In the function VisitCellsOverlapped() the two lines
-//calculating tx and ty are incorrect.
+// calculating tx and ty are incorrect.
 //  The less-than sign in each line should be a greater-than sign. That is, the
 //  two lines should read:
 //
@@ -35,10 +35,10 @@ namespace PolyVox {
 //	float ty = ((y1 > y2) ? (y1 - miny) : (maxy - y1)) / Abs(y2 - y1);
 //
 //	Thanks to Jetro Lauha of Fathammer in Helsinki, Finland for reporting
-//this error.
+// this error.
 //
 //	Jetro also points out that the computations of i, j, iend, and jend are
-//incorrectly rounded if the line
+// incorrectly rounded if the line
 //  coordinates are allowed to go negative. While that was not really the intent
 //  of the code -- that is, I assumed grids to be numbered from (0, 0) to (m, n)
 //  -- I'm at fault for not making my assumption clear. Where it is important to
@@ -54,7 +54,7 @@ namespace PolyVox {
 //	int jend = (int)floorf(y2 / CELL_SIDE);
 //
 //	page 328. The if-statement that reads "if (ty <= tx && ty <= tz)" has a
-//superfluous condition.
+// superfluous condition.
 //  It should simply read "if (ty <= tz)".
 //
 //	This error was reported by Joey Hammer (PixelActive).

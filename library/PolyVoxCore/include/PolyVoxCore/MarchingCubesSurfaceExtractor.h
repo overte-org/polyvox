@@ -95,9 +95,11 @@ private:
 
   Vector3DFloat
   computeSobelGradient(const typename VolumeType::Sampler &volIter) {
-    static const int weights[3][3][3] = {{{2, 3, 2}, {3, 6, 3}, {2, 3, 2}},
-                                         {{3, 6, 3}, {6, 0, 6}, {3, 6, 3}},
-                                         {{2, 3, 2}, {3, 6, 3}, {2, 3, 2}}};
+    static const int weights[3][3][3] = {
+        {{2, 3, 2}, {3, 6, 3}, {2, 3, 2}},
+        {{3, 6, 3}, {6, 0, 6}, {3, 6, 3}},
+        {{2, 3, 2}, {3, 6, 3}, {2, 3, 2}}
+    };
 
     // FIXME - Should actually use DensityType here, both in principle and
     // because the maths may be faster (and to reduce casts). So it would be

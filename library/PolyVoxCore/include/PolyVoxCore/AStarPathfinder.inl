@@ -343,7 +343,7 @@ float AStarPathfinder<VolumeType>::computeH(const Vector3DInt32 &a,
 
   // Note that if the hash is zero we can have differences between the Linux vs.
   // Windows (or perhaps GCC vs. VS) versions of the code. This is probably
-  //because of the way sorting inside the std::set works (i.e. one system swaps
+  // because of the way sorting inside the std::set works (i.e. one system swaps
   // values which are identical while the other one doesn't - both approaches
   // are valid). For the same reason we want to make sure that position (x,y,z)
   // has a differnt hash from e.g. position (x,z,y).

@@ -41,7 +41,7 @@ POLYVOX_API void MeshDecimator<PositionMaterial>::fillInitialVertexMetadata(
 
   // Identify duplicate vertices, as they lie on the material edge. To do this
   // we convert into integers and sort (first on z, then y, then x). They should
-  //be mostly in order as this is the order they come out of the
+  // be mostly in order as this is the order they come out of the
   // CubicSurfaceExtractor in. Duplicates are now neighbours in the resulting
   // list so just scan through for pairs.
   std::vector<IntVertex> intVertices;
