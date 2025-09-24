@@ -2,6 +2,16 @@
 
 This is a C++20 upgrade of the polyvox library for primary use in overte, so not all things build/work.
 
+here are the following changes made:
+- [x] upgrade code to support c++20
+- [x] add various nix files for testing and development
+- [x] format code with clang-format
+- [x] remove helper code for older MSVC compilers
+- [x] updated to Qt5 testing framework (TODO: update to Qt6)
+- [x] upgrade cmake files to support more modern cmake versions
+- [ ] fix examples
+- [ ] maybe restore Doxygen functionality
+
 ## Original README
 PolyVox is the core technology which lies behind our games. It is a fast, lightweight C++ library for the storage and processing of volumetric (voxel-based) environments. It has applications in both games and medical/scientific visualisation, and is released under the terms of the `zlib license <http://www.tldrlegal.com/l/ZLIB>`_.
 
