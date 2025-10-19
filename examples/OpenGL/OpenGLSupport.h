@@ -29,11 +29,11 @@ freely, subject to the following restrictions:
 #include "glew/glew.h"
 
 struct OpenGLColour {
-  GLfloat red;
-  GLfloat green;
-  GLfloat blue;
+    GLfloat red;
+    GLfloat green;
+    GLfloat blue;
 };
 
 OpenGLColour convertMaterialIDToColour(uint8_t materialID);
 
-#endif //__OpenGLExample_OpenGLSupport_H__
+#endif  //__OpenGLExample_OpenGLSupport_H__

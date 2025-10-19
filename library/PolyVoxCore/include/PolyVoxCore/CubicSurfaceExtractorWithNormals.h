@@ -30,31 +30,30 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/SurfaceMesh.h"
 
 namespace PolyVox {
-template <typename VolumeType,
-          typename IsQuadNeeded =
-              DefaultIsQuadNeeded<typename VolumeType::VoxelType>>
+template <typename VolumeType, typename IsQuadNeeded = DefaultIsQuadNeeded<typename VolumeType::VoxelType>>
 class CubicSurfaceExtractorWithNormals {
 public:
-  CubicSurfaceExtractorWithNormals(VolumeType *volData, Region region,
-                                   SurfaceMesh<PositionMaterialNormal> *result,
-                                   IsQuadNeeded isQuadNeeded = IsQuadNeeded());
+    CubicSurfaceExtractorWithNormals(VolumeType* volData,
+                                     Region region,
+                                     SurfaceMesh<PositionMaterialNormal>* result,
+                                     IsQuadNeeded isQuadNeeded = IsQuadNeeded());
 
-  void execute();
+    void execute();
 
 private:
-  IsQuadNeeded m_funcIsQuadNeededCallback;
+    IsQuadNeeded m_funcIsQuadNeededCallback;
 
-  // The volume data and a sampler to access it.
-  VolumeType *m_volData;
-  typename VolumeType::Sampler m_sampVolume;
+    // The volume data and a sampler to access it.
+    VolumeType* m_volData;
+    typename VolumeType::Sampler m_sampVolume;
 
-  // The surface patch we are currently filling.
-  SurfaceMesh<PositionMaterialNormal> *m_meshCurrent;
+    // The surface patch we are currently filling.
+    SurfaceMesh<PositionMaterialNormal>* m_meshCurrent;
 
-  // Information about the region we are currently processing
-  Region m_regSizeInVoxels;
+    // Information about the region we are currently processing
+    Region m_regSizeInVoxels;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/CubicSurfaceExtractorWithNormals.inl"
 

@@ -47,17 +47,16 @@ namespace PolyVox {
 template <typename IsVoxelTransparentCallback>
 class AmbientOcclusionCalculatorRaycastCallback {
 public:
-  AmbientOcclusionCalculatorRaycastCallback(
-      IsVoxelTransparentCallback isVoxelTransparentCallback)
-      : mIsVoxelTransparentCallback(isVoxelTransparentCallback) {}
+    AmbientOcclusionCalculatorRaycastCallback(IsVoxelTransparentCallback isVoxelTransparentCallback) :
+        mIsVoxelTransparentCallback(isVoxelTransparentCallback) {}
 
-  bool operator()(const SimpleVolume<uint8_t>::Sampler &sampler) {
-    uint8_t sample = sampler.getVoxel();
-    bool func = mIsVoxelTransparentCallback(sample);
-    return func;
-  }
+    bool operator()(const SimpleVolume<uint8_t>::Sampler& sampler) {
+        uint8_t sample = sampler.getVoxel();
+        bool func = mIsVoxelTransparentCallback(sample);
+        return func;
+    }
 
-  IsVoxelTransparentCallback mIsVoxelTransparentCallback;
+    IsVoxelTransparentCallback mIsVoxelTransparentCallback;
 };
 
 // NOTE: The callback needs to be a functor not a function. I haven't been
@@ -71,12 +70,14 @@ public:
 
 /// Calculate the ambient occlusion for the volume
 template <typename VolumeType, typename IsVoxelTransparentCallback>
-void calculateAmbientOcclusion(
-    VolumeType *volInput, Array<3, uint8_t> *arrayResult, Region region,
-    float fRayLength, uint8_t uNoOfSamplesPerOutputElement,
-    IsVoxelTransparentCallback isVoxelTransparentCallback);
-} // namespace PolyVox
+void calculateAmbientOcclusion(VolumeType* volInput,
+                               Array<3, uint8_t>* arrayResult,
+                               Region region,
+                               float fRayLength,
+                               uint8_t uNoOfSamplesPerOutputElement,
+                               IsVoxelTransparentCallback isVoxelTransparentCallback);
+}  // namespace PolyVox
 
 #include "PolyVoxCore/AmbientOcclusionCalculator.inl"
 
-#endif //__AmbientOcclusionCalculator_H__
+#endif  //__AmbientOcclusionCalculator_H__

@@ -29,11 +29,9 @@ namespace PolyVox {
 /// \param uBlockSideLength The size of the block to use within the volume
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-SimpleVolume<VoxelType>::SimpleVolume(const Region &regValid,
-                                      uint16_t uBlockSideLength)
-    : BaseVolume<VoxelType>(regValid) {
-  // Create a volume of the right size.
-  initialise(regValid, uBlockSideLength);
+SimpleVolume<VoxelType>::SimpleVolume(const Region& regValid, uint16_t uBlockSideLength) : BaseVolume<VoxelType>(regValid) {
+    // Create a volume of the right size.
+    initialise(regValid, uBlockSideLength);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,16 +44,17 @@ SimpleVolume<VoxelType>::SimpleVolume(const Region &regValid,
 /// \sa VolumeResampler
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-SimpleVolume<VoxelType>::SimpleVolume(const SimpleVolume<VoxelType> & /*rhs*/) {
-  assert(false); // See function comment above.
+SimpleVolume<VoxelType>::SimpleVolume(const SimpleVolume<VoxelType>& /*rhs*/) {
+    assert(false);  // See function comment above.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Destroys the volume
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VoxelType> SimpleVolume<VoxelType>::~SimpleVolume() {
-  delete[] m_pBlocks;
-  delete[] m_pUncompressedBorderData;
+template <typename VoxelType>
+SimpleVolume<VoxelType>::~SimpleVolume() {
+    delete[] m_pBlocks;
+    delete[] m_pUncompressedBorderData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,9 +67,8 @@ template <typename VoxelType> SimpleVolume<VoxelType>::~SimpleVolume() {
 /// \sa VolumeResampler
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-SimpleVolume<VoxelType> &
-SimpleVolume<VoxelType>::operator=(const SimpleVolume<VoxelType> & /*rhs*/) {
-  assert(false); // See function comment above.
+SimpleVolume<VoxelType>& SimpleVolume<VoxelType>::operator=(const SimpleVolume<VoxelType>& /*rhs*/) {
+    assert(false);  // See function comment above.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +78,7 @@ SimpleVolume<VoxelType>::operator=(const SimpleVolume<VoxelType> & /*rhs*/) {
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
 VoxelType SimpleVolume<VoxelType>::getBorderValue(void) const {
-  return *m_pUncompressedBorderData;
+    return *m_pUncompressedBorderData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,28 +88,22 @@ VoxelType SimpleVolume<VoxelType>::getBorderValue(void) const {
 /// \return The voxel value
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-VoxelType SimpleVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos,
-                                              int32_t uZPos) const {
-  if (this->m_regValidRegion.containsPoint(
-          Vector3DInt32(uXPos, uYPos, uZPos))) {
-    const int32_t blockX = uXPos >> m_uBlockSideLengthPower;
-    const int32_t blockY = uYPos >> m_uBlockSideLengthPower;
-    const int32_t blockZ = uZPos >> m_uBlockSideLengthPower;
+VoxelType SimpleVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const {
+    if (this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos))) {
+        const int32_t blockX = uXPos >> m_uBlockSideLengthPower;
+        const int32_t blockY = uYPos >> m_uBlockSideLengthPower;
+        const int32_t blockZ = uZPos >> m_uBlockSideLengthPower;
 
-    const uint16_t xOffset =
-        static_cast<uint16_t>(uXPos - (blockX << m_uBlockSideLengthPower));
-    const uint16_t yOffset =
-        static_cast<uint16_t>(uYPos - (blockY << m_uBlockSideLengthPower));
-    const uint16_t zOffset =
-        static_cast<uint16_t>(uZPos - (blockZ << m_uBlockSideLengthPower));
+        const uint16_t xOffset = static_cast<uint16_t>(uXPos - (blockX << m_uBlockSideLengthPower));
+        const uint16_t yOffset = static_cast<uint16_t>(uYPos - (blockY << m_uBlockSideLengthPower));
+        const uint16_t zOffset = static_cast<uint16_t>(uZPos - (blockZ << m_uBlockSideLengthPower));
 
-    typename SimpleVolume<VoxelType>::Block *pUncompressedBlock =
-        getUncompressedBlock(blockX, blockY, blockZ);
+        typename SimpleVolume<VoxelType>::Block* pUncompressedBlock = getUncompressedBlock(blockX, blockY, blockZ);
 
-    return pUncompressedBlock->getVoxelAt(xOffset, yOffset, zOffset);
-  } else {
-    return getBorderValue();
-  }
+        return pUncompressedBlock->getVoxelAt(xOffset, yOffset, zOffset);
+    } else {
+        return getBorderValue();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,21 +111,19 @@ VoxelType SimpleVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos,
 /// \return The voxel value
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-VoxelType
-SimpleVolume<VoxelType>::getVoxelAt(const Vector3DInt32 &v3dPos) const {
-  return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
+VoxelType SimpleVolume<VoxelType>::getVoxelAt(const Vector3DInt32& v3dPos) const {
+    return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \param tBorder The value to use for voxels outside the volume.
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-void SimpleVolume<VoxelType>::setBorderValue(const VoxelType &tBorder) {
-  /*Block<VoxelType>* pUncompressedBorderBlock =
+void SimpleVolume<VoxelType>::setBorderValue(const VoxelType& tBorder) {
+    /*Block<VoxelType>* pUncompressedBorderBlock =
   getUncompressedBlock(&m_pBorderBlock); return
   pUncompressedBorderBlock->fill(tBorder);*/
-  std::fill(m_pUncompressedBorderData,
-            m_pUncompressedBorderData + m_uNoOfVoxelsPerBlock, tBorder);
+    std::fill(m_pUncompressedBorderData, m_pUncompressedBorderData + m_uNoOfVoxelsPerBlock, tBorder);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,26 +134,23 @@ void SimpleVolume<VoxelType>::setBorderValue(const VoxelType &tBorder) {
 /// \return whether the requested position is inside the volume
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-bool SimpleVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos,
-                                         int32_t uZPos, VoxelType tValue) {
-  assert(
-      this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
+bool SimpleVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue) {
+    assert(this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos)));
 
-  const int32_t blockX = uXPos >> m_uBlockSideLengthPower;
-  const int32_t blockY = uYPos >> m_uBlockSideLengthPower;
-  const int32_t blockZ = uZPos >> m_uBlockSideLengthPower;
+    const int32_t blockX = uXPos >> m_uBlockSideLengthPower;
+    const int32_t blockY = uYPos >> m_uBlockSideLengthPower;
+    const int32_t blockZ = uZPos >> m_uBlockSideLengthPower;
 
-  const uint16_t xOffset = uXPos - (blockX << m_uBlockSideLengthPower);
-  const uint16_t yOffset = uYPos - (blockY << m_uBlockSideLengthPower);
-  const uint16_t zOffset = uZPos - (blockZ << m_uBlockSideLengthPower);
+    const uint16_t xOffset = uXPos - (blockX << m_uBlockSideLengthPower);
+    const uint16_t yOffset = uYPos - (blockY << m_uBlockSideLengthPower);
+    const uint16_t zOffset = uZPos - (blockZ << m_uBlockSideLengthPower);
 
-  typename SimpleVolume<VoxelType>::Block *pUncompressedBlock =
-      getUncompressedBlock(blockX, blockY, blockZ);
+    typename SimpleVolume<VoxelType>::Block* pUncompressedBlock = getUncompressedBlock(blockX, blockY, blockZ);
 
-  pUncompressedBlock->setVoxelAt(xOffset, yOffset, zOffset, tValue);
+    pUncompressedBlock->setVoxelAt(xOffset, yOffset, zOffset, tValue);
 
-  // Return true to indicate that we modified a voxel.
-  return true;
+    // Return true to indicate that we modified a voxel.
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,123 +159,107 @@ bool SimpleVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos,
 /// \return whether the requested position is inside the volume
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-bool SimpleVolume<VoxelType>::setVoxelAt(const Vector3DInt32 &v3dPos,
-                                         VoxelType tValue) {
-  return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
+bool SimpleVolume<VoxelType>::setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue) {
+    return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// This function should probably be made internal...
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-void SimpleVolume<VoxelType>::initialise(const Region &regValidRegion,
-                                         uint16_t uBlockSideLength) {
-  // Debug mode validation
-  assert(uBlockSideLength >= 8);
-  assert(uBlockSideLength <= 256);
-  assert(isPowerOf2(uBlockSideLength));
+void SimpleVolume<VoxelType>::initialise(const Region& regValidRegion, uint16_t uBlockSideLength) {
+    // Debug mode validation
+    assert(uBlockSideLength >= 8);
+    assert(uBlockSideLength <= 256);
+    assert(isPowerOf2(uBlockSideLength));
 
-  // Release mode validation
-  if (uBlockSideLength < 8) {
-    throw std::invalid_argument("Block side length should be at least 8");
-  }
-  if (uBlockSideLength > 256) {
-    throw std::invalid_argument(
-        "Block side length should not be more than 256");
-  }
-  if (!isPowerOf2(uBlockSideLength)) {
-    throw std::invalid_argument("Block side length must be a power of two.");
-  }
+    // Release mode validation
+    if (uBlockSideLength < 8) {
+        throw std::invalid_argument("Block side length should be at least 8");
+    }
+    if (uBlockSideLength > 256) {
+        throw std::invalid_argument("Block side length should not be more than 256");
+    }
+    if (!isPowerOf2(uBlockSideLength)) {
+        throw std::invalid_argument("Block side length must be a power of two.");
+    }
 
-  // m_uBlockSideLength = uBlockSideLength;
-  // m_uNoOfVoxelsPerBlock = m_uBlockSideLength * m_uBlockSideLength *
-  // m_uBlockSideLength;
-  m_pUncompressedBorderData = 0;
+    // m_uBlockSideLength = uBlockSideLength;
+    // m_uNoOfVoxelsPerBlock = m_uBlockSideLength * m_uBlockSideLength *
+    // m_uBlockSideLength;
+    m_pUncompressedBorderData = 0;
 
-  this->m_regValidRegion = regValidRegion;
+    this->m_regValidRegion = regValidRegion;
 
-  // m_regValidRegionInBlocks.setLowerCorner(this->m_regValidRegion.getLowerCorner()
-  // / static_cast<int32_t>(uBlockSideLength));
-  // m_regValidRegionInBlocks.setUpperCorner(this->m_regValidRegion.getUpperCorner()
-  // / static_cast<int32_t>(uBlockSideLength));
+    // m_regValidRegionInBlocks.setLowerCorner(this->m_regValidRegion.getLowerCorner()
+    // / static_cast<int32_t>(uBlockSideLength));
+    // m_regValidRegionInBlocks.setUpperCorner(this->m_regValidRegion.getUpperCorner()
+    // / static_cast<int32_t>(uBlockSideLength));
 
-  // Compute the block side length
-  m_uBlockSideLength = uBlockSideLength;
-  m_uBlockSideLengthPower = logBase2(m_uBlockSideLength);
-  m_uNoOfVoxelsPerBlock =
-      m_uBlockSideLength * m_uBlockSideLength * m_uBlockSideLength;
+    // Compute the block side length
+    m_uBlockSideLength = uBlockSideLength;
+    m_uBlockSideLengthPower = logBase2(m_uBlockSideLength);
+    m_uNoOfVoxelsPerBlock = m_uBlockSideLength * m_uBlockSideLength * m_uBlockSideLength;
 
-  // m_regValidRegionInBlocks.setLowerX(this->m_regValidRegion.getLowerX() >>
-  // m_uBlockSideLengthPower);
-  // m_regValidRegionInBlocks.setLowerY(this->m_regValidRegion.getLowerY() >>
-  // m_uBlockSideLengthPower);
-  // m_regValidRegionInBlocks.setLowerZ(this->m_regValidRegion.getLowerZ() >>
-  // m_uBlockSideLengthPower);
-  m_regValidRegionInBlocks.setLowerCorner(Vector3DInt32(
-      this->m_regValidRegion.getLowerCorner().getX() >> m_uBlockSideLengthPower,
-      this->m_regValidRegion.getLowerCorner().getY() >> m_uBlockSideLengthPower,
-      this->m_regValidRegion.getLowerCorner().getZ() >>
-          m_uBlockSideLengthPower));
-  // m_regValidRegionInBlocks.setUpperX(this->m_regValidRegion.getUpperX() >>
-  // m_uBlockSideLengthPower);
-  // m_regValidRegionInBlocks.setUpperY(this->m_regValidRegion.getUpperY() >>
-  // m_uBlockSideLengthPower);
-  // m_regValidRegionInBlocks.setUpperZ(this->m_regValidRegion.getUpperZ() >>
-  // m_uBlockSideLengthPower);
-  m_regValidRegionInBlocks.setUpperCorner(Vector3DInt32(
-      this->m_regValidRegion.getUpperCorner().getX() >> m_uBlockSideLengthPower,
-      this->m_regValidRegion.getUpperCorner().getY() >> m_uBlockSideLengthPower,
-      this->m_regValidRegion.getUpperCorner().getZ() >>
-          m_uBlockSideLengthPower));
+    // m_regValidRegionInBlocks.setLowerX(this->m_regValidRegion.getLowerX() >>
+    // m_uBlockSideLengthPower);
+    // m_regValidRegionInBlocks.setLowerY(this->m_regValidRegion.getLowerY() >>
+    // m_uBlockSideLengthPower);
+    // m_regValidRegionInBlocks.setLowerZ(this->m_regValidRegion.getLowerZ() >>
+    // m_uBlockSideLengthPower);
+    m_regValidRegionInBlocks.setLowerCorner(
+        Vector3DInt32(this->m_regValidRegion.getLowerCorner().getX() >> m_uBlockSideLengthPower,
+                      this->m_regValidRegion.getLowerCorner().getY() >> m_uBlockSideLengthPower,
+                      this->m_regValidRegion.getLowerCorner().getZ() >> m_uBlockSideLengthPower));
+    // m_regValidRegionInBlocks.setUpperX(this->m_regValidRegion.getUpperX() >>
+    // m_uBlockSideLengthPower);
+    // m_regValidRegionInBlocks.setUpperY(this->m_regValidRegion.getUpperY() >>
+    // m_uBlockSideLengthPower);
+    // m_regValidRegionInBlocks.setUpperZ(this->m_regValidRegion.getUpperZ() >>
+    // m_uBlockSideLengthPower);
+    m_regValidRegionInBlocks.setUpperCorner(
+        Vector3DInt32(this->m_regValidRegion.getUpperCorner().getX() >> m_uBlockSideLengthPower,
+                      this->m_regValidRegion.getUpperCorner().getY() >> m_uBlockSideLengthPower,
+                      this->m_regValidRegion.getUpperCorner().getZ() >> m_uBlockSideLengthPower));
 
-  // Compute the size of the volume in blocks (and note +1 at the end)
-  m_uWidthInBlocks = m_regValidRegionInBlocks.getUpperCorner().getX() -
-                     m_regValidRegionInBlocks.getLowerCorner().getX() + 1;
-  m_uHeightInBlocks = m_regValidRegionInBlocks.getUpperCorner().getY() -
-                      m_regValidRegionInBlocks.getLowerCorner().getY() + 1;
-  m_uDepthInBlocks = m_regValidRegionInBlocks.getUpperCorner().getZ() -
-                     m_regValidRegionInBlocks.getLowerCorner().getZ() + 1;
-  m_uNoOfBlocksInVolume =
-      m_uWidthInBlocks * m_uHeightInBlocks * m_uDepthInBlocks;
+    // Compute the size of the volume in blocks (and note +1 at the end)
+    m_uWidthInBlocks = m_regValidRegionInBlocks.getUpperCorner().getX() - m_regValidRegionInBlocks.getLowerCorner().getX() + 1;
+    m_uHeightInBlocks = m_regValidRegionInBlocks.getUpperCorner().getY() - m_regValidRegionInBlocks.getLowerCorner().getY() + 1;
+    m_uDepthInBlocks = m_regValidRegionInBlocks.getUpperCorner().getZ() - m_regValidRegionInBlocks.getLowerCorner().getZ() + 1;
+    m_uNoOfBlocksInVolume = m_uWidthInBlocks * m_uHeightInBlocks * m_uDepthInBlocks;
 
-  // Allocate the data
-  m_pBlocks = new Block[m_uNoOfBlocksInVolume];
-  for (uint32_t i = 0; i < m_uNoOfBlocksInVolume; ++i) {
-    m_pBlocks[i].initialise(m_uBlockSideLength);
-  }
+    // Allocate the data
+    m_pBlocks = new Block[m_uNoOfBlocksInVolume];
+    for (uint32_t i = 0; i < m_uNoOfBlocksInVolume; ++i) {
+        m_pBlocks[i].initialise(m_uBlockSideLength);
+    }
 
-  // Create the border block
-  m_pUncompressedBorderData = new VoxelType[m_uNoOfVoxelsPerBlock];
-  std::fill(m_pUncompressedBorderData,
-            m_pUncompressedBorderData + m_uNoOfVoxelsPerBlock, VoxelType());
+    // Create the border block
+    m_pUncompressedBorderData = new VoxelType[m_uNoOfVoxelsPerBlock];
+    std::fill(m_pUncompressedBorderData, m_pUncompressedBorderData + m_uNoOfVoxelsPerBlock, VoxelType());
 
-  // Other properties we might find useful later
-  this->m_uLongestSideLength = (std::max)(
-      (std::max)(this->getWidth(), this->getHeight()), this->getDepth());
-  this->m_uShortestSideLength = (std::min)(
-      (std::min)(this->getWidth(), this->getHeight()), this->getDepth());
-  this->m_fDiagonalLength =
-      sqrtf(static_cast<float>(this->getWidth() * this->getWidth() +
-                               this->getHeight() * this->getHeight() +
-                               this->getDepth() * this->getDepth()));
+    // Other properties we might find useful later
+    this->m_uLongestSideLength = (std::max)((std::max)(this->getWidth(), this->getHeight()), this->getDepth());
+    this->m_uShortestSideLength = (std::min)((std::min)(this->getWidth(), this->getHeight()), this->getDepth());
+    this->m_fDiagonalLength = sqrtf(static_cast<float>(
+        this->getWidth() * this->getWidth() + this->getHeight() * this->getHeight() + this->getDepth() * this->getDepth()));
 }
 
 template <typename VoxelType>
-typename SimpleVolume<VoxelType>::Block *
-SimpleVolume<VoxelType>::getUncompressedBlock(int32_t uBlockX, int32_t uBlockY,
-                                              int32_t uBlockZ) const {
-  // The lower left corner of the volume could be
-  // anywhere, but array indices need to start at zero.
-  uBlockX -= m_regValidRegionInBlocks.getLowerCorner().getX();
-  uBlockY -= m_regValidRegionInBlocks.getLowerCorner().getY();
-  uBlockZ -= m_regValidRegionInBlocks.getLowerCorner().getZ();
+typename SimpleVolume<VoxelType>::Block* SimpleVolume<VoxelType>::getUncompressedBlock(int32_t uBlockX,
+                                                                                       int32_t uBlockY,
+                                                                                       int32_t uBlockZ) const {
+    // The lower left corner of the volume could be
+    // anywhere, but array indices need to start at zero.
+    uBlockX -= m_regValidRegionInBlocks.getLowerCorner().getX();
+    uBlockY -= m_regValidRegionInBlocks.getLowerCorner().getY();
+    uBlockZ -= m_regValidRegionInBlocks.getLowerCorner().getZ();
 
-  // Compute the block index
-  uint32_t uBlockIndex = uBlockX + uBlockY * m_uWidthInBlocks +
-                         uBlockZ * m_uWidthInBlocks * m_uHeightInBlocks;
+    // Compute the block index
+    uint32_t uBlockIndex = uBlockX + uBlockY * m_uWidthInBlocks + uBlockZ * m_uWidthInBlocks * m_uHeightInBlocks;
 
-  // Return the block
-  return &(m_pBlocks[uBlockIndex]);
+    // Return the block
+    return &(m_pBlocks[uBlockIndex]);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,14 +269,14 @@ SimpleVolume<VoxelType>::getUncompressedBlock(int32_t uBlockX, int32_t uBlockY,
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
 uint32_t SimpleVolume<VoxelType>::calculateSizeInBytes(void) {
-  uint32_t uSizeInBytes = sizeof(SimpleVolume);
+    uint32_t uSizeInBytes = sizeof(SimpleVolume);
 
-  uint32_t uSizeOfBlockInBytes = m_uNoOfVoxelsPerBlock * sizeof(VoxelType);
+    uint32_t uSizeOfBlockInBytes = m_uNoOfVoxelsPerBlock * sizeof(VoxelType);
 
-  // Memory used by the blocks ( + 1 is for border)
-  uSizeInBytes += uSizeOfBlockInBytes * (m_uNoOfBlocksInVolume + 1);
+    // Memory used by the blocks ( + 1 is for border)
+    uSizeInBytes += uSizeOfBlockInBytes * (m_uNoOfBlocksInVolume + 1);
 
-  return uSizeInBytes;
+    return uSizeInBytes;
 }
 
-} // namespace PolyVox
+}  // namespace PolyVox

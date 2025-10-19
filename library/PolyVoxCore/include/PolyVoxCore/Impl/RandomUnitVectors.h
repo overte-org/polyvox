@@ -32,4 +32,4 @@ namespace PolyVox {
 extern POLYVOX_API const Vector3DFloat randomUnitVectors[];
 }
 
-#endif //__PolyVox_RandomUnitVectors_H__
+#endif  //__PolyVox_RandomUnitVectors_H__

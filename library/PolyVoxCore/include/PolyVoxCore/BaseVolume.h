@@ -39,129 +39,130 @@ namespace PolyVox {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// More details to come...
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename _VoxelType> class BaseVolume {
+template <typename _VoxelType>
+class BaseVolume {
 public:
-  typedef _VoxelType VoxelType;
+    typedef _VoxelType VoxelType;
 
 #ifndef SWIG
-  template <typename DerivedVolumeType> class Sampler {
-  public:
-    Sampler(DerivedVolumeType *volume);
-    ~Sampler();
+    template <typename DerivedVolumeType>
+    class Sampler {
+    public:
+        Sampler(DerivedVolumeType* volume);
+        ~Sampler();
 
-    Vector3DInt32 getPosition(void) const;
-    inline VoxelType getVoxel(void) const;
+        Vector3DInt32 getPosition(void) const;
+        inline VoxelType getVoxel(void) const;
 
-    void setPosition(const Vector3DInt32 &v3dNewPos);
-    void setPosition(int32_t xPos, int32_t yPos, int32_t zPos);
-    inline bool setVoxel(VoxelType tValue);
+        void setPosition(const Vector3DInt32& v3dNewPos);
+        void setPosition(int32_t xPos, int32_t yPos, int32_t zPos);
+        inline bool setVoxel(VoxelType tValue);
 
-    void movePositiveX(void);
-    void movePositiveY(void);
-    void movePositiveZ(void);
+        void movePositiveX(void);
+        void movePositiveY(void);
+        void movePositiveZ(void);
 
-    void moveNegativeX(void);
-    void moveNegativeY(void);
-    void moveNegativeZ(void);
+        void moveNegativeX(void);
+        void moveNegativeY(void);
+        void moveNegativeZ(void);
 
-    inline VoxelType peekVoxel1nx1ny1nz(void) const;
-    inline VoxelType peekVoxel1nx1ny0pz(void) const;
-    inline VoxelType peekVoxel1nx1ny1pz(void) const;
-    inline VoxelType peekVoxel1nx0py1nz(void) const;
-    inline VoxelType peekVoxel1nx0py0pz(void) const;
-    inline VoxelType peekVoxel1nx0py1pz(void) const;
-    inline VoxelType peekVoxel1nx1py1nz(void) const;
-    inline VoxelType peekVoxel1nx1py0pz(void) const;
-    inline VoxelType peekVoxel1nx1py1pz(void) const;
+        inline VoxelType peekVoxel1nx1ny1nz(void) const;
+        inline VoxelType peekVoxel1nx1ny0pz(void) const;
+        inline VoxelType peekVoxel1nx1ny1pz(void) const;
+        inline VoxelType peekVoxel1nx0py1nz(void) const;
+        inline VoxelType peekVoxel1nx0py0pz(void) const;
+        inline VoxelType peekVoxel1nx0py1pz(void) const;
+        inline VoxelType peekVoxel1nx1py1nz(void) const;
+        inline VoxelType peekVoxel1nx1py0pz(void) const;
+        inline VoxelType peekVoxel1nx1py1pz(void) const;
 
-    inline VoxelType peekVoxel0px1ny1nz(void) const;
-    inline VoxelType peekVoxel0px1ny0pz(void) const;
-    inline VoxelType peekVoxel0px1ny1pz(void) const;
-    inline VoxelType peekVoxel0px0py1nz(void) const;
-    inline VoxelType peekVoxel0px0py0pz(void) const;
-    inline VoxelType peekVoxel0px0py1pz(void) const;
-    inline VoxelType peekVoxel0px1py1nz(void) const;
-    inline VoxelType peekVoxel0px1py0pz(void) const;
-    inline VoxelType peekVoxel0px1py1pz(void) const;
+        inline VoxelType peekVoxel0px1ny1nz(void) const;
+        inline VoxelType peekVoxel0px1ny0pz(void) const;
+        inline VoxelType peekVoxel0px1ny1pz(void) const;
+        inline VoxelType peekVoxel0px0py1nz(void) const;
+        inline VoxelType peekVoxel0px0py0pz(void) const;
+        inline VoxelType peekVoxel0px0py1pz(void) const;
+        inline VoxelType peekVoxel0px1py1nz(void) const;
+        inline VoxelType peekVoxel0px1py0pz(void) const;
+        inline VoxelType peekVoxel0px1py1pz(void) const;
 
-    inline VoxelType peekVoxel1px1ny1nz(void) const;
-    inline VoxelType peekVoxel1px1ny0pz(void) const;
-    inline VoxelType peekVoxel1px1ny1pz(void) const;
-    inline VoxelType peekVoxel1px0py1nz(void) const;
-    inline VoxelType peekVoxel1px0py0pz(void) const;
-    inline VoxelType peekVoxel1px0py1pz(void) const;
-    inline VoxelType peekVoxel1px1py1nz(void) const;
-    inline VoxelType peekVoxel1px1py0pz(void) const;
-    inline VoxelType peekVoxel1px1py1pz(void) const;
+        inline VoxelType peekVoxel1px1ny1nz(void) const;
+        inline VoxelType peekVoxel1px1ny0pz(void) const;
+        inline VoxelType peekVoxel1px1ny1pz(void) const;
+        inline VoxelType peekVoxel1px0py1nz(void) const;
+        inline VoxelType peekVoxel1px0py0pz(void) const;
+        inline VoxelType peekVoxel1px0py1pz(void) const;
+        inline VoxelType peekVoxel1px1py1nz(void) const;
+        inline VoxelType peekVoxel1px1py0pz(void) const;
+        inline VoxelType peekVoxel1px1py1pz(void) const;
 
-  protected:
-    DerivedVolumeType *mVolume;
+    protected:
+        DerivedVolumeType* mVolume;
 
-    // The current position in the volume
-    int32_t mXPosInVolume;
-    int32_t mYPosInVolume;
-    int32_t mZPosInVolume;
-  };
+        // The current position in the volume
+        int32_t mXPosInVolume;
+        int32_t mYPosInVolume;
+        int32_t mZPosInVolume;
+    };
 #endif
 
 public:
-  /// Gets the value used for voxels which are outside the volume
-  VoxelType getBorderValue(void) const;
-  /// Gets a Region representing the extents of the Volume.
-  Region getEnclosingRegion(void) const;
-  /// Gets the width of the volume in voxels.
-  int32_t getWidth(void) const;
-  /// Gets the height of the volume in voxels.
-  int32_t getHeight(void) const;
-  /// Gets the depth of the volume in voxels.
-  int32_t getDepth(void) const;
-  /// Gets the length of the longest side in voxels
-  int32_t getLongestSideLength(void) const;
-  /// Gets the length of the shortest side in voxels
-  int32_t getShortestSideLength(void) const;
-  /// Gets the length of the diagonal in voxels
-  float getDiagonalLength(void) const;
-  /// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
-  VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const;
-  /// Gets a voxel at the position given by a 3D vector
-  VoxelType getVoxelAt(const Vector3DInt32 &v3dPos) const;
+    /// Gets the value used for voxels which are outside the volume
+    VoxelType getBorderValue(void) const;
+    /// Gets a Region representing the extents of the Volume.
+    Region getEnclosingRegion(void) const;
+    /// Gets the width of the volume in voxels.
+    int32_t getWidth(void) const;
+    /// Gets the height of the volume in voxels.
+    int32_t getHeight(void) const;
+    /// Gets the depth of the volume in voxels.
+    int32_t getDepth(void) const;
+    /// Gets the length of the longest side in voxels
+    int32_t getLongestSideLength(void) const;
+    /// Gets the length of the shortest side in voxels
+    int32_t getShortestSideLength(void) const;
+    /// Gets the length of the diagonal in voxels
+    float getDiagonalLength(void) const;
+    /// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
+    VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const;
+    /// Gets a voxel at the position given by a 3D vector
+    VoxelType getVoxelAt(const Vector3DInt32& v3dPos) const;
 
-  /// Sets the value used for voxels which are outside the volume
-  void setBorderValue(const VoxelType &tBorder);
-  /// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
-  bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos,
-                  VoxelType tValue);
-  /// Sets the voxel at the position given by a 3D vector
-  bool setVoxelAt(const Vector3DInt32 &v3dPos, VoxelType tValue);
+    /// Sets the value used for voxels which are outside the volume
+    void setBorderValue(const VoxelType& tBorder);
+    /// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
+    bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue);
+    /// Sets the voxel at the position given by a 3D vector
+    bool setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue);
 
-  /// Calculates approximatly how many bytes of memory the volume is currently
-  /// using.
-  uint32_t calculateSizeInBytes(void);
+    /// Calculates approximatly how many bytes of memory the volume is currently
+    /// using.
+    uint32_t calculateSizeInBytes(void);
 
 protected:
-  /// Constructor for creating a fixed size volume.
-  BaseVolume(const Region &regValid);
+    /// Constructor for creating a fixed size volume.
+    BaseVolume(const Region& regValid);
 
-  /// Copy constructor
-  BaseVolume(const BaseVolume &rhs);
+    /// Copy constructor
+    BaseVolume(const BaseVolume& rhs);
 
-  /// Destructor
-  ~BaseVolume();
+    /// Destructor
+    ~BaseVolume();
 
-  /// Assignment operator
-  BaseVolume &operator=(const BaseVolume &rhs);
+    /// Assignment operator
+    BaseVolume& operator=(const BaseVolume& rhs);
 
-  // The size of the volume
-  Region m_regValidRegion;
+    // The size of the volume
+    Region m_regValidRegion;
 
-  // Some useful sizes
-  int32_t m_uLongestSideLength;
-  int32_t m_uShortestSideLength;
-  float m_fDiagonalLength;
+    // Some useful sizes
+    int32_t m_uLongestSideLength;
+    int32_t m_uShortestSideLength;
+    float m_fDiagonalLength;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/BaseVolume.inl"
 #include "PolyVoxCore/BaseVolumeSampler.inl"
 
-#endif //__PolyVox_BaseVolume_H__
+#endif  //__PolyVox_BaseVolume_H__

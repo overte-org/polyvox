@@ -30,7 +30,7 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/Array.h"
 
 #include <list>
-#include <stdexcept> //For runtime_error
+#include <stdexcept>  //For runtime_error
 
 namespace PolyVox {
 const float sqrt_1 = 1.0f;
@@ -44,8 +44,7 @@ extern const POLYVOX_API Vector3DInt32 arrayPathfinderCorners[8];
 /// This function provides the default method for checking whether a given voxel
 /// is valid for the path computed by the AStarPathfinder.
 template <typename VolumeType>
-bool aStarDefaultVoxelValidator(const VolumeType *volData,
-                                const Vector3DInt32 &v3dPos);
+bool aStarDefaultVoxelValidator(const VolumeType* volData, const Vector3DInt32& v3dPos);
 
 /// Provides a configuration for the AStarPathfinder.
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,77 +58,76 @@ bool aStarDefaultVoxelValidator(const VolumeType *volData,
 ///
 /// \sa AStarPathfinder
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VolumeType> struct AStarPathfinderParams {
+template <typename VolumeType>
+struct AStarPathfinderParams {
 public:
-  AStarPathfinderParams(
-      VolumeType *volData, const Vector3DInt32 &v3dStart,
-      const Vector3DInt32 &v3dEnd, std::list<Vector3DInt32> *listResult,
-      float fHBias = 1.0, uint32_t uMaxNoOfNodes = 10000,
-      Connectivity requiredConnectivity = TwentySixConnected,
-      polyvox_function<bool(const VolumeType *, const Vector3DInt32 &)>
-          funcIsVoxelValidForPath = &aStarDefaultVoxelValidator,
-      polyvox_function<void(float)> funcProgressCallback = 0)
-      : volume(volData), start(v3dStart), end(v3dEnd), result(listResult),
-        connectivity(requiredConnectivity), hBias(fHBias),
-        maxNumberOfNodes(uMaxNoOfNodes),
-        isVoxelValidForPath(funcIsVoxelValidForPath),
-        progressCallback(funcProgressCallback) {}
+    AStarPathfinderParams(
+        VolumeType* volData,
+        const Vector3DInt32& v3dStart,
+        const Vector3DInt32& v3dEnd,
+        std::list<Vector3DInt32>* listResult,
+        float fHBias = 1.0,
+        uint32_t uMaxNoOfNodes = 10000,
+        Connectivity requiredConnectivity = TwentySixConnected,
+        polyvox_function<bool(const VolumeType*, const Vector3DInt32&)> funcIsVoxelValidForPath = &aStarDefaultVoxelValidator,
+        polyvox_function<void(float)> funcProgressCallback = 0) :
+        volume(volData), start(v3dStart), end(v3dEnd), result(listResult), connectivity(requiredConnectivity), hBias(fHBias),
+        maxNumberOfNodes(uMaxNoOfNodes), isVoxelValidForPath(funcIsVoxelValidForPath), progressCallback(funcProgressCallback) {}
 
-  /// This is the volume through which the AStarPathfinder must find a path.
-  VolumeType *volume;
+    /// This is the volume through which the AStarPathfinder must find a path.
+    VolumeType* volume;
 
-  /// The start point for the pathfinding algorithm.
-  Vector3DInt32 start;
+    /// The start point for the pathfinding algorithm.
+    Vector3DInt32 start;
 
-  /// The end point for the pathfinding algorithm.
-  Vector3DInt32 end;
+    /// The end point for the pathfinding algorithm.
+    Vector3DInt32 end;
 
-  /// The resulting path will be stored as a series of points in
-  /// this list. Any existing contents will be cleared.
-  std::list<Vector3DInt32> *result;
+    /// The resulting path will be stored as a series of points in
+    /// this list. Any existing contents will be cleared.
+    std::list<Vector3DInt32>* result;
 
-  /// The AStarPathfinder performs its search by examining the neighbours
-  /// of each voxel it encounters. This property controls the meaning of
-  /// neighbour - e.g. whether two voxels must share a face, edge, or corner.
-  Connectivity connectivity;
+    /// The AStarPathfinder performs its search by examining the neighbours
+    /// of each voxel it encounters. This property controls the meaning of
+    /// neighbour - e.g. whether two voxels must share a face, edge, or corner.
+    Connectivity connectivity;
 
-  /// For each voxel the pathfinder tracks its distance to the start (known as
-  /// g()) and estimates its distance to the end (known as h()). Increasing or
-  /// decreasing h() has an effect on the way the pathfinder behaves. If h() is
-  /// an underestimate of the true distance then the pathfinder will act more
-  /// like a greedy search - always finding the shortest path but taking longer
-  /// to do so. If h() is an over estimate then the pathfinder will behave more
-  /// like a best-first search - returning a potentially suboptimal path but
-  /// finding it more quickly. The hBias is multiplied by the estimated h()
-  /// value to control this behaviour.
-  float hBias;
+    /// For each voxel the pathfinder tracks its distance to the start (known as
+    /// g()) and estimates its distance to the end (known as h()). Increasing or
+    /// decreasing h() has an effect on the way the pathfinder behaves. If h() is
+    /// an underestimate of the true distance then the pathfinder will act more
+    /// like a greedy search - always finding the shortest path but taking longer
+    /// to do so. If h() is an over estimate then the pathfinder will behave more
+    /// like a best-first search - returning a potentially suboptimal path but
+    /// finding it more quickly. The hBias is multiplied by the estimated h()
+    /// value to control this behaviour.
+    float hBias;
 
-  /// Volumes can be pretty huge (millions of voxels) and processing each one of
-  /// these can take a long time. In A* terminology each voxel is a node, and
-  /// this property controls the maximum number of nodes that will be considered
-  /// when finding the path, before giving up and throwing an exception because
-  /// a path can't be found.
-  uint32_t maxNumberOfNodes;
+    /// Volumes can be pretty huge (millions of voxels) and processing each one of
+    /// these can take a long time. In A* terminology each voxel is a node, and
+    /// this property controls the maximum number of nodes that will be considered
+    /// when finding the path, before giving up and throwing an exception because
+    /// a path can't be found.
+    uint32_t maxNumberOfNodes;
 
-  /// This function is called to determine whether the path can pass though a
-  /// given voxel. The default behaviour is specified by
-  /// aStarDefaultVoxelValidator(), but users can specify thier own criteria if
-  /// desired. For example, if you always want a path to follow a surface then
-  /// you could check to ensure that the voxel above is empty and the voxel
-  /// below is solid.
-  ///
-  /// \sa aStarDefaultVoxelValidator
-  polyvox_function<bool(const VolumeType *, const Vector3DInt32 &)>
-      isVoxelValidForPath;
+    /// This function is called to determine whether the path can pass though a
+    /// given voxel. The default behaviour is specified by
+    /// aStarDefaultVoxelValidator(), but users can specify thier own criteria if
+    /// desired. For example, if you always want a path to follow a surface then
+    /// you could check to ensure that the voxel above is empty and the voxel
+    /// below is solid.
+    ///
+    /// \sa aStarDefaultVoxelValidator
+    polyvox_function<bool(const VolumeType*, const Vector3DInt32&)> isVoxelValidForPath;
 
-  /// This function is called by the AStarPathfinder to report on its progress
-  /// in getting to the goal. The progress is reported by computing the distance
-  /// from the closest node found so far to the end node, and comparing this
-  /// with the distance from the start node to the end node. This progress value
-  /// is guarenteed to never decrease, but it may stop increasing
-  /// for short periods of time. It may even stop increasing altogether if a
-  /// path cannot be found.
-  polyvox_function<void(float)> progressCallback;
+    /// This function is called by the AStarPathfinder to report on its progress
+    /// in getting to the goal. The progress is reported by computing the distance
+    /// from the closest node found so far to the end node, and comparing this
+    /// with the distance from the start node to the end node. This progress value
+    /// is guarenteed to never decrease, but it may stop increasing
+    /// for short periods of time. It may even stop increasing altogether if a
+    /// path cannot be found.
+    polyvox_function<void(float)> progressCallback;
 };
 
 /// The AStarPathfinder compute a path from one point in the volume to another.
@@ -156,35 +154,36 @@ public:
 ///
 /// \sa AStarPathfinderParams
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VolumeType> class AStarPathfinder {
+template <typename VolumeType>
+class AStarPathfinder {
 public:
-  AStarPathfinder(const AStarPathfinderParams<VolumeType> &params);
+    AStarPathfinder(const AStarPathfinderParams<VolumeType>& params);
 
-  void execute();
+    void execute();
 
 private:
-  void processNeighbour(const Vector3DInt32 &neighbourPos, float neighbourGVal);
+    void processNeighbour(const Vector3DInt32& neighbourPos, float neighbourGVal);
 
-  float SixConnectedCost(const Vector3DInt32 &a, const Vector3DInt32 &b);
-  float EighteenConnectedCost(const Vector3DInt32 &a, const Vector3DInt32 &b);
-  float TwentySixConnectedCost(const Vector3DInt32 &a, const Vector3DInt32 &b);
-  float computeH(const Vector3DInt32 &a, const Vector3DInt32 &b);
-  uint32_t hash(uint32_t a);
+    float SixConnectedCost(const Vector3DInt32& a, const Vector3DInt32& b);
+    float EighteenConnectedCost(const Vector3DInt32& a, const Vector3DInt32& b);
+    float TwentySixConnectedCost(const Vector3DInt32& a, const Vector3DInt32& b);
+    float computeH(const Vector3DInt32& a, const Vector3DInt32& b);
+    uint32_t hash(uint32_t a);
 
-  // Node containers
-  AllNodesContainer allNodes;
-  OpenNodesContainer openNodes;
-  ClosedNodesContainer closedNodes;
+    // Node containers
+    AllNodesContainer allNodes;
+    OpenNodesContainer openNodes;
+    ClosedNodesContainer closedNodes;
 
-  // The current node
-  AllNodesContainer::iterator current;
+    // The current node
+    AllNodesContainer::iterator current;
 
-  float m_fProgress;
+    float m_fProgress;
 
-  AStarPathfinderParams<VolumeType> m_params;
+    AStarPathfinderParams<VolumeType> m_params;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/AStarPathfinder.inl"
 
-#endif //__PolyVox_AStarPathfinder_H__
+#endif  //__PolyVox_AStarPathfinder_H__

@@ -27,17 +27,18 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/Region.h"
 
 namespace PolyVox {
-template <typename IteratorType> class IteratorController {
+template <typename IteratorType>
+class IteratorController {
 public:
-  void reset(void);
-  bool moveForward(void);
+    void reset(void);
+    bool moveForward(void);
 
 public:
-  Region m_regValid;
-  IteratorType *m_Iter;
+    Region m_regValid;
+    IteratorType* m_Iter;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/IteratorController.inl"
 
-#endif //__PolyVox_IteratorController_H__
+#endif  //__PolyVox_IteratorController_H__

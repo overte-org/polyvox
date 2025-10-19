@@ -33,48 +33,48 @@ freely, subject to the following restrictions:
 namespace PolyVox {
 /// Voxel scene manager
 /// \deprecated
-template <typename VoxelType> class POLYVOX_DEPRECATED VolumeChangeTracker {
+template <typename VoxelType>
+class POLYVOX_DEPRECATED VolumeChangeTracker {
 public:
-  // Constructors, etc
-  VolumeChangeTracker(LargeVolume<VoxelType> *volumeDataToSet,
-                      uint16_t regionSideLength);
-  ~VolumeChangeTracker();
+    // Constructors, etc
+    VolumeChangeTracker(LargeVolume<VoxelType>* volumeDataToSet, uint16_t regionSideLength);
+    ~VolumeChangeTracker();
 
-  // Getters
-  int32_t getCurrentTime(void) const;
-  int32_t getLastModifiedTimeForRegion(uint16_t uX, uint16_t uY, uint16_t uZ);
-  LargeVolume<VoxelType> *getWrappedVolume(void) const;
+    // Getters
+    int32_t getCurrentTime(void) const;
+    int32_t getLastModifiedTimeForRegion(uint16_t uX, uint16_t uY, uint16_t uZ);
+    LargeVolume<VoxelType>* getWrappedVolume(void) const;
 
-  // Setters
-  void setAllRegionsModified(void);
-  void setLockedVoxelAt(uint16_t x, uint16_t y, uint16_t z, VoxelType value);
-  void setVoxelAt(uint16_t x, uint16_t y, uint16_t z, VoxelType value);
+    // Setters
+    void setAllRegionsModified(void);
+    void setLockedVoxelAt(uint16_t x, uint16_t y, uint16_t z, VoxelType value);
+    void setVoxelAt(uint16_t x, uint16_t y, uint16_t z, VoxelType value);
 
-  // Others
-  void lockRegion(const Region &regToLock);
-  void unlockRegion(void);
-  // void markRegionChanged(uint16_t firstX, uint16_t firstY, uint16_t firstZ,
-  // uint16_t lastX, uint16_t lastY, uint16_t lastZ);
+    // Others
+    void lockRegion(const Region& regToLock);
+    void unlockRegion(void);
+    // void markRegionChanged(uint16_t firstX, uint16_t firstY, uint16_t firstZ,
+    // uint16_t lastX, uint16_t lastY, uint16_t lastZ);
 
 public:
-  void incrementCurrentTime(void);
-  bool m_bIsLocked;
-  Region m_regLastLocked;
-  LargeVolume<VoxelType> *volumeData;
+    void incrementCurrentTime(void);
+    bool m_bIsLocked;
+    Region m_regLastLocked;
+    LargeVolume<VoxelType>* volumeData;
 
-  uint16_t m_uRegionSideLength;
-  uint8_t m_uRegionSideLengthPower;
-  uint16_t m_uVolumeWidthInRegions;
-  uint16_t m_uVolumeHeightInRegions;
-  uint16_t m_uVolumeDepthInRegions;
+    uint16_t m_uRegionSideLength;
+    uint8_t m_uRegionSideLengthPower;
+    uint16_t m_uVolumeWidthInRegions;
+    uint16_t m_uVolumeHeightInRegions;
+    uint16_t m_uVolumeDepthInRegions;
 
-  // It's not what the block class was designed for, but it
-  // provides a handy way of storing a 3D grid of values.
-  LargeVolume<int32_t> *volRegionLastModified;
+    // It's not what the block class was designed for, but it
+    // provides a handy way of storing a 3D grid of values.
+    LargeVolume<int32_t>* volRegionLastModified;
 
-  static uint32_t m_uCurrentTime;
+    static uint32_t m_uCurrentTime;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxUtil/VolumeChangeTracker.inl"
 

@@ -31,11 +31,12 @@ namespace RaycastResults {
 /**
  * The results of a raycast
  */
-enum RaycastResult {
-  Completed, ///< If the ray passed through the volume without being interupted
-  Interupted ///< If the ray was interupted while travelling
+enum RaycastResult
+{
+    Completed,  ///< If the ray passed through the volume without being interupted
+    Interupted  ///< If the ray was interupted while travelling
 };
-} // namespace RaycastResults
+}  // namespace RaycastResults
 typedef RaycastResults::RaycastResult RaycastResult;
 
 /// OUT OF DATE SINCE UNCLASSING
@@ -92,17 +93,18 @@ typedef RaycastResults::RaycastResult RaycastResult;
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename VolumeType, typename Callback>
-RaycastResult
-raycastWithEndpoints(VolumeType *volData, const Vector3DFloat &v3dStart,
-                     const Vector3DFloat &v3dEnd, Callback &callback);
+RaycastResult raycastWithEndpoints(VolumeType* volData,
+                                   const Vector3DFloat& v3dStart,
+                                   const Vector3DFloat& v3dEnd,
+                                   Callback& callback);
 
 template <typename VolumeType, typename Callback>
-RaycastResult raycastWithDirection(VolumeType *volData,
-                                   const Vector3DFloat &v3dStart,
-                                   const Vector3DFloat &v3dDirectionAndLength,
-                                   Callback &callback);
-} // namespace PolyVox
+RaycastResult raycastWithDirection(VolumeType* volData,
+                                   const Vector3DFloat& v3dStart,
+                                   const Vector3DFloat& v3dDirectionAndLength,
+                                   Callback& callback);
+}  // namespace PolyVox
 
 #include "PolyVoxCore/Raycast.inl"
 
-#endif //__PolyVox_Raycast_H__
+#endif  //__PolyVox_Raycast_H__

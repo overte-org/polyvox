@@ -60,120 +60,117 @@ used as follows:
 Vector2DInt4 test(1,2); //Declares a 2 dimensional Vector of type int4.
 \endcode
 */
-template <uint32_t Size, typename Type> class Vector {
+template <uint32_t Size, typename Type>
+class Vector {
 public:
-  /// Constructor.
-  Vector(Type x, Type y);
-  /// Constructor.
-  Vector(Type x, Type y, Type z);
-  /// Constructor.
-  Vector(Type x, Type y, Type z, Type w);
-  /// Constructor
-  Vector(void);
-  /// Copy Constructor.
-  Vector(const Vector<Size, Type> &vector);
-  /// Copy Constructor which performs casting.
-  template <typename CastType>
-  explicit Vector(const Vector<Size, CastType> &vector);
-  /// Destructor.
-  ~Vector(void);
+    /// Constructor.
+    Vector(Type x, Type y);
+    /// Constructor.
+    Vector(Type x, Type y, Type z);
+    /// Constructor.
+    Vector(Type x, Type y, Type z, Type w);
+    /// Constructor
+    Vector(void);
+    /// Copy Constructor.
+    Vector(const Vector<Size, Type>& vector);
+    /// Copy Constructor which performs casting.
+    template <typename CastType>
+    explicit Vector(const Vector<Size, CastType>& vector);
+    /// Destructor.
+    ~Vector(void);
 
-  /// Assignment Operator.
-  Vector<Size, Type> &operator=(const Vector<Size, Type> &rhs);
-  /// Equality Operator.
-  bool operator==(const Vector<Size, Type> &rhs) const;
-  /// Inequality Operator.
-  bool operator!=(const Vector<Size, Type> &rhs) const;
-  /// Comparison Operator.
-  bool operator<(const Vector<Size, Type> &rhs) const;
-  /// Addition and Assignment Operator.
-  Vector<Size, Type> &operator+=(const Vector<Size, Type> &rhs);
-  /// Subtraction and Assignment Operator.
-  Vector<Size, Type> &operator-=(const Vector<Size, Type> &rhs);
-  /// Multiplication and Assignment Operator.
-  Vector<Size, Type> &operator*=(const Vector<Size, Type> &rhs);
-  /// Division and Assignment Operator.
-  Vector<Size, Type> &operator/=(const Vector<Size, Type> &rhs);
-  /// Multiplication and Assignment Operator.
-  Vector<Size, Type> &operator*=(const Type &rhs);
-  /// Division and Assignment Operator.
-  Vector<Size, Type> &operator/=(const Type &rhs);
+    /// Assignment Operator.
+    Vector<Size, Type>& operator=(const Vector<Size, Type>& rhs);
+    /// Equality Operator.
+    bool operator==(const Vector<Size, Type>& rhs) const;
+    /// Inequality Operator.
+    bool operator!=(const Vector<Size, Type>& rhs) const;
+    /// Comparison Operator.
+    bool operator<(const Vector<Size, Type>& rhs) const;
+    /// Addition and Assignment Operator.
+    Vector<Size, Type>& operator+=(const Vector<Size, Type>& rhs);
+    /// Subtraction and Assignment Operator.
+    Vector<Size, Type>& operator-=(const Vector<Size, Type>& rhs);
+    /// Multiplication and Assignment Operator.
+    Vector<Size, Type>& operator*=(const Vector<Size, Type>& rhs);
+    /// Division and Assignment Operator.
+    Vector<Size, Type>& operator/=(const Vector<Size, Type>& rhs);
+    /// Multiplication and Assignment Operator.
+    Vector<Size, Type>& operator*=(const Type& rhs);
+    /// Division and Assignment Operator.
+    Vector<Size, Type>& operator/=(const Type& rhs);
 
-  /// Element Access.
-  Type getElement(uint32_t index) const;
-  /// Get the x component of the vector.
-  Type getX(void) const;
-  /// Get the y component of the vector.
-  Type getY(void) const;
-  /// Get the z component of the vector.
-  Type getZ(void) const;
-  /// Get the w component of the vector.
-  Type getW(void) const;
+    /// Element Access.
+    Type getElement(uint32_t index) const;
+    /// Get the x component of the vector.
+    Type getX(void) const;
+    /// Get the y component of the vector.
+    Type getY(void) const;
+    /// Get the z component of the vector.
+    Type getZ(void) const;
+    /// Get the w component of the vector.
+    Type getW(void) const;
 
-  /// Element Access.
-  void setElement(uint32_t index, Type tValue);
-  /// Element Access.
-  void setElements(Type x, Type y);
-  /// Element Access.
-  void setElements(Type x, Type y, Type z);
-  /// Element Access.
-  void setElements(Type x, Type y, Type z, Type w);
-  /// Set the x component of the vector.
-  void setX(Type tX);
-  /// Set the y component of the vector.
-  void setY(Type tY);
-  /// Set the z component of the vector.
-  void setZ(Type tZ);
-  /// Set the w component of the vector.
-  void setW(Type tW);
+    /// Element Access.
+    void setElement(uint32_t index, Type tValue);
+    /// Element Access.
+    void setElements(Type x, Type y);
+    /// Element Access.
+    void setElements(Type x, Type y, Type z);
+    /// Element Access.
+    void setElements(Type x, Type y, Type z, Type w);
+    /// Set the x component of the vector.
+    void setX(Type tX);
+    /// Set the y component of the vector.
+    void setY(Type tY);
+    /// Set the z component of the vector.
+    void setZ(Type tZ);
+    /// Set the w component of the vector.
+    void setW(Type tW);
 
-  /// Get the length of the vector.
-  double length(void) const;
-  /// Get the squared length of the vector.
-  double lengthSquared(void) const;
-  /// Find the angle between this vector and that which is passed as a
-  /// parameter.
-  double angleTo(const Vector<Size, Type> &vector) const;
-  /// Find the cross product between this vector and the vector passed as a
-  /// parameter.
-  Vector<Size, Type> cross(const Vector<Size, Type> &vector) const;
-  /// Find the dot product between this vector and the vector passed as a
-  /// parameter.
-  Type dot(const Vector<Size, Type> &rhs) const;
-  /// Normalise the vector.
-  void normalise(void);
+    /// Get the length of the vector.
+    double length(void) const;
+    /// Get the squared length of the vector.
+    double lengthSquared(void) const;
+    /// Find the angle between this vector and that which is passed as a
+    /// parameter.
+    double angleTo(const Vector<Size, Type>& vector) const;
+    /// Find the cross product between this vector and the vector passed as a
+    /// parameter.
+    Vector<Size, Type> cross(const Vector<Size, Type>& vector) const;
+    /// Find the dot product between this vector and the vector passed as a
+    /// parameter.
+    Type dot(const Vector<Size, Type>& rhs) const;
+    /// Normalise the vector.
+    void normalise(void);
 
 private:
-  // Values for the vector
-  Type m_tElements[Size];
+    // Values for the vector
+    Type m_tElements[Size];
 };
 
 // Non-member overloaded operators.
 /// Addition operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator+(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs);
+Vector<Size, Type> operator+(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs);
 /// Subtraction operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator-(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs);
+Vector<Size, Type> operator-(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs);
 /// Multiplication operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator*(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs);
+Vector<Size, Type> operator*(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs);
 /// Division operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator/(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs);
+Vector<Size, Type> operator/(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs);
 /// Multiplication operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator*(const Vector<Size, Type> &lhs, const Type &rhs);
+Vector<Size, Type> operator*(const Vector<Size, Type>& lhs, const Type& rhs);
 /// Division operator.
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator/(const Vector<Size, Type> &lhs, const Type &rhs);
+Vector<Size, Type> operator/(const Vector<Size, Type>& lhs, const Type& rhs);
 /// Stream insertion operator.
 template <uint32_t Size, typename Type>
-std::ostream &operator<<(std::ostream &os, const Vector<Size, Type> &vector);
+std::ostream& operator<<(std::ostream& os, const Vector<Size, Type>& vector);
 
 // Some handy typedefs
 /// A 3D Vector of floats.
@@ -193,7 +190,7 @@ typedef Vector<3, int32_t> Vector3DInt32;
 /// A 3D Vector of unsigned 32-bit values.
 typedef Vector<3, uint32_t> Vector3DUint32;
 
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/Vector.inl"
 

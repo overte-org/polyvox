@@ -32,36 +32,35 @@ distribution.
 
 class OpenGLWidget : public QGLWidget {
 public:
-  // Constructor
-  OpenGLWidget(QWidget *parent);
+    // Constructor
+    OpenGLWidget(QWidget* parent);
 
-  // Mouse handling
-  void mouseMoveEvent(QMouseEvent *event);
-  void mousePressEvent(QMouseEvent *event);
+    // Mouse handling
+    void mouseMoveEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
 
-  // Convert a SrfaceMesh to OpenGL index/vertex buffers
-  void setSurfaceMeshToRender(
-      const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &surfaceMesh);
+    // Convert a SrfaceMesh to OpenGL index/vertex buffers
+    void setSurfaceMeshToRender(const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& surfaceMesh);
 
 protected:
-  // Qt OpenGL functions
-  void initializeGL();
-  void resizeGL(int w, int h);
-  void paintGL();
+    // Qt OpenGL functions
+    void initializeGL();
+    void resizeGL(int w, int h);
+    void paintGL();
 
 private:
-  // Index/vertex buffer data
-  GLuint m_uBeginIndex;
-  GLuint m_uEndIndex;
-  GLuint noOfIndices;
-  GLuint indexBuffer;
-  GLuint vertexBuffer;
+    // Index/vertex buffer data
+    GLuint m_uBeginIndex;
+    GLuint m_uEndIndex;
+    GLuint noOfIndices;
+    GLuint indexBuffer;
+    GLuint vertexBuffer;
 
-  // Mouse data
-  QPoint m_LastFrameMousePos;
-  QPoint m_CurrentMousePos;
-  int m_xRotation;
-  int m_yRotation;
+    // Mouse data
+    QPoint m_LastFrameMousePos;
+    QPoint m_CurrentMousePos;
+    int m_xRotation;
+    int m_yRotation;
 };
 
-#endif //__BasicExample_OpenGLWidget_H__
+#endif  //__BasicExample_OpenGLWidget_H__

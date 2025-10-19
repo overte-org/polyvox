@@ -26,17 +26,17 @@ distribution.
 namespace PolyVox {
 template <uint32_t N>
 ArraySizesImpl<N + 1> ArraySizesImpl<N>::operator()(uint32_t uSize) {
-  return ArraySizesImpl<N + 1>(m_pSizes, uSize);
-}
-
-template <uint32_t N> ArraySizesImpl<N>::operator UIntArrayN() const {
-  return m_pSizes;
+    return ArraySizesImpl<N + 1>(m_pSizes, uSize);
 }
 
 template <uint32_t N>
-ArraySizesImpl<N>::ArraySizesImpl(const uint32_t (&pSizes)[N - 1],
-                                  uint32_t uSize) {
-  std::copy(&pSizes[0], &pSizes[N - 1], m_pSizes);
-  m_pSizes[N - 1] = uSize;
+ArraySizesImpl<N>::operator UIntArrayN() const {
+    return m_pSizes;
 }
-} // namespace PolyVox
+
+template <uint32_t N>
+ArraySizesImpl<N>::ArraySizesImpl(const uint32_t (&pSizes)[N - 1], uint32_t uSize) {
+    std::copy(&pSizes[0], &pSizes[N - 1], m_pSizes);
+    m_pSizes[N - 1] = uSize;
+}
+}  // namespace PolyVox

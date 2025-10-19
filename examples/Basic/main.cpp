@@ -33,64 +33,61 @@ freely, subject to the following restrictions:
 // Use the PolyVox namespace
 using namespace PolyVox;
 
-void createSphereInVolume(SimpleVolume<uint8_t> &volData, float fRadius) {
-  // This vector hold the position of the center of the volume
-  Vector3DFloat v3dVolCenter(volData.getWidth() / 2, volData.getHeight() / 2,
-                             volData.getDepth() / 2);
+void createSphereInVolume(SimpleVolume<uint8_t>& volData, float fRadius) {
+    // This vector hold the position of the center of the volume
+    Vector3DFloat v3dVolCenter(volData.getWidth() / 2, volData.getHeight() / 2, volData.getDepth() / 2);
 
-  // This three-level for loop iterates over every voxel in the volume
-  for (int z = 0; z < volData.getDepth(); z++) {
-    for (int y = 0; y < volData.getHeight(); y++) {
-      for (int x = 0; x < volData.getWidth(); x++) {
-        // Store our current position as a vector...
-        Vector3DFloat v3dCurrentPos(x, y, z);
-        // And compute how far the current position is from the center of the
-        // volume
-        float fDistToCenter = (v3dCurrentPos - v3dVolCenter).length();
+    // This three-level for loop iterates over every voxel in the volume
+    for (int z = 0; z < volData.getDepth(); z++) {
+        for (int y = 0; y < volData.getHeight(); y++) {
+            for (int x = 0; x < volData.getWidth(); x++) {
+                // Store our current position as a vector...
+                Vector3DFloat v3dCurrentPos(x, y, z);
+                // And compute how far the current position is from the center of the
+                // volume
+                float fDistToCenter = (v3dCurrentPos - v3dVolCenter).length();
 
-        uint8_t uVoxelValue = 0;
+                uint8_t uVoxelValue = 0;
 
-        // If the current voxel is less than 'radius' units from the center then
-        // we make it solid.
-        if (fDistToCenter <= fRadius) {
-          // Our new voxel value
-          uVoxelValue = 255;
+                // If the current voxel is less than 'radius' units from the center then
+                // we make it solid.
+                if (fDistToCenter <= fRadius) {
+                    // Our new voxel value
+                    uVoxelValue = 255;
+                }
+
+                // Wrte the voxel value into the volume
+                volData.setVoxelAt(x, y, z, uVoxelValue);
+            }
         }
-
-        // Wrte the voxel value into the volume
-        volData.setVoxelAt(x, y, z, uVoxelValue);
-      }
     }
-  }
 }
 
-int main(int argc, char *argv[]) {
-  // Create and show the Qt OpenGL window
-  QApplication app(argc, argv);
-  OpenGLWidget openGLWidget(0);
-  openGLWidget.show();
+int main(int argc, char* argv[]) {
+    // Create and show the Qt OpenGL window
+    QApplication app(argc, argv);
+    OpenGLWidget openGLWidget(0);
+    openGLWidget.show();
 
-  // Create an empty volume and then place a sphere in it
-  SimpleVolume<uint8_t> volData(
-      PolyVox::Region(Vector3DInt32(0, 0, 0), Vector3DInt32(63, 63, 63)));
-  createSphereInVolume(volData, 30);
+    // Create an empty volume and then place a sphere in it
+    SimpleVolume<uint8_t> volData(PolyVox::Region(Vector3DInt32(0, 0, 0), Vector3DInt32(63, 63, 63)));
+    createSphereInVolume(volData, 30);
 
-  // A mesh object to hold the result of surface extraction
-  SurfaceMesh<PositionMaterialNormal> mesh;
+    // A mesh object to hold the result of surface extraction
+    SurfaceMesh<PositionMaterialNormal> mesh;
 
-  // Create a surface extractor. Comment out one of the following two lines to
-  // decide which type gets created.
-  CubicSurfaceExtractorWithNormals<SimpleVolume<uint8_t>> surfaceExtractor(
-      &volData, volData.getEnclosingRegion(), &mesh);
-  // MarchingCubesSurfaceExtractor< SimpleVolume<uint8_t> >
-  // surfaceExtractor(&volData, volData.getEnclosingRegion(), &mesh);
+    // Create a surface extractor. Comment out one of the following two lines to
+    // decide which type gets created.
+    CubicSurfaceExtractorWithNormals<SimpleVolume<uint8_t>> surfaceExtractor(&volData, volData.getEnclosingRegion(), &mesh);
+    // MarchingCubesSurfaceExtractor< SimpleVolume<uint8_t> >
+    // surfaceExtractor(&volData, volData.getEnclosingRegion(), &mesh);
 
-  // Execute the surface extractor.
-  surfaceExtractor.execute();
+    // Execute the surface extractor.
+    surfaceExtractor.execute();
 
-  // Pass the surface to the OpenGL window
-  openGLWidget.setSurfaceMeshToRender(mesh);
+    // Pass the surface to the OpenGL window
+    openGLWidget.setSurfaceMeshToRender(mesh);
 
-  // Run the message pump.
-  return app.exec();
+    // Run the message pump.
+    return app.exec();
 }

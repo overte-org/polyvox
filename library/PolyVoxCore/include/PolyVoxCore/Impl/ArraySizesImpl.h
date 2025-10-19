@@ -35,24 +35,25 @@ template pattern without exposing the use of templates to the user.
 
 It is based on the following article: http://www.drdobbs.com/cpp/184401319
 */
-template <uint32_t N> class ArraySizesImpl {
-  typedef const uint32_t (&UIntArrayN)[N];
+template <uint32_t N>
+class ArraySizesImpl {
+    typedef const uint32_t (&UIntArrayN)[N];
 
-  friend class ArraySizes;
-  friend class ArraySizesImpl<N - 1>;
+    friend class ArraySizes;
+    friend class ArraySizesImpl<N - 1>;
 
 public:
-  ArraySizesImpl<N + 1> operator()(uint32_t uSize);
+    ArraySizesImpl<N + 1> operator()(uint32_t uSize);
 
-  operator UIntArrayN() const;
+    operator UIntArrayN() const;
 
 private:
-  ArraySizesImpl(const uint32_t (&pSizes)[N - 1], uint32_t uSize);
+    ArraySizesImpl(const uint32_t (&pSizes)[N - 1], uint32_t uSize);
 
-  uint32_t m_pSizes[N];
+    uint32_t m_pSizes[N];
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/Impl/ArraySizesImpl.inl"
 
-#endif //__PolyVox_ArraySizesImpl_H__
+#endif  //__PolyVox_ArraySizesImpl_H__

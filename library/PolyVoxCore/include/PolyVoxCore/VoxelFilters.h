@@ -28,7 +28,7 @@ freely, subject to the following restrictions:
 
 namespace PolyVox {
 template <typename VolumeType>
-float computeSmoothedVoxel(typename VolumeType::Sampler &volIter);
+float computeSmoothedVoxel(typename VolumeType::Sampler& volIter);
 }
 
 #include "PolyVoxCore/VoxelFilters.inl"

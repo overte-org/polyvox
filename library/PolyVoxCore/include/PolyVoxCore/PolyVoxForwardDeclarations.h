@@ -30,7 +30,8 @@ namespace PolyVox {
 ////////////////////////////////////////////////////////////////////////////////
 // Array
 ////////////////////////////////////////////////////////////////////////////////
-template <uint32_t dimensions, typename ElementType> class Array;
+template <uint32_t dimensions, typename ElementType>
+class Array;
 
 typedef Array<1, float> Array1DFloat;
 typedef Array<1, double> Array1DDouble;
@@ -62,12 +63,14 @@ typedef Array<3, uint32_t> Array3DUint32;
 ////////////////////////////////////////////////////////////////////////////////
 // CubicSurfaceExtractor
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VolumeType> class CubicSurfaceExtractor;
+template <typename VolumeType>
+class CubicSurfaceExtractor;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Density
 ////////////////////////////////////////////////////////////////////////////////
-template <typename Type> class Density;
+template <typename Type>
+class Density;
 
 typedef Density<int8_t> DensityI8;
 typedef Density<uint8_t> DensityU8;
@@ -76,18 +79,20 @@ typedef Density<uint16_t> DensityU16;
 typedef Density<float> DensityFloat;
 typedef Density<double> DensityDouble;
 
-typedef DensityU8 Density8;   // Backwards compatibility
-typedef DensityU16 Density16; // Backwards compatibility
+typedef DensityU8 Density8;    // Backwards compatibility
+typedef DensityU16 Density16;  // Backwards compatibility
 
 ////////////////////////////////////////////////////////////////////////////////
 // LargeVolume
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VoxelType> class LargeVolume;
+template <typename VoxelType>
+class LargeVolume;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Material
 ////////////////////////////////////////////////////////////////////////////////
-template <typename Type> class Material;
+template <typename Type>
+class Material;
 
 typedef Material<uint8_t> MaterialU8;
 typedef Material<uint16_t> MaterialU16;
@@ -119,7 +124,8 @@ class PositionMaterialNormal;
 ////////////////////////////////////////////////////////////////////////////////
 // RawVolume
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VoxelType> class RawVolume;
+template <typename VoxelType>
+class RawVolume;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Region
@@ -135,12 +141,14 @@ class MarchingCubesSurfaceExtractor;
 ////////////////////////////////////////////////////////////////////////////////
 // SurfaceMesh
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VertexType> class SurfaceMesh;
+template <typename VertexType>
+class SurfaceMesh;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Vector
 ////////////////////////////////////////////////////////////////////////////////
-template <uint32_t Size, typename Type> class Vector;
+template <uint32_t Size, typename Type>
+class Vector;
 typedef Vector<3, float> Vector3DFloat;
 typedef Vector<3, double> Vector3DDouble;
 typedef Vector<3, int8_t> Vector3DInt8;
@@ -149,6 +157,6 @@ typedef Vector<3, int16_t> Vector3DInt16;
 typedef Vector<3, uint16_t> Vector3DUint16;
 typedef Vector<3, int32_t> Vector3DInt32;
 typedef Vector<3, uint32_t> Vector3DUint32;
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #endif

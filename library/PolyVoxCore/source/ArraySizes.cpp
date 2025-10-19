@@ -27,7 +27,9 @@ namespace PolyVox {
 /**
 \param uSize The size of the first dimension.
 */
-ArraySizes::ArraySizes(uint32_t uSize) { m_pSizes[0] = uSize; }
+ArraySizes::ArraySizes(uint32_t uSize) {
+    m_pSizes[0] = uSize;
+}
 
 /**
 This class only directly implements one dimensional sizes. Higher numbers
@@ -37,11 +39,13 @@ create an object of the next dimensionality up.
 \return A higher dimension version of this class.
 */
 ArraySizesImpl<2> ArraySizes::operator()(uint32_t uSize) {
-  return ArraySizesImpl<2>(m_pSizes, uSize);
+    return ArraySizesImpl<2>(m_pSizes, uSize);
 }
 
 /**
 \return The array of integers corresponding to this object.
 */
-ArraySizes::operator UIntArray1() const { return m_pSizes; }
-} // namespace PolyVox
+ArraySizes::operator UIntArray1() const {
+    return m_pSizes;
+}
+}  // namespace PolyVox

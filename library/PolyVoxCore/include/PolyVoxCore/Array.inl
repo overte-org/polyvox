@@ -27,8 +27,8 @@ namespace PolyVox {
 /// this array before it can be used.
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-Array<noOfDims, ElementType>::Array()
-    : m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0), m_pElements(0) {}
+Array<noOfDims, ElementType>::Array() : m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0), m_pElements(0) {
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Creates an array with the specified dimensions.
@@ -37,9 +37,9 @@ Array<noOfDims, ElementType>::Array()
 /// \sa ArraySizes
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-Array<noOfDims, ElementType>::Array(const uint32_t (&pDimensions)[noOfDims])
-    : m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0), m_pElements(0) {
-  resize(pDimensions);
+Array<noOfDims, ElementType>::Array(const uint32_t (&pDimensions)[noOfDims]) :
+    m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0), m_pElements(0) {
+    resize(pDimensions);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ Array<noOfDims, ElementType>::Array(const uint32_t (&pDimensions)[noOfDims])
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
 Array<noOfDims, ElementType>::~Array() {
-  deallocate();
+    deallocate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -60,11 +60,9 @@ Array<noOfDims, ElementType>::~Array() {
 /// \return The requested SubArray
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-SubArray<noOfDims - 1, ElementType>
-Array<noOfDims, ElementType>::operator[](uint32_t uIndex) {
-  assert(uIndex < m_pDimensions[0]);
-  return SubArray<noOfDims - 1, ElementType>(
-      &m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
+SubArray<noOfDims - 1, ElementType> Array<noOfDims, ElementType>::operator[](uint32_t uIndex) {
+    assert(uIndex < m_pDimensions[0]);
+    return SubArray<noOfDims - 1, ElementType>(&m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -77,11 +75,9 @@ Array<noOfDims, ElementType>::operator[](uint32_t uIndex) {
 /// \return The requested SubArray
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-const SubArray<noOfDims - 1, ElementType>
-Array<noOfDims, ElementType>::operator[](uint32_t uIndex) const {
-  assert(uIndex < m_pDimensions[0]);
-  return SubArray<noOfDims - 1, ElementType>(
-      &m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
+const SubArray<noOfDims - 1, ElementType> Array<noOfDims, ElementType>::operator[](uint32_t uIndex) const {
+    assert(uIndex < m_pDimensions[0]);
+    return SubArray<noOfDims - 1, ElementType>(&m_pElements[uIndex * m_pOffsets[0]], m_pDimensions + 1, m_pOffsets + 1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +86,7 @@ Array<noOfDims, ElementType>::operator[](uint32_t uIndex) const {
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
 uint32_t Array<noOfDims, ElementType>::getNoOfElements(void) const {
-  return m_uNoOfElements;
+    return m_uNoOfElements;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,8 +99,8 @@ uint32_t Array<noOfDims, ElementType>::getNoOfElements(void) const {
 /// \sa getNoOfElements()
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-ElementType *Array<noOfDims, ElementType>::getRawData(void) const {
-  return m_pElements;
+ElementType* Array<noOfDims, ElementType>::getRawData(void) const {
+    return m_pElements;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,27 +110,26 @@ ElementType *Array<noOfDims, ElementType>::getRawData(void) const {
 /// \sa ArraySizes
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-void Array<noOfDims, ElementType>::resize(
-    const uint32_t (&pDimensions)[noOfDims]) {
-  deallocate();
+void Array<noOfDims, ElementType>::resize(const uint32_t (&pDimensions)[noOfDims]) {
+    deallocate();
 
-  m_pDimensions = new uint32_t[noOfDims];
-  m_pOffsets = new uint32_t[noOfDims];
+    m_pDimensions = new uint32_t[noOfDims];
+    m_pOffsets = new uint32_t[noOfDims];
 
-  // Calculate all the information you need to use the array
-  m_uNoOfElements = 1;
-  for (uint32_t i = 0; i < noOfDims; i++) {
-    assert(pDimensions[i] != 0);
+    // Calculate all the information you need to use the array
+    m_uNoOfElements = 1;
+    for (uint32_t i = 0; i < noOfDims; i++) {
+        assert(pDimensions[i] != 0);
 
-    m_uNoOfElements *= pDimensions[i];
-    m_pDimensions[i] = pDimensions[i];
-    m_pOffsets[i] = 1;
-    for (uint32_t k = noOfDims - 1; k > i; k--) {
-      m_pOffsets[i] *= pDimensions[k];
+        m_uNoOfElements *= pDimensions[i];
+        m_pDimensions[i] = pDimensions[i];
+        m_pOffsets[i] = 1;
+        for (uint32_t k = noOfDims - 1; k > i; k--) {
+            m_pOffsets[i] *= pDimensions[k];
+        }
     }
-  }
-  // Allocate new elements, let exception propagate
-  m_pElements = new ElementType[m_uNoOfElements];
+    // Allocate new elements, let exception propagate
+    m_pElements = new ElementType[m_uNoOfElements];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,23 +139,23 @@ void Array<noOfDims, ElementType>::resize(
 /// \param rhs The array to swap this object with.
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
-void Array<noOfDims, ElementType>::swap(Array<noOfDims, ElementType> &rhs) {
-  // Implement this function without temporary 'Array'
-  // objects, as the destructors will free the memory...
-  uint32_t *m_pTempDimensions = m_pDimensions;
-  uint32_t *m_pTempOffsets = m_pOffsets;
-  uint32_t m_uTempNoOfElements = m_uNoOfElements;
-  ElementType *m_pTempElements = m_pElements;
+void Array<noOfDims, ElementType>::swap(Array<noOfDims, ElementType>& rhs) {
+    // Implement this function without temporary 'Array'
+    // objects, as the destructors will free the memory...
+    uint32_t* m_pTempDimensions = m_pDimensions;
+    uint32_t* m_pTempOffsets = m_pOffsets;
+    uint32_t m_uTempNoOfElements = m_uNoOfElements;
+    ElementType* m_pTempElements = m_pElements;
 
-  m_pDimensions = rhs.m_pDimensions;
-  m_pOffsets = rhs.m_pOffsets;
-  m_uNoOfElements = rhs.m_uNoOfElements;
-  m_pElements = rhs.m_pElements;
+    m_pDimensions = rhs.m_pDimensions;
+    m_pOffsets = rhs.m_pOffsets;
+    m_uNoOfElements = rhs.m_uNoOfElements;
+    m_pElements = rhs.m_pElements;
 
-  rhs.m_pDimensions = m_pTempDimensions;
-  rhs.m_pOffsets = m_pTempOffsets;
-  rhs.m_uNoOfElements = m_uTempNoOfElements;
-  rhs.m_pElements = m_pTempElements;
+    rhs.m_pDimensions = m_pTempDimensions;
+    rhs.m_pOffsets = m_pTempOffsets;
+    rhs.m_uNoOfElements = m_uTempNoOfElements;
+    rhs.m_pElements = m_pTempElements;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -168,36 +163,35 @@ void Array<noOfDims, ElementType>::swap(Array<noOfDims, ElementType> &rhs) {
 ////////////////////////////////////////////////////////////////////////////////
 template <uint32_t noOfDims, typename ElementType>
 uint32_t Array<noOfDims, ElementType>::getDimension(uint32_t uDimension) {
-  assert(uDimension < noOfDims);
-  return m_pDimensions[uDimension];
+    assert(uDimension < noOfDims);
+    return m_pDimensions[uDimension];
 }
 
 template <uint32_t noOfDims, typename ElementType>
-Array<noOfDims, ElementType>::Array(const Array<noOfDims, ElementType> &rhs)
-    : m_pElements(0), m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0) {
-  // Not implemented
-  assert(false);
+Array<noOfDims, ElementType>::Array(const Array<noOfDims, ElementType>& rhs) :
+    m_pElements(0), m_pDimensions(0), m_pOffsets(0), m_uNoOfElements(0) {
+    // Not implemented
+    assert(false);
 }
 
 template <uint32_t noOfDims, typename ElementType>
-Array<noOfDims, ElementType> &Array<noOfDims, ElementType>::operator=(
-    const Array<noOfDims, ElementType> &rhs) {
-  // Not implemented
-  assert(false);
+Array<noOfDims, ElementType>& Array<noOfDims, ElementType>::operator=(const Array<noOfDims, ElementType>& rhs) {
+    // Not implemented
+    assert(false);
 
-  return *this;
+    return *this;
 }
 
 template <uint32_t noOfDims, typename ElementType>
 void Array<noOfDims, ElementType>::deallocate(void) {
-  delete[] m_pDimensions;
-  m_pDimensions = 0;
-  delete[] m_pOffsets;
-  m_pOffsets = 0;
-  delete[] m_pElements;
-  m_pElements = 0;
+    delete[] m_pDimensions;
+    m_pDimensions = 0;
+    delete[] m_pOffsets;
+    m_pOffsets = 0;
+    delete[] m_pElements;
+    m_pElements = 0;
 
-  m_uNoOfElements = 0;
+    m_uNoOfElements = 0;
 }
 
 //****************************************************************************//
@@ -205,85 +199,85 @@ void Array<noOfDims, ElementType>::deallocate(void) {
 //****************************************************************************//
 
 template <typename ElementType>
-Array<1, ElementType>::Array() : m_pElements(0), m_pDimensions(0) {}
-
-template <typename ElementType>
-Array<1, ElementType>::Array(const uint32_t (&pDimensions)[1])
-    : m_pElements(0), m_pDimensions(0) {
-  resize(pDimensions);
-}
-
-template <typename ElementType> Array<1, ElementType>::~Array() {
-  deallocate();
+Array<1, ElementType>::Array() : m_pElements(0), m_pDimensions(0) {
 }
 
 template <typename ElementType>
-ElementType &Array<1, ElementType>::operator[](uint32_t uIndex) {
-  assert(uIndex < m_pDimensions[0]);
-  return m_pElements[uIndex];
+Array<1, ElementType>::Array(const uint32_t (&pDimensions)[1]) : m_pElements(0), m_pDimensions(0) {
+    resize(pDimensions);
 }
 
 template <typename ElementType>
-const ElementType &Array<1, ElementType>::operator[](uint32_t uIndex) const {
-  assert(uIndex < m_pDimensions[0]);
-  return m_pElements[uIndex];
+Array<1, ElementType>::~Array() {
+    deallocate();
+}
+
+template <typename ElementType>
+ElementType& Array<1, ElementType>::operator[](uint32_t uIndex) {
+    assert(uIndex < m_pDimensions[0]);
+    return m_pElements[uIndex];
+}
+
+template <typename ElementType>
+const ElementType& Array<1, ElementType>::operator[](uint32_t uIndex) const {
+    assert(uIndex < m_pDimensions[0]);
+    return m_pElements[uIndex];
 }
 
 template <typename ElementType>
 uint32_t Array<1, ElementType>::getNoOfElements(void) const {
-  return m_pDimensions[0];
+    return m_pDimensions[0];
 }
 
 template <typename ElementType>
-ElementType *Array<1, ElementType>::getRawData(void) const {
-  return m_pElements;
+ElementType* Array<1, ElementType>::getRawData(void) const {
+    return m_pElements;
 }
 
 template <typename ElementType>
 void Array<1, ElementType>::resize(const uint32_t (&pDimensions)[1]) {
-  deallocate();
+    deallocate();
 
-  m_pDimensions = new uint32_t[1];
-  m_pDimensions[0] = pDimensions[0];
+    m_pDimensions = new uint32_t[1];
+    m_pDimensions[0] = pDimensions[0];
 
-  // Allocate new elements, let exception propagate
-  m_pElements = new ElementType[m_pDimensions[0]];
+    // Allocate new elements, let exception propagate
+    m_pElements = new ElementType[m_pDimensions[0]];
 }
 
 template <typename ElementType>
-void Array<1, ElementType>::swap(Array<1, ElementType> &rhs) {
-  // Implement this function without temporary 'Array'
-  // objects, as the destructors will free the memory...
-  uint32_t *m_pTempDimensions = m_pDimensions;
-  ElementType *m_pTempElements = m_pElements;
+void Array<1, ElementType>::swap(Array<1, ElementType>& rhs) {
+    // Implement this function without temporary 'Array'
+    // objects, as the destructors will free the memory...
+    uint32_t* m_pTempDimensions = m_pDimensions;
+    ElementType* m_pTempElements = m_pElements;
 
-  m_pDimensions = rhs.m_pDimensions;
-  m_pElements = rhs.m_pElements;
+    m_pDimensions = rhs.m_pDimensions;
+    m_pElements = rhs.m_pElements;
 
-  rhs.m_pDimensions = m_pTempDimensions;
-  rhs.m_pElements = m_pTempElements;
+    rhs.m_pDimensions = m_pTempDimensions;
+    rhs.m_pElements = m_pTempElements;
 }
 
 template <typename ElementType>
-Array<1, ElementType>::Array(const Array<1, ElementType> &rhs)
-    : m_pElements(0), m_pDimensions(0) {
-  // Not implemented
-  assert(false);
+Array<1, ElementType>::Array(const Array<1, ElementType>& rhs) : m_pElements(0), m_pDimensions(0) {
+    // Not implemented
+    assert(false);
 }
 
 template <typename ElementType>
-Array<1, ElementType> &
-Array<1, ElementType>::operator=(const Array<1, ElementType> &rhs) {
-  // Not implemented
-  assert(false);
+Array<1, ElementType>& Array<1, ElementType>::operator=(const Array<1, ElementType>& rhs) {
+    // Not implemented
+    assert(false);
 
-  return *this;
+    return *this;
 }
 
-template <typename ElementType> void Array<1, ElementType>::deallocate(void) {
-  delete[] m_pDimensions;
-  m_pDimensions = 0;
-  delete[] m_pElements;
-  m_pElements = 0;
+template <typename ElementType>
+void Array<1, ElementType>::deallocate(void) {
+    delete[] m_pDimensions;
+    m_pDimensions = 0;
+    delete[] m_pElements;
+    m_pElements = 0;
 }
-} // namespace PolyVox
+}  // namespace PolyVox

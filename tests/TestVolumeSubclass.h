@@ -27,10 +27,10 @@ freely, subject to the following restrictions:
 #include <QObject>
 
 class TestVolumeSubclass : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
 private slots:
-  void testExtractSurface();
+    void testExtractSurface();
 };
 
 #endif

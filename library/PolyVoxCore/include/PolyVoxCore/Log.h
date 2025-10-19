@@ -36,38 +36,39 @@ namespace PolyVox {
 ////////////////////////////////////////////////////////////////////////////////
 /// Log levels for filtering logging events
 ////////////////////////////////////////////////////////////////////////////////
-enum LogSeverity {
-  LS_DEBUG, ///< Only displayed if it is a debug build
-  LS_INFO,
-  LS_WARN,
-  LS_ERROR
+enum LogSeverity
+{
+    LS_DEBUG,  ///< Only displayed if it is a debug build
+    LS_INFO,
+    LS_WARN,
+    LS_ERROR
 };
 
 POLYVOX_API extern void (*logHandler)(std::string, int severity);
-} // namespace PolyVox
+}  // namespace PolyVox
 
 // Debug severity messages are only used if we are a debug build
 #ifdef _DEBUG
-#define POLYVOX_LOG_DEBUG(message)                                             \
-  if (logHandler) {                                                            \
-    logHandler(message, LS_DEBUG);                                             \
-  }
+#define POLYVOX_LOG_DEBUG(message)     \
+    if (logHandler) {                  \
+        logHandler(message, LS_DEBUG); \
+    }
 #else
 #define POLYVOX_LOG_DEBUG(message)
 #endif
 
 // Other severity levels work in both debug and release
-#define POLYVOX_LOG_INFO(message)                                              \
-  if (logHandler) {                                                            \
-    logHandler(message, LS_INFO);                                              \
-  }
-#define POLYVOX_LOG_WARN(message)                                              \
-  if (logHandler) {                                                            \
-    logHandler(message, LS_WARN);                                              \
-  }
-#define POLYVOX_LOG_ERROR(message)                                             \
-  if (logHandler) {                                                            \
-    logHandler(message, LS_ERROR);                                             \
-  }
+#define POLYVOX_LOG_INFO(message)     \
+    if (logHandler) {                 \
+        logHandler(message, LS_INFO); \
+    }
+#define POLYVOX_LOG_WARN(message)     \
+    if (logHandler) {                 \
+        logHandler(message, LS_WARN); \
+    }
+#define POLYVOX_LOG_ERROR(message)     \
+    if (logHandler) {                  \
+        logHandler(message, LS_ERROR); \
+    }
 
 #endif

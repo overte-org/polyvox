@@ -29,6 +29,6 @@ freely, subject to the following restrictions:
 namespace PolyVox {
 extern const POLYVOX_API int edgeTable[256];
 extern const POLYVOX_API int triTable[256][16];
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #endif

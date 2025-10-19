@@ -26,7 +26,7 @@ freely, subject to the following restrictions:
 
 #include "Impl/TypeDef.h"
 
-#include "PolyVoxCore/DefaultIsQuadNeeded.h" //we'll specialise this function for this voxel type
+#include "PolyVoxCore/DefaultIsQuadNeeded.h"  //we'll specialise this function for this voxel type
 
 #include <cassert>
 
@@ -41,45 +41,44 @@ namespace PolyVox {
 // int32_t template parameter is a dummy, required as the compiler expects to be
 // able to declare an instance of VoxelType::DensityType without knowing that
 // VoxelType doesn't actually have a density.
-template <typename Type> class Material {
+template <typename Type>
+class Material {
 public:
-  Material() : m_uMaterial(0) {}
-  Material(Type uMaterial) : m_uMaterial(uMaterial) {}
+    Material() : m_uMaterial(0) {}
+    Material(Type uMaterial) : m_uMaterial(uMaterial) {}
 
-  bool operator==(const Material &rhs) const {
-    return (m_uMaterial == rhs.m_uMaterial);
-  };
+    bool operator==(const Material& rhs) const { return (m_uMaterial == rhs.m_uMaterial); };
 
-  bool operator!=(const Material &rhs) const { return !(*this == rhs); }
+    bool operator!=(const Material& rhs) const { return !(*this == rhs); }
 
-  /// \return The current material value of the voxel
-  Type getMaterial() const { return m_uMaterial; }
-  /**
+    /// \return The current material value of the voxel
+    Type getMaterial() const { return m_uMaterial; }
+    /**
    * Set the material value of the voxel
    *
    * \param uMaterial The material to set to
    */
-  void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
+    void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
 
 private:
-  Type m_uMaterial;
+    Type m_uMaterial;
 };
 
 typedef Material<uint8_t> Material8;
 typedef Material<uint16_t> Material16;
 
-template <typename Type> class DefaultIsQuadNeeded<Material<Type>> {
+template <typename Type>
+class DefaultIsQuadNeeded<Material<Type>> {
 public:
-  bool operator()(Material<Type> back, Material<Type> front,
-                  uint32_t &materialToUse) {
-    if ((back.getMaterial() > 0) && (front.getMaterial() == 0)) {
-      materialToUse = static_cast<uint32_t>(back.getMaterial());
-      return true;
-    } else {
-      return false;
+    bool operator()(Material<Type> back, Material<Type> front, uint32_t& materialToUse) {
+        if ((back.getMaterial() > 0) && (front.getMaterial() == 0)) {
+            materialToUse = static_cast<uint32_t>(back.getMaterial());
+            return true;
+        } else {
+            return false;
+        }
     }
-  }
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
-#endif //__PolyVox_Material_H__
+#endif  //__PolyVox_Material_H__

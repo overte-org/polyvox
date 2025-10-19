@@ -35,7 +35,7 @@ namespace PolyVox {
 /// \deprecated
 class POLYVOX_DEPRECATED VolumeSerializationProgressListener {
 public:
-  virtual void onProgressUpdated(float fProgress) = 0;
+    virtual void onProgressUpdated(float fProgress) = 0;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,48 +43,46 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED polyvox_shared_ptr<VolumeType>
-loadVolumeRaw(std::istream &stream,
-              VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED polyvox_shared_ptr<VolumeType> loadVolumeRaw(std::istream& stream,
+                                                                VolumeSerializationProgressListener* progressListener = 0);
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED void
-saveVolumeRaw(std::ostream &stream, VolumeType &volume,
-              VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED void saveVolumeRaw(std::ostream& stream,
+                                      VolumeType& volume,
+                                      VolumeSerializationProgressListener* progressListener = 0);
 
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED polyvox_shared_ptr<VolumeType>
-loadVolumeRle(std::istream &stream,
-              VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED polyvox_shared_ptr<VolumeType> loadVolumeRle(std::istream& stream,
+                                                                VolumeSerializationProgressListener* progressListener = 0);
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED void
-saveVolumeRle(std::ostream &stream, VolumeType &volume,
-              VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED void saveVolumeRle(std::ostream& stream,
+                                      VolumeType& volume,
+                                      VolumeSerializationProgressListener* progressListener = 0);
 
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED bool
-loadVolume(std::istream &stream, VolumeType &volume,
-           VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED bool loadVolume(std::istream& stream,
+                                   VolumeType& volume,
+                                   VolumeSerializationProgressListener* progressListener = 0);
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED bool
-saveVolume(std::ostream &stream, VolumeType &volume,
-           VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED bool saveVolume(std::ostream& stream,
+                                   VolumeType& volume,
+                                   VolumeSerializationProgressListener* progressListener = 0);
 
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED bool
-loadVersion0(std::istream &stream, VolumeType &volume,
-             VolumeSerializationProgressListener *progressListener = 0);
+POLYVOX_DEPRECATED bool loadVersion0(std::istream& stream,
+                                     VolumeType& volume,
+                                     VolumeSerializationProgressListener* progressListener = 0);
 /// \deprecated
 template <typename VolumeType>
-POLYVOX_DEPRECATED bool
-saveVersion0(std::ostream &stream, VolumeType &volume,
-             VolumeSerializationProgressListener *progressListener = 0);
-} // namespace PolyVox
+POLYVOX_DEPRECATED bool saveVersion0(std::ostream& stream,
+                                     VolumeType& volume,
+                                     VolumeSerializationProgressListener* progressListener = 0);
+}  // namespace PolyVox
 
 #include "PolyVoxUtil/Serialization.inl"
 
