@@ -66,115 +66,110 @@ namespace PolyVox {
 /// 'PositionMaterialNormal' type instead of the 'PositionMaterial' type.
 ///
 /// \deprecated
-template <typename VertexType> class MeshDecimator {
-  // Used to keep track of when a vertex is
-  // on one or more faces of  the region
-  enum RegionFaceFlags {
-    RFF_ON_REGION_FACE_NEG_X,
-    RFF_ON_REGION_FACE_POS_X,
-    RFF_ON_REGION_FACE_NEG_Y,
-    RFF_ON_REGION_FACE_POS_Y,
-    RFF_ON_REGION_FACE_NEG_Z,
-    RFF_ON_REGION_FACE_POS_Z,
-    RFF_NO_OF_REGION_FACE_FLAGS
-  };
+template <typename VertexType>
+class MeshDecimator {
+    // Used to keep track of when a vertex is
+    // on one or more faces of  the region
+    enum RegionFaceFlags
+    {
+        RFF_ON_REGION_FACE_NEG_X,
+        RFF_ON_REGION_FACE_POS_X,
+        RFF_ON_REGION_FACE_NEG_Y,
+        RFF_ON_REGION_FACE_POS_Y,
+        RFF_ON_REGION_FACE_NEG_Z,
+        RFF_ON_REGION_FACE_POS_Z,
+        RFF_NO_OF_REGION_FACE_FLAGS
+    };
 
-  // Data about the initial mesh - this
-  // will be fill in once at the start
-  struct InitialVertexMetadata {
-    Vector3DFloat normal;
-    bool isOnMaterialEdge;
-    std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> isOnRegionFace;
-  };
+    // Data about the initial mesh - this
+    // will be fill in once at the start
+    struct InitialVertexMetadata {
+        Vector3DFloat normal;
+        bool isOnMaterialEdge;
+        std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> isOnRegionFace;
+    };
 
-  // Representing a triangle for decimation purposes.
-  struct Triangle {
-    uint32_t v0;
-    uint32_t v1;
-    uint32_t v2;
-    Vector3DFloat normal;
-  };
+    // Representing a triangle for decimation purposes.
+    struct Triangle {
+        uint32_t v0;
+        uint32_t v1;
+        uint32_t v2;
+        Vector3DFloat normal;
+    };
 
-  struct IntVertex {
-    int32_t x;
-    int32_t y;
-    int32_t z;
-    uint32_t index;
+    struct IntVertex {
+        int32_t x;
+        int32_t y;
+        int32_t z;
+        uint32_t index;
 
-    IntVertex(int32_t xVal, int32_t yVal, int32_t zVal, uint32_t indexVal)
-        : x(xVal), y(yVal), z(zVal), index(indexVal) {}
+        IntVertex(int32_t xVal, int32_t yVal, int32_t zVal, uint32_t indexVal) : x(xVal), y(yVal), z(zVal), index(indexVal) {}
 
-    bool operator==(const IntVertex &rhs) const {
-      return (x == rhs.x) && (y == rhs.y) && (z == rhs.z);
-    }
+        bool operator==(const IntVertex& rhs) const { return (x == rhs.x) && (y == rhs.y) && (z == rhs.z); }
 
-    bool operator<(const IntVertex &rhs) const {
-      if (z < rhs.z)
-        return true;
-      if (rhs.z < z)
-        return false;
+        bool operator<(const IntVertex& rhs) const {
+            if (z < rhs.z)
+                return true;
+            if (rhs.z < z)
+                return false;
 
-      if (y < rhs.y)
-        return true;
-      if (rhs.y < y)
-        return false;
+            if (y < rhs.y)
+                return true;
+            if (rhs.y < y)
+                return false;
 
-      if (x < rhs.x)
-        return true;
-      if (rhs.x < x)
-        return false;
+            if (x < rhs.x)
+                return true;
+            if (rhs.x < x)
+                return false;
 
-      return false;
-    }
-  };
+            return false;
+        }
+    };
 
 public:
-  /// Constructor
-  POLYVOX_DEPRECATED MeshDecimator(const SurfaceMesh<VertexType> *pInputMesh,
-                                   SurfaceMesh<VertexType> *pOutputMesh,
-                                   float fEdgeCollapseThreshold = 0.95f);
+    /// Constructor
+    POLYVOX_DEPRECATED MeshDecimator(const SurfaceMesh<VertexType>* pInputMesh,
+                                     SurfaceMesh<VertexType>* pOutputMesh,
+                                     float fEdgeCollapseThreshold = 0.95f);
 
-  /// Performs the decimation.
-  POLYVOX_DEPRECATED void execute();
+    /// Performs the decimation.
+    POLYVOX_DEPRECATED void execute();
 
 private:
-  void fillInitialVertexMetadata(
-      std::vector<InitialVertexMetadata> &vecInitialVertexMetadata);
+    void fillInitialVertexMetadata(std::vector<InitialVertexMetadata>& vecInitialVertexMetadata);
 
-  void buildConnectivityData(void);
+    void buildConnectivityData(void);
 
-  bool attemptEdgeCollapse(uint32_t uSrc, uint32_t uDst);
+    bool attemptEdgeCollapse(uint32_t uSrc, uint32_t uDst);
 
-  const SurfaceMesh<VertexType> *m_pInputMesh;
-  SurfaceMesh<VertexType> *m_pOutputMesh;
+    const SurfaceMesh<VertexType>* m_pInputMesh;
+    SurfaceMesh<VertexType>* m_pOutputMesh;
 
-  uint32_t performDecimationPass(float m_fMinDotProductForCollapse);
-  bool isSubset(std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> a,
-                std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> b);
+    uint32_t performDecimationPass(float m_fMinDotProductForCollapse);
+    bool isSubset(std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> a, std::bitset<RFF_NO_OF_REGION_FACE_FLAGS> b);
 
-  bool canCollapseEdge(uint32_t uSrc, uint32_t uDst);
-  bool canCollapseNormalEdge(uint32_t uSrc, uint32_t uDst);
-  bool canCollapseRegionEdge(uint32_t uSrc, uint32_t uDst);
-  bool canCollapseMaterialEdge(uint32_t uSrc, uint32_t uDst);
-  bool collapseChangesFaceNormals(uint32_t uSrc, uint32_t uDst,
-                                  float fThreshold);
+    bool canCollapseEdge(uint32_t uSrc, uint32_t uDst);
+    bool canCollapseNormalEdge(uint32_t uSrc, uint32_t uDst);
+    bool canCollapseRegionEdge(uint32_t uSrc, uint32_t uDst);
+    bool canCollapseMaterialEdge(uint32_t uSrc, uint32_t uDst);
+    bool collapseChangesFaceNormals(uint32_t uSrc, uint32_t uDst, float fThreshold);
 
-  // Data structures used during decimation
+    // Data structures used during decimation
 
-  std::vector<bool> vertexLocked;
-  std::vector<uint32_t> vertexMapper;
+    std::vector<bool> vertexLocked;
+    std::vector<uint32_t> vertexMapper;
 
-  std::vector<Triangle> m_vecTriangles;
-  std::vector<std::vector<uint32_t>>
-      trianglesUsingVertex; // Should probably use vector of vectors, and resise
-                            // in advance.
+    std::vector<Triangle> m_vecTriangles;
+    std::vector<std::vector<uint32_t>> trianglesUsingVertex;  // Should probably use vector of vectors, and resise
+                                                              // in advance.
 
-  std::vector<InitialVertexMetadata> m_vecInitialVertexMetadata;
+    std::vector<InitialVertexMetadata> m_vecInitialVertexMetadata;
 
-  float m_fMinDotProductForCollapse;
+    float m_fMinDotProductForCollapse;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/MeshDecimator.inl"
 
-#endif //__PolyVox_MeshDecimator_H__
+#endif  //__PolyVox_MeshDecimator_H__

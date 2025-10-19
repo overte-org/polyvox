@@ -26,7 +26,7 @@ freely, subject to the following restrictions:
 
 #include "Impl/SubArray.h"
 
-#include "PolyVoxCore/ArraySizes.h" //Not strictly required, but convienient
+#include "PolyVoxCore/ArraySizes.h"  //Not strictly required, but convienient
 
 namespace PolyVox {
 /// Provides an efficient implementation of a multidimensional array.
@@ -73,79 +73,81 @@ namespace PolyVox {
 ///  functions such as std::swap, while a shallow copy introduces confusion over
 ///  memory ownership.
 ////////////////////////////////////////////////////////////////////////////////
-template <uint32_t noOfDims, typename ElementType> class Array {
+template <uint32_t noOfDims, typename ElementType>
+class Array {
 public:
-  /// Constructor
-  Array();
-  /// Constructor
-  Array(const uint32_t (&pDimensions)[noOfDims]);
-  /// Destructor
-  ~Array();
+    /// Constructor
+    Array();
+    /// Constructor
+    Array(const uint32_t (&pDimensions)[noOfDims]);
+    /// Destructor
+    ~Array();
 
-  /// Subarray access
-  SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex);
-  /// Subarray access
-  const SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex) const;
+    /// Subarray access
+    SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex);
+    /// Subarray access
+    const SubArray<noOfDims - 1, ElementType> operator[](uint32_t uIndex) const;
 
-  /// Gets the total number of elements in this array
-  uint32_t getNoOfElements(void) const;
-  /// Gets a pointer to the first element of the array
-  ElementType *getRawData(void) const;
+    /// Gets the total number of elements in this array
+    uint32_t getNoOfElements(void) const;
+    /// Gets a pointer to the first element of the array
+    ElementType* getRawData(void) const;
 
-  /// Resize the array to the specified dimensions
-  void resize(const uint32_t (&pDimensions)[noOfDims]);
-  /// Swaps the contents of this array with the one specified
-  void swap(Array<noOfDims, ElementType> &rhs);
-  /// Get the size of the Array along the specified dimension
-  uint32_t getDimension(uint32_t uDimension);
+    /// Resize the array to the specified dimensions
+    void resize(const uint32_t (&pDimensions)[noOfDims]);
+    /// Swaps the contents of this array with the one specified
+    void swap(Array<noOfDims, ElementType>& rhs);
+    /// Get the size of the Array along the specified dimension
+    uint32_t getDimension(uint32_t uDimension);
 
 private:
-  Array(const Array<noOfDims, ElementType> &rhs);
+    Array(const Array<noOfDims, ElementType>& rhs);
 
-  Array<noOfDims, ElementType> &
-  operator=(const Array<noOfDims, ElementType> &rhs);
+    Array<noOfDims, ElementType>& operator=(const Array<noOfDims, ElementType>& rhs);
 
-  void deallocate(void);
+    void deallocate(void);
 
-  uint32_t *m_pDimensions;
-  uint32_t *m_pOffsets;
-  uint32_t m_uNoOfElements;
-  ElementType *m_pElements;
+    uint32_t* m_pDimensions;
+    uint32_t* m_pOffsets;
+    uint32_t m_uNoOfElements;
+    ElementType* m_pElements;
 };
 
-template <typename ElementType> class Array<1, ElementType> {
+template <typename ElementType>
+class Array<1, ElementType> {
 public:
-  Array();
+    Array();
 
-  Array(const uint32_t (&pDimensions)[1]);
+    Array(const uint32_t (&pDimensions)[1]);
 
-  ~Array();
+    ~Array();
 
-  ElementType &operator[](uint32_t uIndex);
+    ElementType& operator[](uint32_t uIndex);
 
-  const ElementType &operator[](uint32_t uIndex) const;
+    const ElementType& operator[](uint32_t uIndex) const;
 
-  uint32_t getNoOfElements(void) const;
+    uint32_t getNoOfElements(void) const;
 
-  ElementType *getRawData(void) const;
+    ElementType* getRawData(void) const;
 
-  void resize(const uint32_t (&pDimensions)[1]);
+    void resize(const uint32_t (&pDimensions)[1]);
 
-  void swap(Array<1, ElementType> &rhs);
+    void swap(Array<1, ElementType>& rhs);
 
 private:
-  Array(const Array<1, ElementType> &rhs);
+    Array(const Array<1, ElementType>& rhs);
 
-  Array<1, ElementType> &operator=(const Array<1, ElementType> &rhs);
+    Array<1, ElementType>& operator=(const Array<1, ElementType>& rhs);
 
-  void deallocate(void);
+    void deallocate(void);
 
-  uint32_t *m_pDimensions;
-  ElementType *m_pElements;
+    uint32_t* m_pDimensions;
+    ElementType* m_pElements;
 };
 
-template <typename ElementType> class Array<0, ElementType> {
-  // Zero dimensional array is meaningless.
+template <typename ElementType>
+class Array<0, ElementType> {
+    // Zero dimensional array is meaningless.
 };
 
 // Some handy typedefs
@@ -199,7 +201,7 @@ typedef Array<3, uint16_t> Array3DUint16;
 typedef Array<3, int32_t> Array3DInt32;
 /// A 3D Array of unsigned 32-bit values.
 typedef Array<3, uint32_t> Array3DUint32;
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/Array.inl"
 

@@ -30,25 +30,24 @@ namespace PolyVox {
 template <typename SrcVolumeType, typename DstVolumeType>
 class VolumeResampler {
 public:
-  VolumeResampler(SrcVolumeType *pVolSrc, Region regSrc, DstVolumeType *pVolDst,
-                  Region regDst);
+    VolumeResampler(SrcVolumeType* pVolSrc, Region regSrc, DstVolumeType* pVolDst, Region regDst);
 
-  void execute();
+    void execute();
 
 private:
-  void resampleSameSize();
-  void resampleArbitrary();
+    void resampleSameSize();
+    void resampleArbitrary();
 
-  // Source data
-  SrcVolumeType *m_pVolSrc;
-  Region m_regSrc;
+    // Source data
+    SrcVolumeType* m_pVolSrc;
+    Region m_regSrc;
 
-  // Destination data
-  DstVolumeType *m_pVolDst;
-  Region m_regDst;
+    // Destination data
+    DstVolumeType* m_pVolDst;
+    Region m_regDst;
 };
 
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/VolumeResampler.inl"
 

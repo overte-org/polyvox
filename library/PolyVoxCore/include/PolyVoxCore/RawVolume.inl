@@ -28,12 +28,11 @@ namespace PolyVox {
 /// \param regValid Specifies the minimum and maximum valid voxel positions.
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-RawVolume<VoxelType>::RawVolume(const Region &regValid)
-    : BaseVolume<VoxelType>(regValid) {
-  setBorderValue(VoxelType());
+RawVolume<VoxelType>::RawVolume(const Region& regValid) : BaseVolume<VoxelType>(regValid) {
+    setBorderValue(VoxelType());
 
-  // Create a volume of the right size.
-  initialise(regValid);
+    // Create a volume of the right size.
+    initialise(regValid);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,16 +45,17 @@ RawVolume<VoxelType>::RawVolume(const Region &regValid)
 /// \sa VolumeResampler
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-RawVolume<VoxelType>::RawVolume(const RawVolume<VoxelType> & /*rhs*/) {
-  assert(false); // See function comment above.
+RawVolume<VoxelType>::RawVolume(const RawVolume<VoxelType>& /*rhs*/) {
+    assert(false);  // See function comment above.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Destroys the volume
 ////////////////////////////////////////////////////////////////////////////////
-template <typename VoxelType> RawVolume<VoxelType>::~RawVolume() {
-  delete[] m_pData;
-  m_pData = 0;
+template <typename VoxelType>
+RawVolume<VoxelType>::~RawVolume() {
+    delete[] m_pData;
+    m_pData = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -68,9 +68,8 @@ template <typename VoxelType> RawVolume<VoxelType>::~RawVolume() {
 /// \sa VolumeResampler
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-RawVolume<VoxelType> &
-RawVolume<VoxelType>::operator=(const RawVolume<VoxelType> & /*rhs*/) {
-  assert(false); // See function comment above.
+RawVolume<VoxelType>& RawVolume<VoxelType>::operator=(const RawVolume<VoxelType>& /*rhs*/) {
+    assert(false);  // See function comment above.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +79,7 @@ RawVolume<VoxelType>::operator=(const RawVolume<VoxelType> & /*rhs*/) {
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
 VoxelType RawVolume<VoxelType>::getBorderValue(void) const {
-  return m_tBorderValue;
+    return m_tBorderValue;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,21 +89,17 @@ VoxelType RawVolume<VoxelType>::getBorderValue(void) const {
 /// \return The voxel value
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-VoxelType RawVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos,
-                                           int32_t uZPos) const {
-  if (this->m_regValidRegion.containsPoint(
-          Vector3DInt32(uXPos, uYPos, uZPos))) {
-    const Vector3DInt32 &v3dLowerCorner =
-        this->m_regValidRegion.getLowerCorner();
-    int32_t iLocalXPos = uXPos - v3dLowerCorner.getX();
-    int32_t iLocalYPos = uYPos - v3dLowerCorner.getY();
-    int32_t iLocalZPos = uZPos - v3dLowerCorner.getZ();
+VoxelType RawVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const {
+    if (this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos))) {
+        const Vector3DInt32& v3dLowerCorner = this->m_regValidRegion.getLowerCorner();
+        int32_t iLocalXPos = uXPos - v3dLowerCorner.getX();
+        int32_t iLocalYPos = uYPos - v3dLowerCorner.getY();
+        int32_t iLocalZPos = uZPos - v3dLowerCorner.getZ();
 
-    return m_pData[iLocalXPos + iLocalYPos * this->getWidth() +
-                   iLocalZPos * this->getWidth() * this->getHeight()];
-  } else {
-    return this->getBorderValue();
-  }
+        return m_pData[iLocalXPos + iLocalYPos * this->getWidth() + iLocalZPos * this->getWidth() * this->getHeight()];
+    } else {
+        return this->getBorderValue();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -112,16 +107,16 @@ VoxelType RawVolume<VoxelType>::getVoxelAt(int32_t uXPos, int32_t uYPos,
 /// \return The voxel value
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-VoxelType RawVolume<VoxelType>::getVoxelAt(const Vector3DInt32 &v3dPos) const {
-  return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
+VoxelType RawVolume<VoxelType>::getVoxelAt(const Vector3DInt32& v3dPos) const {
+    return getVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// \param tBorder The value to use for voxels outside the volume.
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-void RawVolume<VoxelType>::setBorderValue(const VoxelType &tBorder) {
-  m_tBorderValue = tBorder;
+void RawVolume<VoxelType>::setBorderValue(const VoxelType& tBorder) {
+    m_tBorderValue = tBorder;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -132,24 +127,20 @@ void RawVolume<VoxelType>::setBorderValue(const VoxelType &tBorder) {
 /// \return whether the requested position is inside the volume
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-bool RawVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos,
-                                      int32_t uZPos, VoxelType tValue) {
-  if (this->m_regValidRegion.containsPoint(
-          Vector3DInt32(uXPos, uYPos, uZPos))) {
-    const Vector3DInt32 &v3dLowerCorner =
-        this->m_regValidRegion.getLowerCorner();
-    int32_t iLocalXPos = uXPos - v3dLowerCorner.getX();
-    int32_t iLocalYPos = uYPos - v3dLowerCorner.getY();
-    int32_t iLocalZPos = uZPos - v3dLowerCorner.getZ();
+bool RawVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue) {
+    if (this->m_regValidRegion.containsPoint(Vector3DInt32(uXPos, uYPos, uZPos))) {
+        const Vector3DInt32& v3dLowerCorner = this->m_regValidRegion.getLowerCorner();
+        int32_t iLocalXPos = uXPos - v3dLowerCorner.getX();
+        int32_t iLocalYPos = uYPos - v3dLowerCorner.getY();
+        int32_t iLocalZPos = uZPos - v3dLowerCorner.getZ();
 
-    m_pData[iLocalXPos + iLocalYPos * this->getWidth() +
-            iLocalZPos * this->getWidth() * this->getHeight()] = tValue;
+        m_pData[iLocalXPos + iLocalYPos * this->getWidth() + iLocalZPos * this->getWidth() * this->getHeight()] = tValue;
 
-    // Return true to indicate that we modified a voxel.
-    return true;
-  } else {
-    return false;
-  }
+        // Return true to indicate that we modified a voxel.
+        return true;
+    } else {
+        return false;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -158,36 +149,30 @@ bool RawVolume<VoxelType>::setVoxelAt(int32_t uXPos, int32_t uYPos,
 /// \return whether the requested position is inside the volume
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-bool RawVolume<VoxelType>::setVoxelAt(const Vector3DInt32 &v3dPos,
-                                      VoxelType tValue) {
-  return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
+bool RawVolume<VoxelType>::setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue) {
+    return setVoxelAt(v3dPos.getX(), v3dPos.getY(), v3dPos.getZ(), tValue);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// This function should probably be made internal...
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
-void RawVolume<VoxelType>::initialise(const Region &regValidRegion) {
-  this->m_regValidRegion = regValidRegion;
+void RawVolume<VoxelType>::initialise(const Region& regValidRegion) {
+    this->m_regValidRegion = regValidRegion;
 
-  // Ensure dimensions of the specified Region are valid
-  assert(this->getWidth() > 0);
-  assert(this->getHeight() > 0);
-  assert(this->getDepth() > 0);
+    // Ensure dimensions of the specified Region are valid
+    assert(this->getWidth() > 0);
+    assert(this->getHeight() > 0);
+    assert(this->getDepth() > 0);
 
-  // Create the data
-  m_pData =
-      new VoxelType[this->getWidth() * this->getHeight() * this->getDepth()];
+    // Create the data
+    m_pData = new VoxelType[this->getWidth() * this->getHeight() * this->getDepth()];
 
-  // Other properties we might find useful later
-  this->m_uLongestSideLength = (std::max)(
-      (std::max)(this->getWidth(), this->getHeight()), this->getDepth());
-  this->m_uShortestSideLength = (std::min)(
-      (std::min)(this->getWidth(), this->getHeight()), this->getDepth());
-  this->m_fDiagonalLength =
-      sqrtf(static_cast<float>(this->getWidth() * this->getWidth() +
-                               this->getHeight() * this->getHeight() +
-                               this->getDepth() * this->getDepth()));
+    // Other properties we might find useful later
+    this->m_uLongestSideLength = (std::max)((std::max)(this->getWidth(), this->getHeight()), this->getDepth());
+    this->m_uShortestSideLength = (std::min)((std::min)(this->getWidth(), this->getHeight()), this->getDepth());
+    this->m_fDiagonalLength = sqrtf(static_cast<float>(
+        this->getWidth() * this->getWidth() + this->getHeight() * this->getHeight() + this->getDepth() * this->getDepth()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,8 +180,7 @@ void RawVolume<VoxelType>::initialise(const Region &regValidRegion) {
 ////////////////////////////////////////////////////////////////////////////////
 template <typename VoxelType>
 uint32_t RawVolume<VoxelType>::calculateSizeInBytes(void) {
-  return this->getWidth() * this->getHeight() * this->getDepth() *
-         sizeof(VoxelType);
+    return this->getWidth() * this->getHeight() * this->getDepth() * sizeof(VoxelType);
 }
 
-} // namespace PolyVox
+}  // namespace PolyVox

@@ -29,15 +29,13 @@ freely, subject to the following restrictions:
 #include "glew/glew.h"
 
 struct OpenGLSurfaceMesh {
-  GLulong noOfIndices;
-  GLuint indexBuffer;
-  GLuint vertexBuffer;
-  const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> *sourceMesh;
+    GLulong noOfIndices;
+    GLuint indexBuffer;
+    GLuint vertexBuffer;
+    const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>* sourceMesh;
 };
 
-OpenGLSurfaceMesh BuildOpenGLSurfaceMesh(
-    const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> &mesh);
-void renderRegionVertexBufferObject(const OpenGLSurfaceMesh &openGLSurfaceMesh,
-                                    unsigned int uLodLevel);
+OpenGLSurfaceMesh BuildOpenGLSurfaceMesh(const PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal>& mesh);
+void renderRegionVertexBufferObject(const OpenGLSurfaceMesh& openGLSurfaceMesh, unsigned int uLodLevel);
 
-#endif //__OpenGLExample_OpenGLVertexBufferObjectSupport_H__
+#endif  //__OpenGLExample_OpenGLVertexBufferObjectSupport_H__

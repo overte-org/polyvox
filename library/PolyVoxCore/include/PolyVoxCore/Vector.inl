@@ -30,8 +30,8 @@ Creates a Vector object and initialises it with given values.
 */
 template <uint32_t Size, typename Type>
 Vector<Size, Type>::Vector(Type x, Type y) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
 }
 
 /**
@@ -42,9 +42,9 @@ Creates a Vector3D object and initialises it with given values.
 */
 template <uint32_t Size, typename Type>
 Vector<Size, Type>::Vector(Type x, Type y, Type z) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
-  m_tElements[2] = z;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
+    m_tElements[2] = z;
 }
 
 /**
@@ -56,24 +56,26 @@ Creates a Vector3D object and initialises it with given values.
 */
 template <uint32_t Size, typename Type>
 Vector<Size, Type>::Vector(Type x, Type y, Type z, Type w) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
-  m_tElements[2] = z;
-  m_tElements[3] = w;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
+    m_tElements[2] = z;
+    m_tElements[3] = w;
 }
 
 /**
 Creates a Vector object but does not initialise it.
 */
-template <uint32_t Size, typename Type> Vector<Size, Type>::Vector(void) {}
+template <uint32_t Size, typename Type>
+Vector<Size, Type>::Vector(void) {
+}
 
 /**
 Copy constructor builds object based on object passed as parameter.
 \param vector A reference to the Vector to be copied.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type>::Vector(const Vector<Size, Type> &vector) {
-  std::memcpy(m_tElements, vector.m_tElements, sizeof(Type) * Size);
+Vector<Size, Type>::Vector(const Vector<Size, Type>& vector) {
+    std::memcpy(m_tElements, vector.m_tElements, sizeof(Type) * Size);
 }
 
 /**
@@ -87,16 +89,18 @@ Vector3DFloat v3dFloat = static_cast<Vector3DFloat>(v3dDouble); //Casting
 */
 template <uint32_t Size, typename Type>
 template <typename CastType>
-Vector<Size, Type>::Vector(const Vector<Size, CastType> &vector) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] = static_cast<Type>(vector.getElement(ct));
-  }
+Vector<Size, Type>::Vector(const Vector<Size, CastType>& vector) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] = static_cast<Type>(vector.getElement(ct));
+    }
 }
 
 /**
 Destroys the Vector.
 */
-template <uint32_t Size, typename Type> Vector<Size, Type>::~Vector(void) {}
+template <uint32_t Size, typename Type>
+Vector<Size, Type>::~Vector(void) {
+}
 
 /**
 Assignment operator copies each element of first Vector to the second.
@@ -104,13 +108,12 @@ Assignment operator copies each element of first Vector to the second.
 \return A reference to the result to allow chaining.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> &
-Vector<Size, Type>::operator=(const Vector<Size, Type> &rhs) {
-  if (this == &rhs) {
+Vector<Size, Type>& Vector<Size, Type>::operator=(const Vector<Size, Type>& rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    std::memcpy(m_tElements, rhs.m_tElements, sizeof(Type) * Size);
     return *this;
-  }
-  std::memcpy(m_tElements, rhs.m_tElements, sizeof(Type) * Size);
-  return *this;
 }
 
 /**
@@ -120,16 +123,15 @@ Checks whether two Vectors are equal.
 \see operator!=
 */
 template <uint32_t Size, typename Type>
-inline bool
-Vector<Size, Type>::operator==(const Vector<Size, Type> &rhs) const {
-  bool equal = true;
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    if (m_tElements[ct] != rhs.m_tElements[ct]) {
-      equal = false;
-      break;
+inline bool Vector<Size, Type>::operator==(const Vector<Size, Type>& rhs) const {
+    bool equal = true;
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        if (m_tElements[ct] != rhs.m_tElements[ct]) {
+            equal = false;
+            break;
+        }
     }
-  }
-  return equal;
+    return equal;
 }
 
 /**
@@ -139,9 +141,8 @@ Checks whether two Vectors are not equal.
 \see operator==
 */
 template <uint32_t Size, typename Type>
-inline bool
-Vector<Size, Type>::operator!=(const Vector<Size, Type> &rhs) const {
-  return !(*this == rhs); // Just call equality operator and invert the result.
+inline bool Vector<Size, Type>::operator!=(const Vector<Size, Type>& rhs) const {
+    return !(*this == rhs);  // Just call equality operator and invert the result.
 }
 
 /**
@@ -152,14 +153,14 @@ meaningless but it allows Vectors to me used as key in sdt::map, etc.
 \see operator!=
 */
 template <uint32_t Size, typename Type>
-inline bool Vector<Size, Type>::operator<(const Vector<Size, Type> &rhs) const {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    if (m_tElements[ct] < rhs.m_tElements[ct])
-      return true;
-    if (rhs.m_tElements[ct] < m_tElements[ct])
-      return false;
-  }
-  return false;
+inline bool Vector<Size, Type>::operator<(const Vector<Size, Type>& rhs) const {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        if (m_tElements[ct] < rhs.m_tElements[ct])
+            return true;
+        if (rhs.m_tElements[ct] < m_tElements[ct])
+            return false;
+    }
+    return false;
 }
 
 /**
@@ -168,12 +169,11 @@ Addition operator adds corresponding elements of the two Vectors.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &
-Vector<Size, Type>::operator+=(const Vector<Size, Type> &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] += rhs.m_tElements[ct];
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator+=(const Vector<Size, Type>& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] += rhs.m_tElements[ct];
+    }
+    return *this;
 }
 
 /**
@@ -183,12 +183,11 @@ other.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &
-Vector<Size, Type>::operator-=(const Vector<Size, Type> &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] -= rhs.m_tElements[ct];
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator-=(const Vector<Size, Type>& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] -= rhs.m_tElements[ct];
+    }
+    return *this;
 }
 
 /**
@@ -197,12 +196,11 @@ Multiplication operator multiplies corresponding elements of the two Vectors.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &
-Vector<Size, Type>::operator*=(const Vector<Size, Type> &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] *= rhs.m_tElements[ct];
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator*=(const Vector<Size, Type>& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] *= rhs.m_tElements[ct];
+    }
+    return *this;
 }
 
 /**
@@ -211,12 +209,11 @@ Division operator divides corresponding elements of one Vector by the other.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &
-Vector<Size, Type>::operator/=(const Vector<Size, Type> &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] /= rhs.m_tElements[ct];
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator/=(const Vector<Size, Type>& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] /= rhs.m_tElements[ct];
+    }
+    return *this;
 }
 
 /**
@@ -225,11 +222,11 @@ Multiplication operator multiplies each element of the Vector by a number.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &Vector<Size, Type>::operator*=(const Type &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] *= rhs;
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator*=(const Type& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] *= rhs;
+    }
+    return *this;
 }
 
 /**
@@ -238,11 +235,11 @@ inline Vector<Size, Type> &Vector<Size, Type>::operator*=(const Type &rhs) {
     \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type> &Vector<Size, Type>::operator/=(const Type &rhs) {
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] /= rhs;
-  }
-  return *this;
+inline Vector<Size, Type>& Vector<Size, Type>::operator/=(const Type& rhs) {
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] /= rhs;
+    }
+    return *this;
 }
 
 /**
@@ -252,11 +249,10 @@ Addition operator adds corresponding elements of the two Vectors.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator+(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs) {
-  Vector<Size, Type> result = lhs;
-  result += rhs;
-  return result;
+Vector<Size, Type> operator+(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs) {
+    Vector<Size, Type> result = lhs;
+    result += rhs;
+    return result;
 }
 
 /**
@@ -267,11 +263,10 @@ other.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator-(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs) {
-  Vector<Size, Type> result = lhs;
-  result -= rhs;
-  return result;
+Vector<Size, Type> operator-(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs) {
+    Vector<Size, Type> result = lhs;
+    result -= rhs;
+    return result;
 }
 
 /**
@@ -281,11 +276,10 @@ Multiplication operator mulitplies corresponding elements of the two Vectors.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator*(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs) {
-  Vector<Size, Type> result = lhs;
-  result *= rhs;
-  return result;
+Vector<Size, Type> operator*(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs) {
+    Vector<Size, Type> result = lhs;
+    result *= rhs;
+    return result;
 }
 
 /**
@@ -295,11 +289,10 @@ Division operator divides corresponding elements of one Vector by the other.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator/(const Vector<Size, Type> &lhs,
-                             const Vector<Size, Type> &rhs) {
-  Vector<Size, Type> result = lhs;
-  result /= rhs;
-  return result;
+Vector<Size, Type> operator/(const Vector<Size, Type>& lhs, const Vector<Size, Type>& rhs) {
+    Vector<Size, Type> result = lhs;
+    result /= rhs;
+    return result;
 }
 
 /**
@@ -309,10 +302,10 @@ Multiplication operator multiplies each element of the Vector by a number.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator*(const Vector<Size, Type> &lhs, const Type &rhs) {
-  Vector<Size, Type> result = lhs;
-  result *= rhs;
-  return result;
+Vector<Size, Type> operator*(const Vector<Size, Type>& lhs, const Type& rhs) {
+    Vector<Size, Type> result = lhs;
+    result *= rhs;
+    return result;
 }
 
 /**
@@ -322,10 +315,10 @@ Division operator divides each element of the Vector by a number.
 \return The resulting Vector.
 */
 template <uint32_t Size, typename Type>
-Vector<Size, Type> operator/(const Vector<Size, Type> &lhs, const Type &rhs) {
-  Vector<Size, Type> result = lhs;
-  result /= rhs;
-  return result;
+Vector<Size, Type> operator/(const Vector<Size, Type>& lhs, const Type& rhs) {
+    Vector<Size, Type> result = lhs;
+    result /= rhs;
+    return result;
 }
 
 /**
@@ -335,16 +328,16 @@ Enables the Vector to be used intuitively with output streams such as cout.
 \return A reference to the output stream to allow chaining.
 */
 template <uint32_t Size, typename Type>
-std::ostream &operator<<(std::ostream &os, const Vector<Size, Type> &vector) {
-  os << "(";
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    os << vector.getElement(ct);
-    if (ct < (Size - 1)) {
-      os << ",";
+std::ostream& operator<<(std::ostream& os, const Vector<Size, Type>& vector) {
+    os << "(";
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        os << vector.getElement(ct);
+        if (ct < (Size - 1)) {
+            os << ",";
+        }
     }
-  }
-  os << ")";
-  return os;
+    os << ")";
+    return os;
 }
 
 /**
@@ -354,7 +347,7 @@ Returns the element at the given position.
 */
 template <uint32_t Size, typename Type>
 inline Type Vector<Size, Type>::getElement(uint32_t index) const {
-  return m_tElements[index];
+    return m_tElements[index];
 }
 
 /**
@@ -363,7 +356,7 @@ Vector.
 */
 template <uint32_t Size, typename Type>
 inline Type Vector<Size, Type>::getX(void) const {
-  return m_tElements[0];
+    return m_tElements[0];
 }
 
 /**
@@ -371,7 +364,7 @@ inline Type Vector<Size, Type>::getX(void) const {
 */
 template <uint32_t Size, typename Type>
 inline Type Vector<Size, Type>::getY(void) const {
-  return m_tElements[1];
+    return m_tElements[1];
 }
 
 /**
@@ -379,7 +372,7 @@ inline Type Vector<Size, Type>::getY(void) const {
 */
 template <uint32_t Size, typename Type>
 inline Type Vector<Size, Type>::getZ(void) const {
-  return m_tElements[2];
+    return m_tElements[2];
 }
 
 /**
@@ -387,7 +380,7 @@ inline Type Vector<Size, Type>::getZ(void) const {
 */
 template <uint32_t Size, typename Type>
 inline Type Vector<Size, Type>::getW(void) const {
-  return m_tElements[3];
+    return m_tElements[3];
 }
 
 /**
@@ -396,7 +389,7 @@ inline Type Vector<Size, Type>::getW(void) const {
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setElement(uint32_t index, Type tValue) {
-  m_tElements[index] = tValue;
+    m_tElements[index] = tValue;
 }
 
 /**
@@ -406,8 +399,8 @@ Sets several elements of a vector at once.
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setElements(Type x, Type y) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
 }
 
 /**
@@ -418,9 +411,9 @@ Sets several elements of a vector at once.
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setElements(Type x, Type y, Type z) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
-  m_tElements[2] = z;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
+    m_tElements[2] = z;
 }
 
 /**
@@ -432,10 +425,10 @@ Sets several elements of a vector at once.
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setElements(Type x, Type y, Type z, Type w) {
-  m_tElements[0] = x;
-  m_tElements[1] = y;
-  m_tElements[2] = z;
-  m_tElements[3] = w;
+    m_tElements[0] = x;
+    m_tElements[1] = y;
+    m_tElements[2] = z;
+    m_tElements[3] = w;
 }
 
 /**
@@ -444,7 +437,7 @@ Vector.
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setX(Type tX) {
-  m_tElements[0] = tX;
+    m_tElements[0] = tX;
 }
 
 /**
@@ -452,7 +445,7 @@ inline void Vector<Size, Type>::setX(Type tX) {
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setY(Type tY) {
-  m_tElements[1] = tY;
+    m_tElements[1] = tY;
 }
 
 /**
@@ -460,7 +453,7 @@ inline void Vector<Size, Type>::setY(Type tY) {
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setZ(Type tZ) {
-  m_tElements[2] = tZ;
+    m_tElements[2] = tZ;
 }
 
 /**
@@ -468,7 +461,7 @@ inline void Vector<Size, Type>::setZ(Type tZ) {
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::setW(Type tW) {
-  m_tElements[3] = tW;
+    m_tElements[3] = tW;
 }
 
 /**
@@ -477,7 +470,7 @@ inline void Vector<Size, Type>::setW(Type tW) {
 */
 template <uint32_t Size, typename Type>
 inline double Vector<Size, Type>::length(void) const {
-  return sqrt(lengthSquared());
+    return sqrt(lengthSquared());
 }
 
 /**
@@ -485,11 +478,11 @@ inline double Vector<Size, Type>::length(void) const {
 */
 template <uint32_t Size, typename Type>
 inline double Vector<Size, Type>::lengthSquared(void) const {
-  double result = 0.0f;
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    result += m_tElements[ct] * m_tElements[ct];
-  }
-  return result;
+    double result = 0.0f;
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        result += m_tElements[ct] * m_tElements[ct];
+    }
+    return result;
 }
 
 /**
@@ -502,9 +495,8 @@ returned is in radians and varies between 0 and 3.14(pi). It is always positive.
 \return The angle between them in radians.
 */
 template <uint32_t Size, typename Type>
-inline double
-Vector<Size, Type>::angleTo(const Vector<Size, Type> &vector) const {
-  return acos(dot(vector) / (vector.length() * this->length()));
+inline double Vector<Size, Type>::angleTo(const Vector<Size, Type>& vector) const {
+    return acos(dot(vector) / (vector.length() * this->length()));
 }
 
 /**
@@ -520,12 +512,11 @@ it is not commutative. E.g a.b != b.a. The cross product obeys the
 \see dot()
 */
 template <uint32_t Size, typename Type>
-inline Vector<Size, Type>
-Vector<Size, Type>::cross(const Vector<Size, Type> &vector) const {
-  Type i = vector.getZ() * this->getY() - vector.getY() * this->getZ();
-  Type j = vector.getX() * this->getZ() - vector.getZ() * this->getX();
-  Type k = vector.getY() * this->getX() - vector.getX() * this->getY();
-  return Vector<Size, Type>(i, j, k);
+inline Vector<Size, Type> Vector<Size, Type>::cross(const Vector<Size, Type>& vector) const {
+    Type i = vector.getZ() * this->getY() - vector.getY() * this->getZ();
+    Type j = vector.getX() * this->getZ() - vector.getZ() * this->getX();
+    Type k = vector.getY() * this->getX() - vector.getX() * this->getY();
+    return Vector<Size, Type>(i, j, k);
 }
 
 /**
@@ -536,12 +527,12 @@ This function is commutative, such that a.dot(b) == b.dot(a).
 \see cross()
 */
 template <uint32_t Size, typename Type>
-inline Type Vector<Size, Type>::dot(const Vector<Size, Type> &rhs) const {
-  Type dotProduct = static_cast<Type>(0);
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    dotProduct += m_tElements[ct] * rhs.m_tElements[ct];
-  }
-  return dotProduct;
+inline Type Vector<Size, Type>::dot(const Vector<Size, Type>& rhs) const {
+    Type dotProduct = static_cast<Type>(0);
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        dotProduct += m_tElements[ct] * rhs.m_tElements[ct];
+    }
+    return dotProduct;
 }
 
 /**
@@ -551,13 +542,13 @@ Divides the i, j, and k components by the length to give a Vector of length 1.0.
 */
 template <uint32_t Size, typename Type>
 inline void Vector<Size, Type>::normalise(void) {
-  Type tLength = static_cast<Type>(this->length());
-  // FIXME - throw div by zero exception?
-  if (tLength < 0.0001f) {
-    return;
-  }
-  for (uint32_t ct = 0; ct < Size; ++ct) {
-    m_tElements[ct] /= tLength;
-  }
+    Type tLength = static_cast<Type>(this->length());
+    // FIXME - throw div by zero exception?
+    if (tLength < 0.0001f) {
+        return;
+    }
+    for (uint32_t ct = 0; ct < Size; ++ct) {
+        m_tElements[ct] /= tLength;
+    }
 }
-} // namespace PolyVox
+}  // namespace PolyVox

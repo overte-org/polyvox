@@ -54,23 +54,23 @@ namespace PolyVox {
 ///  here: http://www.drdobbs.com/cpp/184401319/
 ////////////////////////////////////////////////////////////////////////////////
 class POLYVOX_API ArraySizes {
-  typedef const uint32_t (&UIntArray1)[1];
+    typedef const uint32_t (&UIntArray1)[1];
 
 public:
-  /// Constructor
-  explicit ArraySizes(uint32_t uSize);
+    /// Constructor
+    explicit ArraySizes(uint32_t uSize);
 
-  /// Duplicates this object but with an extra dimension
-  ArraySizesImpl<2> operator()(uint32_t uSize);
+    /// Duplicates this object but with an extra dimension
+    ArraySizesImpl<2> operator()(uint32_t uSize);
 
-  /// Converts this object to an array of integers
-  operator UIntArray1() const;
+    /// Converts this object to an array of integers
+    operator UIntArray1() const;
 
 private:
-  // This class is only one dimensional. Higher dimensions
-  // are implemented via the ArraySizesImpl class.
-  uint32_t m_pSizes[1];
+    // This class is only one dimensional. Higher dimensions
+    // are implemented via the ArraySizesImpl class.
+    uint32_t m_pSizes[1];
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
-#endif //__PolyVox_ArraySizes_H__
+#endif  //__PolyVox_ArraySizes_H__

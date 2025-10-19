@@ -31,6 +31,6 @@ freely, subject to the following restrictions:
 namespace PolyVox {
 POLYVOX_API uint8_t logBase2(uint32_t uInput);
 POLYVOX_API bool isPowerOf2(uint32_t uInput);
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #endif

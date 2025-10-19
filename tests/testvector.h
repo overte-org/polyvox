@@ -27,12 +27,12 @@ freely, subject to the following restrictions:
 #include <QObject>
 
 class TestVector : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 
 private slots:
-  void testLength();
-  void testDotProduct();
-  void testEquality();
+    void testLength();
+    void testDotProduct();
+    void testEquality();
 };
 
 #endif

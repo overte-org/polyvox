@@ -75,86 +75,87 @@ namespace PolyVox {
  * \return A RaycastResults designating whether the ray hit anything or not
  */
 template <typename VolumeType, typename Callback>
-RaycastResult
-raycastWithEndpoints(VolumeType *volData, const Vector3DFloat &v3dStart,
-                     const Vector3DFloat &v3dEnd, Callback &callback) {
-  typename VolumeType::Sampler sampler(volData);
+RaycastResult raycastWithEndpoints(VolumeType* volData,
+                                   const Vector3DFloat& v3dStart,
+                                   const Vector3DFloat& v3dEnd,
+                                   Callback& callback) {
+    typename VolumeType::Sampler sampler(volData);
 
-  // The doRaycast function is assuming that it is iterating over the areas
-  // defined between voxels. We actually want to define the areas as being
-  // centered on voxels (as this is what the CubicSurfaceExtractor generates).
-  // We add 0.5 here to adjust for this.
-  float x1 = v3dStart.getX() + 0.5f;
-  float y1 = v3dStart.getY() + 0.5f;
-  float z1 = v3dStart.getZ() + 0.5f;
-  float x2 = v3dEnd.getX() + 0.5f;
-  float y2 = v3dEnd.getY() + 0.5f;
-  float z2 = v3dEnd.getZ() + 0.5f;
+    // The doRaycast function is assuming that it is iterating over the areas
+    // defined between voxels. We actually want to define the areas as being
+    // centered on voxels (as this is what the CubicSurfaceExtractor generates).
+    // We add 0.5 here to adjust for this.
+    float x1 = v3dStart.getX() + 0.5f;
+    float y1 = v3dStart.getY() + 0.5f;
+    float z1 = v3dStart.getZ() + 0.5f;
+    float x2 = v3dEnd.getX() + 0.5f;
+    float y2 = v3dEnd.getY() + 0.5f;
+    float z2 = v3dEnd.getZ() + 0.5f;
 
-  int i = (int)floorf(x1);
-  int j = (int)floorf(y1);
-  int k = (int)floorf(z1);
+    int i = (int)floorf(x1);
+    int j = (int)floorf(y1);
+    int k = (int)floorf(z1);
 
-  int iend = (int)floorf(x2);
-  int jend = (int)floorf(y2);
-  int kend = (int)floorf(z2);
+    int iend = (int)floorf(x2);
+    int jend = (int)floorf(y2);
+    int kend = (int)floorf(z2);
 
-  int di = ((x1 < x2) ? 1 : ((x1 > x2) ? -1 : 0));
-  int dj = ((y1 < y2) ? 1 : ((y1 > y2) ? -1 : 0));
-  int dk = ((z1 < z2) ? 1 : ((z1 > z2) ? -1 : 0));
+    int di = ((x1 < x2) ? 1 : ((x1 > x2) ? -1 : 0));
+    int dj = ((y1 < y2) ? 1 : ((y1 > y2) ? -1 : 0));
+    int dk = ((z1 < z2) ? 1 : ((z1 > z2) ? -1 : 0));
 
-  float deltatx = 1.0f / std::abs(x2 - x1);
-  float deltaty = 1.0f / std::abs(y2 - y1);
-  float deltatz = 1.0f / std::abs(z2 - z1);
+    float deltatx = 1.0f / std::abs(x2 - x1);
+    float deltaty = 1.0f / std::abs(y2 - y1);
+    float deltatz = 1.0f / std::abs(z2 - z1);
 
-  float minx = floorf(x1), maxx = minx + 1.0f;
-  float tx = ((x1 > x2) ? (x1 - minx) : (maxx - x1)) * deltatx;
-  float miny = floorf(y1), maxy = miny + 1.0f;
-  float ty = ((y1 > y2) ? (y1 - miny) : (maxy - y1)) * deltaty;
-  float minz = floorf(z1), maxz = minz + 1.0f;
-  float tz = ((z1 > z2) ? (z1 - minz) : (maxz - z1)) * deltatz;
+    float minx = floorf(x1), maxx = minx + 1.0f;
+    float tx = ((x1 > x2) ? (x1 - minx) : (maxx - x1)) * deltatx;
+    float miny = floorf(y1), maxy = miny + 1.0f;
+    float ty = ((y1 > y2) ? (y1 - miny) : (maxy - y1)) * deltaty;
+    float minz = floorf(z1), maxz = minz + 1.0f;
+    float tz = ((z1 > z2) ? (z1 - minz) : (maxz - z1)) * deltatz;
 
-  sampler.setPosition(i, j, k);
+    sampler.setPosition(i, j, k);
 
-  for (;;) {
-    if (!callback(sampler)) {
-      return RaycastResults::Interupted;
+    for (;;) {
+        if (!callback(sampler)) {
+            return RaycastResults::Interupted;
+        }
+
+        if (tx <= ty && tx <= tz) {
+            if (i == iend)
+                break;
+            tx += deltatx;
+            i += di;
+
+            if (di == 1)
+                sampler.movePositiveX();
+            if (di == -1)
+                sampler.moveNegativeX();
+        } else if (ty <= tz) {
+            if (j == jend)
+                break;
+            ty += deltaty;
+            j += dj;
+
+            if (dj == 1)
+                sampler.movePositiveY();
+            if (dj == -1)
+                sampler.moveNegativeY();
+        } else {
+            if (k == kend)
+                break;
+            tz += deltatz;
+            k += dk;
+
+            if (dk == 1)
+                sampler.movePositiveZ();
+            if (dk == -1)
+                sampler.moveNegativeZ();
+        }
     }
 
-    if (tx <= ty && tx <= tz) {
-      if (i == iend)
-        break;
-      tx += deltatx;
-      i += di;
-
-      if (di == 1)
-        sampler.movePositiveX();
-      if (di == -1)
-        sampler.moveNegativeX();
-    } else if (ty <= tz) {
-      if (j == jend)
-        break;
-      ty += deltaty;
-      j += dj;
-
-      if (dj == 1)
-        sampler.movePositiveY();
-      if (dj == -1)
-        sampler.moveNegativeY();
-    } else {
-      if (k == kend)
-        break;
-      tz += deltatz;
-      k += dk;
-
-      if (dk == 1)
-        sampler.movePositiveZ();
-      if (dk == -1)
-        sampler.moveNegativeZ();
-    }
-  }
-
-  return RaycastResults::Completed;
+    return RaycastResults::Completed;
 }
 
 /**
@@ -183,12 +184,11 @@ raycastWithEndpoints(VolumeType *volData, const Vector3DFloat &v3dStart,
  * \return A RaycastResults designating whether the ray hit anything or not
  */
 template <typename VolumeType, typename Callback>
-RaycastResult raycastWithDirection(VolumeType *volData,
-                                   const Vector3DFloat &v3dStart,
-                                   const Vector3DFloat &v3dDirectionAndLength,
-                                   Callback &callback) {
-  Vector3DFloat v3dEnd = v3dStart + v3dDirectionAndLength;
-  return raycastWithEndpoints<VolumeType, Callback>(volData, v3dStart, v3dEnd,
-                                                    callback);
+RaycastResult raycastWithDirection(VolumeType* volData,
+                                   const Vector3DFloat& v3dStart,
+                                   const Vector3DFloat& v3dDirectionAndLength,
+                                   Callback& callback) {
+    Vector3DFloat v3dEnd = v3dStart + v3dDirectionAndLength;
+    return raycastWithEndpoints<VolumeType, Callback>(volData, v3dStart, v3dEnd, callback);
 }
-} // namespace PolyVox
+}  // namespace PolyVox

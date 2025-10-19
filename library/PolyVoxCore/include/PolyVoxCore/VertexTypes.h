@@ -39,19 +39,19 @@ class POLYVOX_API PositionMaterial
 #endif
 {
 public:
-  PositionMaterial();
-  PositionMaterial(Vector3DFloat positionToSet, float materialToSet);
+    PositionMaterial();
+    PositionMaterial(Vector3DFloat positionToSet, float materialToSet);
 
-  float getMaterial(void) const;
-  const Vector3DFloat &getPosition(void) const;
+    float getMaterial(void) const;
+    const Vector3DFloat& getPosition(void) const;
 
-  void setMaterial(float materialToSet);
-  void setPosition(const Vector3DFloat &positionToSet);
+    void setMaterial(float materialToSet);
+    void setPosition(const Vector3DFloat& positionToSet);
 
 public:
-  // Nicely fits into four floats.
-  Vector3DFloat position;
-  float material;
+    // Nicely fits into four floats.
+    Vector3DFloat position;
+    float material;
 };
 
 #ifdef SWIG
@@ -61,26 +61,25 @@ class POLYVOX_API PositionMaterialNormal
 #endif
 {
 public:
-  PositionMaterialNormal();
-  PositionMaterialNormal(Vector3DFloat positionToSet, float materialToSet);
-  PositionMaterialNormal(Vector3DFloat positionToSet, Vector3DFloat normalToSet,
-                         float materialToSet);
+    PositionMaterialNormal();
+    PositionMaterialNormal(Vector3DFloat positionToSet, float materialToSet);
+    PositionMaterialNormal(Vector3DFloat positionToSet, Vector3DFloat normalToSet, float materialToSet);
 
-  float getMaterial(void) const;
-  const Vector3DFloat &getNormal(void) const;
-  const Vector3DFloat &getPosition(void) const;
+    float getMaterial(void) const;
+    const Vector3DFloat& getNormal(void) const;
+    const Vector3DFloat& getPosition(void) const;
 
-  void setMaterial(float materialToSet);
-  void setNormal(const Vector3DFloat &normalToSet);
-  void setPosition(const Vector3DFloat &positionToSet);
+    void setMaterial(float materialToSet);
+    void setNormal(const Vector3DFloat& normalToSet);
+    void setPosition(const Vector3DFloat& positionToSet);
 
 public:
-  // Nicely fits into seven floats, meaning we
-  // can squeeze in one more for material blending.
-  Vector3DFloat position;
-  Vector3DFloat normal;
-  float material; // FIXME: This shouldn't be float on CPU?
+    // Nicely fits into seven floats, meaning we
+    // can squeeze in one more for material blending.
+    Vector3DFloat position;
+    Vector3DFloat normal;
+    float material;  // FIXME: This shouldn't be float on CPU?
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #endif

@@ -49,18 +49,18 @@ freely, subject to the following restrictions:
 // imports or exports (or does nothing for static build) POLYVOX_LOCAL is used
 // for non-api symbols.
 
-#ifdef POLYVOX_SHARED // defined if PolyVox is compiled as a shared library
-#ifdef POLYVOX_SHARED_EXPORTS // defined if we are building the PolyVox shared
-                              // library (instead of using it)
+#ifdef POLYVOX_SHARED          // defined if PolyVox is compiled as a shared library
+#ifdef POLYVOX_SHARED_EXPORTS  // defined if we are building the PolyVox shared \
+                               // library (instead of using it)
 #define POLYVOX_API POLYVOX_HELPER_EXPORT
 #else
 #define POLYVOX_API POLYVOX_HELPER_IMPORT
-#endif // POLYVOX_SHARED_EXPORTS
+#endif  // POLYVOX_SHARED_EXPORTS
 #define POLYVOX_LOCAL POLYVOX_HELPER_LOCAL
-#else // POLYVOX_SHARED is not defined: this means PolyVox is a static library.
+#else  // POLYVOX_SHARED is not defined: this means PolyVox is a static library.
 #define POLYVOX_API
 #define POLYVOX_LOCAL
-#endif // POLYVOX_SHARED
+#endif  // POLYVOX_SHARED
 
 #include <cstdint>
 #include <functional>

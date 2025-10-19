@@ -29,6 +29,8 @@ freely, subject to the following restrictions:
 
 using namespace PolyVox;
 
-void TestMaterial::testCompile() { Material8 material; }
+void TestMaterial::testCompile() {
+    Material8 material;
+}
 
 QTEST_MAIN(TestMaterial)

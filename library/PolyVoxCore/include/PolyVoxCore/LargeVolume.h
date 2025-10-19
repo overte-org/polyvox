@@ -31,17 +31,18 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/Vector.h"
 
 #include <cassert>
-#include <cstdlib> //For abort()
-#include <cstring> //For memcpy
+#include <cstdlib>  //For abort()
+#include <cstring>  //For memcpy
 #include <limits>
 #include <list>
 #include <map>
 #include <memory>
-#include <stdexcept> //For invalid_argument
+#include <stdexcept>  //For invalid_argument
 #include <vector>
 
 namespace PolyVox {
-template <typename VoxelType> class ConstVolumeProxy;
+template <typename VoxelType>
+class ConstVolumeProxy;
 
 /// The LargeVolume class provides a memory efficient method of storing voxel
 /// data while also allowing fast access and modification.
@@ -208,215 +209,201 @@ template <typename VoxelType> class ConstVolumeProxy;
 /// reading from different threads can invalidate the contents of the block
 /// cache (amoung other problems).
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <typename VoxelType> class LargeVolume : public BaseVolume<VoxelType> {
+template <typename VoxelType>
+class LargeVolume : public BaseVolume<VoxelType> {
 public:
-  // There seems to be some descrepency between Visual Studio and GCC about how
-  // the following class should be declared. There is a work around (see also
-  // See http://goo.gl/qu1wn) given below which appears to work on VS2010 and
-  // GCC, but which seems to cause internal compiler errors on VS2008 when
-  // building with the /Gm 'Enable Minimal Rebuild' compiler option. For now it
-  // seems best to 'fix' it with the preprocessor insstead, but maybe the
-  // workaround can be reinstated in the future typedef Volume<VoxelType>
-  // VolumeOfVoxelType; //Workaround for GCC/VS2010 differences. class Sampler :
-  // public VolumeOfVoxelType::template Sampler< LargeVolume<VoxelType> >
-  class Sampler : public BaseVolume<VoxelType>::template Sampler<
-                      LargeVolume<VoxelType>> // This line works on GCC
-  {
-  public:
-    Sampler(LargeVolume<VoxelType> *volume);
-    ~Sampler();
+    // There seems to be some descrepency between Visual Studio and GCC about how
+    // the following class should be declared. There is a work around (see also
+    // See http://goo.gl/qu1wn) given below which appears to work on VS2010 and
+    // GCC, but which seems to cause internal compiler errors on VS2008 when
+    // building with the /Gm 'Enable Minimal Rebuild' compiler option. For now it
+    // seems best to 'fix' it with the preprocessor insstead, but maybe the
+    // workaround can be reinstated in the future typedef Volume<VoxelType>
+    // VolumeOfVoxelType; //Workaround for GCC/VS2010 differences. class Sampler :
+    // public VolumeOfVoxelType::template Sampler< LargeVolume<VoxelType> >
+    class Sampler : public BaseVolume<VoxelType>::template Sampler<LargeVolume<VoxelType>>  // This line works on GCC
+    {
+    public:
+        Sampler(LargeVolume<VoxelType>* volume);
+        ~Sampler();
 
-    Sampler &operator=(const Sampler &rhs);
+        Sampler& operator=(const Sampler& rhs);
 
-    VoxelType getSubSampledVoxel(uint8_t uLevel) const;
-    inline VoxelType getVoxel(void) const;
+        VoxelType getSubSampledVoxel(uint8_t uLevel) const;
+        inline VoxelType getVoxel(void) const;
 
-    void setPosition(const Vector3DInt32 &v3dNewPos);
-    void setPosition(int32_t xPos, int32_t yPos, int32_t zPos);
-    inline bool setVoxel(VoxelType tValue);
+        void setPosition(const Vector3DInt32& v3dNewPos);
+        void setPosition(int32_t xPos, int32_t yPos, int32_t zPos);
+        inline bool setVoxel(VoxelType tValue);
 
-    void movePositiveX(void);
-    void movePositiveY(void);
-    void movePositiveZ(void);
+        void movePositiveX(void);
+        void movePositiveY(void);
+        void movePositiveZ(void);
 
-    void moveNegativeX(void);
-    void moveNegativeY(void);
-    void moveNegativeZ(void);
+        void moveNegativeX(void);
+        void moveNegativeY(void);
+        void moveNegativeZ(void);
 
-    inline VoxelType peekVoxel1nx1ny1nz(void) const;
-    inline VoxelType peekVoxel1nx1ny0pz(void) const;
-    inline VoxelType peekVoxel1nx1ny1pz(void) const;
-    inline VoxelType peekVoxel1nx0py1nz(void) const;
-    inline VoxelType peekVoxel1nx0py0pz(void) const;
-    inline VoxelType peekVoxel1nx0py1pz(void) const;
-    inline VoxelType peekVoxel1nx1py1nz(void) const;
-    inline VoxelType peekVoxel1nx1py0pz(void) const;
-    inline VoxelType peekVoxel1nx1py1pz(void) const;
+        inline VoxelType peekVoxel1nx1ny1nz(void) const;
+        inline VoxelType peekVoxel1nx1ny0pz(void) const;
+        inline VoxelType peekVoxel1nx1ny1pz(void) const;
+        inline VoxelType peekVoxel1nx0py1nz(void) const;
+        inline VoxelType peekVoxel1nx0py0pz(void) const;
+        inline VoxelType peekVoxel1nx0py1pz(void) const;
+        inline VoxelType peekVoxel1nx1py1nz(void) const;
+        inline VoxelType peekVoxel1nx1py0pz(void) const;
+        inline VoxelType peekVoxel1nx1py1pz(void) const;
 
-    inline VoxelType peekVoxel0px1ny1nz(void) const;
-    inline VoxelType peekVoxel0px1ny0pz(void) const;
-    inline VoxelType peekVoxel0px1ny1pz(void) const;
-    inline VoxelType peekVoxel0px0py1nz(void) const;
-    inline VoxelType peekVoxel0px0py0pz(void) const;
-    inline VoxelType peekVoxel0px0py1pz(void) const;
-    inline VoxelType peekVoxel0px1py1nz(void) const;
-    inline VoxelType peekVoxel0px1py0pz(void) const;
-    inline VoxelType peekVoxel0px1py1pz(void) const;
+        inline VoxelType peekVoxel0px1ny1nz(void) const;
+        inline VoxelType peekVoxel0px1ny0pz(void) const;
+        inline VoxelType peekVoxel0px1ny1pz(void) const;
+        inline VoxelType peekVoxel0px0py1nz(void) const;
+        inline VoxelType peekVoxel0px0py0pz(void) const;
+        inline VoxelType peekVoxel0px0py1pz(void) const;
+        inline VoxelType peekVoxel0px1py1nz(void) const;
+        inline VoxelType peekVoxel0px1py0pz(void) const;
+        inline VoxelType peekVoxel0px1py1pz(void) const;
 
-    inline VoxelType peekVoxel1px1ny1nz(void) const;
-    inline VoxelType peekVoxel1px1ny0pz(void) const;
-    inline VoxelType peekVoxel1px1ny1pz(void) const;
-    inline VoxelType peekVoxel1px0py1nz(void) const;
-    inline VoxelType peekVoxel1px0py0pz(void) const;
-    inline VoxelType peekVoxel1px0py1pz(void) const;
-    inline VoxelType peekVoxel1px1py1nz(void) const;
-    inline VoxelType peekVoxel1px1py0pz(void) const;
-    inline VoxelType peekVoxel1px1py1pz(void) const;
+        inline VoxelType peekVoxel1px1ny1nz(void) const;
+        inline VoxelType peekVoxel1px1ny0pz(void) const;
+        inline VoxelType peekVoxel1px1ny1pz(void) const;
+        inline VoxelType peekVoxel1px0py1nz(void) const;
+        inline VoxelType peekVoxel1px0py0pz(void) const;
+        inline VoxelType peekVoxel1px0py1pz(void) const;
+        inline VoxelType peekVoxel1px1py1nz(void) const;
+        inline VoxelType peekVoxel1px1py0pz(void) const;
+        inline VoxelType peekVoxel1px1py1pz(void) const;
 
-  private:
-    // Other current position information
-    VoxelType *mCurrentVoxel;
-  };
+    private:
+        // Other current position information
+        VoxelType* mCurrentVoxel;
+    };
 
-  // Make the ConstVolumeProxy a friend
-  friend class ConstVolumeProxy<VoxelType>;
+    // Make the ConstVolumeProxy a friend
+    friend class ConstVolumeProxy<VoxelType>;
 
-  struct LoadedBlock {
-  public:
-    LoadedBlock(uint16_t uSideLength = 0) : block(uSideLength), timestamp(0) {}
+    struct LoadedBlock {
+    public:
+        LoadedBlock(uint16_t uSideLength = 0) : block(uSideLength), timestamp(0) {}
 
-    Block<VoxelType> block;
-    uint32_t timestamp;
-  };
+        Block<VoxelType> block;
+        uint32_t timestamp;
+    };
 
 public:
-  /// Constructor for creating a very large paging volume.
-  LargeVolume(polyvox_function<void(const ConstVolumeProxy<VoxelType> &,
-                                    const Region &)>
-                  dataRequiredHandler,
-              polyvox_function<void(const ConstVolumeProxy<VoxelType> &,
-                                    const Region &)>
-                  dataOverflowHandler,
-              uint16_t uBlockSideLength = 32);
-  /// Constructor for creating a fixed size volume.
-  LargeVolume(const Region &regValid,
-              polyvox_function<void(const ConstVolumeProxy<VoxelType> &,
-                                    const Region &)>
-                  dataRequiredHandler = 0,
-              polyvox_function<void(const ConstVolumeProxy<VoxelType> &,
-                                    const Region &)>
-                  dataOverflowHandler = 0,
-              bool bPagingEnabled = false, uint16_t uBlockSideLength = 32);
-  /// Destructor
-  ~LargeVolume();
+    /// Constructor for creating a very large paging volume.
+    LargeVolume(polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> dataRequiredHandler,
+                polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> dataOverflowHandler,
+                uint16_t uBlockSideLength = 32);
+    /// Constructor for creating a fixed size volume.
+    LargeVolume(const Region& regValid,
+                polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> dataRequiredHandler = 0,
+                polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> dataOverflowHandler = 0,
+                bool bPagingEnabled = false,
+                uint16_t uBlockSideLength = 32);
+    /// Destructor
+    ~LargeVolume();
 
-  /// Gets the value used for voxels which are outside the volume
-  VoxelType getBorderValue(void) const;
-  /// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
-  VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const;
-  /// Gets a voxel at the position given by a 3D vector
-  VoxelType getVoxelAt(const Vector3DInt32 &v3dPos) const;
+    /// Gets the value used for voxels which are outside the volume
+    VoxelType getBorderValue(void) const;
+    /// Gets a voxel at the position given by <tt>x,y,z</tt> coordinates
+    VoxelType getVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos) const;
+    /// Gets a voxel at the position given by a 3D vector
+    VoxelType getVoxelAt(const Vector3DInt32& v3dPos) const;
 
-  // Sets whether or not blocks are compressed in memory
-  void setCompressionEnabled(bool bCompressionEnabled);
-  /// Sets the number of blocks for which uncompressed data is stored
-  void
-  setMaxNumberOfUncompressedBlocks(uint32_t uMaxNumberOfUncompressedBlocks);
-  /// Sets the number of blocks which can be in memory before the paging system
-  /// starts unloading them
-  void setMaxNumberOfBlocksInMemory(uint32_t uMaxNumberOfBlocksInMemory);
-  /// Sets the value used for voxels which are outside the volume
-  void setBorderValue(const VoxelType &tBorder);
-  /// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
-  bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos,
-                  VoxelType tValue);
-  /// Sets the voxel at the position given by a 3D vector
-  bool setVoxelAt(const Vector3DInt32 &v3dPos, VoxelType tValue);
-  /// Tries to ensure that the voxels within the specified Region are loaded
-  /// into memory.
-  void prefetch(Region regPrefetch);
-  /// Ensures that any voxels within the specified Region are removed from
-  /// memory.
-  void flush(Region regFlush);
-  /// Removes all voxels from memory
-  void flushAll();
+    // Sets whether or not blocks are compressed in memory
+    void setCompressionEnabled(bool bCompressionEnabled);
+    /// Sets the number of blocks for which uncompressed data is stored
+    void setMaxNumberOfUncompressedBlocks(uint32_t uMaxNumberOfUncompressedBlocks);
+    /// Sets the number of blocks which can be in memory before the paging system
+    /// starts unloading them
+    void setMaxNumberOfBlocksInMemory(uint32_t uMaxNumberOfBlocksInMemory);
+    /// Sets the value used for voxels which are outside the volume
+    void setBorderValue(const VoxelType& tBorder);
+    /// Sets the voxel at the position given by <tt>x,y,z</tt> coordinates
+    bool setVoxelAt(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue);
+    /// Sets the voxel at the position given by a 3D vector
+    bool setVoxelAt(const Vector3DInt32& v3dPos, VoxelType tValue);
+    /// Tries to ensure that the voxels within the specified Region are loaded
+    /// into memory.
+    void prefetch(Region regPrefetch);
+    /// Ensures that any voxels within the specified Region are removed from
+    /// memory.
+    void flush(Region regFlush);
+    /// Removes all voxels from memory
+    void flushAll();
 
-  /// Empties the cache of uncompressed blocks
-  void clearBlockCache(void);
-  /// Calculates the approximate compression ratio of the store volume data
-  float calculateCompressionRatio(void);
-  /// Calculates approximatly how many bytes of memory the volume is currently
-  /// using.
-  uint32_t calculateSizeInBytes(void);
+    /// Empties the cache of uncompressed blocks
+    void clearBlockCache(void);
+    /// Calculates the approximate compression ratio of the store volume data
+    float calculateCompressionRatio(void);
+    /// Calculates approximatly how many bytes of memory the volume is currently
+    /// using.
+    uint32_t calculateSizeInBytes(void);
 
 protected:
-  /// Copy constructor
-  LargeVolume(const LargeVolume &rhs);
+    /// Copy constructor
+    LargeVolume(const LargeVolume& rhs);
 
-  /// Assignment operator
-  LargeVolume &operator=(const LargeVolume &rhs);
+    /// Assignment operator
+    LargeVolume& operator=(const LargeVolume& rhs);
 
 private:
-  void initialise(const Region &regValidRegion, uint16_t uBlockSideLength);
+    void initialise(const Region& regValidRegion, uint16_t uBlockSideLength);
 
-  /// gets called when a new region is allocated and needs to be filled
-  /// NOTE: accessing ANY voxels outside this region during the process of this
-  /// function is absolutely unsafe
-  polyvox_function<void(const ConstVolumeProxy<VoxelType> &, const Region &)>
-      m_funcDataRequiredHandler;
-  /// gets called when a Region needs to be stored by the user, because
-  /// LargeVolume will erase it right after this function returns NOTE:
-  /// accessing ANY voxels outside this region during the process of this
-  /// function is absolutely unsafe
-  polyvox_function<void(const ConstVolumeProxy<VoxelType> &, const Region &)>
-      m_funcDataOverflowHandler;
+    /// gets called when a new region is allocated and needs to be filled
+    /// NOTE: accessing ANY voxels outside this region during the process of this
+    /// function is absolutely unsafe
+    polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> m_funcDataRequiredHandler;
+    /// gets called when a Region needs to be stored by the user, because
+    /// LargeVolume will erase it right after this function returns NOTE:
+    /// accessing ANY voxels outside this region during the process of this
+    /// function is absolutely unsafe
+    polyvox_function<void(const ConstVolumeProxy<VoxelType>&, const Region&)> m_funcDataOverflowHandler;
 
-  Block<VoxelType> *getUncompressedBlock(int32_t uBlockX, int32_t uBlockY,
-                                         int32_t uBlockZ) const;
-  void eraseBlock(
-      typename std::map<Vector3DInt32, LoadedBlock>::iterator itBlock) const;
-  /// this function can be called by m_funcDataRequiredHandler without causing
-  /// any weird effects
-  bool setVoxelAtConst(int32_t uXPos, int32_t uYPos, int32_t uZPos,
-                       VoxelType tValue) const;
+    Block<VoxelType>* getUncompressedBlock(int32_t uBlockX, int32_t uBlockY, int32_t uBlockZ) const;
+    void eraseBlock(typename std::map<Vector3DInt32, LoadedBlock>::iterator itBlock) const;
+    /// this function can be called by m_funcDataRequiredHandler without causing
+    /// any weird effects
+    bool setVoxelAtConst(int32_t uXPos, int32_t uYPos, int32_t uZPos, VoxelType tValue) const;
 
-  // The block data
-  mutable std::map<Vector3DInt32, LoadedBlock> m_pBlocks;
+    // The block data
+    mutable std::map<Vector3DInt32, LoadedBlock> m_pBlocks;
 
-  // The cache of uncompressed blocks. The uncompressed block data and the
-  // timestamps are stored here rather than in the Block class. This is so that
-  // in the future each VolumeIterator might to maintain its own cache of
-  // blocks. However, this could mean the same block data is uncompressed and
-  // modified in more than one location in memory... could be messy with
-  // threading.
-  mutable std::vector<LoadedBlock *> m_vecUncompressedBlockCache;
-  mutable uint32_t m_uTimestamper;
-  mutable Vector3DInt32 m_v3dLastAccessedBlockPos;
-  mutable Block<VoxelType> *m_pLastAccessedBlock;
-  uint32_t m_uMaxNumberOfUncompressedBlocks;
-  uint32_t m_uMaxNumberOfBlocksInMemory;
+    // The cache of uncompressed blocks. The uncompressed block data and the
+    // timestamps are stored here rather than in the Block class. This is so that
+    // in the future each VolumeIterator might to maintain its own cache of
+    // blocks. However, this could mean the same block data is uncompressed and
+    // modified in more than one location in memory... could be messy with
+    // threading.
+    mutable std::vector<LoadedBlock*> m_vecUncompressedBlockCache;
+    mutable uint32_t m_uTimestamper;
+    mutable Vector3DInt32 m_v3dLastAccessedBlockPos;
+    mutable Block<VoxelType>* m_pLastAccessedBlock;
+    uint32_t m_uMaxNumberOfUncompressedBlocks;
+    uint32_t m_uMaxNumberOfBlocksInMemory;
 
-  // We don't store an actual Block for the border, just the uncompressed data.
-  // This is partly because the border block does not have a position (so can't
-  // be passed to getUncompressedBlock()) and partly because there's a good
-  // chance we'll often hit it anyway. It's a chunk of homogenous data (rather
-  // than a single value) so that the VolumeIterator can do it's usual pointer
-  // arithmetic without needing to know it's gone outside the volume.
-  VoxelType *m_pUncompressedBorderData;
+    // We don't store an actual Block for the border, just the uncompressed data.
+    // This is partly because the border block does not have a position (so can't
+    // be passed to getUncompressedBlock()) and partly because there's a good
+    // chance we'll often hit it anyway. It's a chunk of homogenous data (rather
+    // than a single value) so that the VolumeIterator can do it's usual pointer
+    // arithmetic without needing to know it's gone outside the volume.
+    VoxelType* m_pUncompressedBorderData;
 
-  // The size of the volume
-  Region m_regValidRegionInBlocks;
+    // The size of the volume
+    Region m_regValidRegionInBlocks;
 
-  // The size of the blocks
-  uint16_t m_uBlockSideLength;
-  uint8_t m_uBlockSideLengthPower;
+    // The size of the blocks
+    uint16_t m_uBlockSideLength;
+    uint8_t m_uBlockSideLengthPower;
 
-  bool m_bCompressionEnabled;
-  bool m_bPagingEnabled;
+    bool m_bCompressionEnabled;
+    bool m_bPagingEnabled;
 };
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/LargeVolume.inl"
 #include "PolyVoxCore/LargeVolumeSampler.inl"
 
-#endif //__PolyVox_LargeVolume_H__
+#endif  //__PolyVox_LargeVolume_H__

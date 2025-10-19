@@ -24,8 +24,8 @@ freely, subject to the following restrictions:
 #ifndef __PolyVox_MaterialDensityPair_H__
 #define __PolyVox_MaterialDensityPair_H__
 
-#include "PolyVoxCore/DefaultIsQuadNeeded.h" //we'll specialise this function for this voxel type
-#include "PolyVoxCore/DefaultMarchingCubesController.h" //We'll specialise the controller contained in here
+#include "PolyVoxCore/DefaultIsQuadNeeded.h"             //we'll specialise this function for this voxel type
+#include "PolyVoxCore/DefaultMarchingCubesController.h"  //We'll specialise the controller contained in here
 
 #include "Impl/TypeDef.h"
 
@@ -39,108 +39,95 @@ namespace PolyVox {
 template <typename Type, uint8_t NoOfMaterialBits, uint8_t NoOfDensityBits>
 class MaterialDensityPair {
 public:
-  MaterialDensityPair() : m_uMaterial(0), m_uDensity(0) {}
-  MaterialDensityPair(Type uMaterial, Type uDensity)
-      : m_uMaterial(uMaterial), m_uDensity(uDensity) {}
+    MaterialDensityPair() : m_uMaterial(0), m_uDensity(0) {}
+    MaterialDensityPair(Type uMaterial, Type uDensity) : m_uMaterial(uMaterial), m_uDensity(uDensity) {}
 
-  bool operator==(const MaterialDensityPair &rhs) const {
-    return (m_uMaterial == rhs.m_uMaterial) && (m_uDensity == rhs.m_uDensity);
-  };
+    bool operator==(const MaterialDensityPair& rhs) const {
+        return (m_uMaterial == rhs.m_uMaterial) && (m_uDensity == rhs.m_uDensity);
+    };
 
-  bool operator!=(const MaterialDensityPair &rhs) const {
-    return !(*this == rhs);
-  }
+    bool operator!=(const MaterialDensityPair& rhs) const { return !(*this == rhs); }
 
-  MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> &operator+=(
-      const MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> &rhs) {
-    m_uDensity += rhs.m_uDensity;
+    MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>& operator+=(
+        const MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>& rhs) {
+        m_uDensity += rhs.m_uDensity;
 
-    // What should we do with the material? Conceptually the idea of adding
-    // materials makes no sense, but for our purposes we consider the 'sum' of
-    // two materials to just be the max. At least this way it is commutative.
-    m_uMaterial = (std::max)(m_uMaterial, rhs.m_uMaterial);
+        // What should we do with the material? Conceptually the idea of adding
+        // materials makes no sense, but for our purposes we consider the 'sum' of
+        // two materials to just be the max. At least this way it is commutative.
+        m_uMaterial = (std::max)(m_uMaterial, rhs.m_uMaterial);
 
-    return *this;
-  }
-
-  MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> &
-  operator/=(uint32_t rhs) {
-    // There's nothing sensible we can do with the material, so this function
-    // only affects the density.
-    m_uDensity /= rhs;
-    return *this;
-  }
-
-  Type getDensity() const { return m_uDensity; }
-  Type getMaterial() const { return m_uMaterial; }
-
-  void setDensity(Type uDensity) { m_uDensity = uDensity; }
-  void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
-
-  static Type getMaxDensity() { return (0x01 << NoOfDensityBits) - 1; }
-  static Type getMinDensity() { return 0; }
-
-private:
-  Type m_uMaterial : NoOfMaterialBits;
-  Type m_uDensity : NoOfDensityBits;
-};
-
-template <typename Type, uint8_t NoOfMaterialBits, uint8_t NoOfDensityBits>
-class DefaultIsQuadNeeded<
-    MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>> {
-public:
-  bool
-  operator()(MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> back,
-             MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> front,
-             uint32_t &materialToUse) {
-    if ((back.getMaterial() > 0) && (front.getMaterial() == 0)) {
-      materialToUse = static_cast<uint32_t>(back.getMaterial());
-      return true;
-    } else {
-      return false;
+        return *this;
     }
-  }
+
+    MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>& operator/=(uint32_t rhs) {
+        // There's nothing sensible we can do with the material, so this function
+        // only affects the density.
+        m_uDensity /= rhs;
+        return *this;
+    }
+
+    Type getDensity() const { return m_uDensity; }
+    Type getMaterial() const { return m_uMaterial; }
+
+    void setDensity(Type uDensity) { m_uDensity = uDensity; }
+    void setMaterial(Type uMaterial) { m_uMaterial = uMaterial; }
+
+    static Type getMaxDensity() { return (0x01 << NoOfDensityBits) - 1; }
+    static Type getMinDensity() { return 0; }
+
+private:
+    Type m_uMaterial : NoOfMaterialBits;
+    Type m_uDensity : NoOfDensityBits;
 };
 
 template <typename Type, uint8_t NoOfMaterialBits, uint8_t NoOfDensityBits>
-class DefaultMarchingCubesController<
-    MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>> {
+class DefaultIsQuadNeeded<MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>> {
 public:
-  typedef Type DensityType;
-  typedef Type MaterialType;
+    bool operator()(MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> back,
+                    MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> front,
+                    uint32_t& materialToUse) {
+        if ((back.getMaterial() > 0) && (front.getMaterial() == 0)) {
+            materialToUse = static_cast<uint32_t>(back.getMaterial());
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
 
-  DefaultMarchingCubesController(void) {
-    // Default to a threshold value halfway between the min and max possible
-    // values.
-    m_tThreshold = (MaterialDensityPair<Type, NoOfMaterialBits,
-                                        NoOfDensityBits>::getMinDensity() +
-                    MaterialDensityPair<Type, NoOfMaterialBits,
-                                        NoOfDensityBits>::getMaxDensity()) /
-                   2;
-  }
+template <typename Type, uint8_t NoOfMaterialBits, uint8_t NoOfDensityBits>
+class DefaultMarchingCubesController<MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>> {
+public:
+    typedef Type DensityType;
+    typedef Type MaterialType;
 
-  DefaultMarchingCubesController(DensityType tThreshold) {
-    m_tThreshold = tThreshold;
-  }
+    DefaultMarchingCubesController(void) {
+        // Default to a threshold value halfway between the min and max possible
+        // values.
+        m_tThreshold = (MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>::getMinDensity() +
+                        MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits>::getMaxDensity()) /
+                       2;
+    }
 
-  DensityType convertToDensity(
-      MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> voxel) {
-    return voxel.getDensity();
-  }
+    DefaultMarchingCubesController(DensityType tThreshold) { m_tThreshold = tThreshold; }
 
-  MaterialType convertToMaterial(
-      MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> voxel) {
-    return voxel.getMaterial();
-  }
+    DensityType convertToDensity(MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> voxel) {
+        return voxel.getDensity();
+    }
 
-  DensityType getThreshold(void) { return m_tThreshold; }
+    MaterialType convertToMaterial(MaterialDensityPair<Type, NoOfMaterialBits, NoOfDensityBits> voxel) {
+        return voxel.getMaterial();
+    }
+
+    DensityType getThreshold(void) { return m_tThreshold; }
 
 private:
-  DensityType m_tThreshold;
+    DensityType m_tThreshold;
 };
 
 typedef MaterialDensityPair<uint8_t, 4, 4> MaterialDensityPair44;
 typedef MaterialDensityPair<uint16_t, 8, 8> MaterialDensityPair88;
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #endif

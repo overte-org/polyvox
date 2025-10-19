@@ -30,39 +30,37 @@ freely, subject to the following restrictions:
 #include <vector>
 
 namespace PolyVox {
-enum NormalGenerationMethod {
-  SIMPLE, ///< Fastest
-  CENTRAL_DIFFERENCE,
-  SOBEL,
-  CENTRAL_DIFFERENCE_SMOOTHED,
-  SOBEL_SMOOTHED ///< Smoothest
+enum NormalGenerationMethod
+{
+    SIMPLE,  ///< Fastest
+    CENTRAL_DIFFERENCE,
+    SOBEL,
+    CENTRAL_DIFFERENCE_SMOOTHED,
+    SOBEL_SMOOTHED  ///< Smoothest
 };
 
 template <typename VolumeType>
-Vector3DFloat
-computeCentralDifferenceGradient(const typename VolumeType::Sampler &volIter);
+Vector3DFloat computeCentralDifferenceGradient(const typename VolumeType::Sampler& volIter);
 
 template <typename VolumeType>
-Vector3DFloat
-computeSmoothCentralDifferenceGradient(typename VolumeType::Sampler &volIter);
+Vector3DFloat computeSmoothCentralDifferenceGradient(typename VolumeType::Sampler& volIter);
 
 template <typename VolumeType>
-Vector3DFloat computeDecimatedCentralDifferenceGradient(
-    typename VolumeType::Sampler &volIter);
+Vector3DFloat computeDecimatedCentralDifferenceGradient(typename VolumeType::Sampler& volIter);
 
 template <typename VolumeType>
-Vector3DFloat computeSobelGradient(const typename VolumeType::Sampler &volIter);
+Vector3DFloat computeSobelGradient(const typename VolumeType::Sampler& volIter);
 
 template <typename VolumeType>
-Vector3DFloat computeSmoothSobelGradient(typename VolumeType::Sampler &volIter);
+Vector3DFloat computeSmoothSobelGradient(typename VolumeType::Sampler& volIter);
 
 // POLYVOX_API void computeNormalsForVertices(VolumeType<uint8_t>* volumeData,
 // SurfaceMesh<PositionMaterialNormal>& mesh, NormalGenerationMethod
 // normalGenerationMethod); POLYVOX_API Vector3DFloat
 // computeNormal(VolumeType<uint8_t>* volumeData, const Vector3DFloat& v3dPos,
 // NormalGenerationMethod normalGenerationMethod);
-} // namespace PolyVox
+}  // namespace PolyVox
 
 #include "PolyVoxCore/GradientEstimators.inl"
 
-#endif //__PolyVox_GradientEstimators_H__
+#endif  //__PolyVox_GradientEstimators_H__

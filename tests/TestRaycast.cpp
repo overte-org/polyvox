@@ -41,71 +41,65 @@ using namespace PolyVox;
 // counting the total number of voxels touched.
 class RaycastTestFunctor {
 public:
-  RaycastTestFunctor() : m_uTotalVoxelsTouched(0) {}
+    RaycastTestFunctor() : m_uTotalVoxelsTouched(0) {}
 
-  bool operator()(const SimpleVolume<int8_t>::Sampler &sampler) {
-    m_uTotalVoxelsTouched++;
+    bool operator()(const SimpleVolume<int8_t>::Sampler& sampler) {
+        m_uTotalVoxelsTouched++;
 
-    return sampler.getVoxel() <= 0;
-  }
+        return sampler.getVoxel() <= 0;
+    }
 
-  uint32_t m_uTotalVoxelsTouched;
+    uint32_t m_uTotalVoxelsTouched;
 };
 
 void TestRaycast::testExecute() {
-  const int32_t uVolumeSideLength = 32;
+    const int32_t uVolumeSideLength = 32;
 
-  // Create a hollow volume, with solid sides on x and y but with open ends in
-  // z.
-  SimpleVolume<int8_t> volData(
-      Region(Vector3DInt32(0, 0, 0),
-             Vector3DInt32(uVolumeSideLength - 1, uVolumeSideLength - 1,
-                           uVolumeSideLength - 1)));
-  for (int32_t z = 0; z < uVolumeSideLength; z++) {
-    for (int32_t y = 0; y < uVolumeSideLength; y++) {
-      for (int32_t x = 0; x < uVolumeSideLength; x++) {
-        if ((x == 0) || (x == uVolumeSideLength - 1) || (y == 0) ||
-            (y == uVolumeSideLength - 1)) {
-          volData.setVoxelAt(x, y, z, 100);
-        } else {
-          volData.setVoxelAt(x, y, z, -100);
+    // Create a hollow volume, with solid sides on x and y but with open ends in
+    // z.
+    SimpleVolume<int8_t> volData(
+        Region(Vector3DInt32(0, 0, 0), Vector3DInt32(uVolumeSideLength - 1, uVolumeSideLength - 1, uVolumeSideLength - 1)));
+    for (int32_t z = 0; z < uVolumeSideLength; z++) {
+        for (int32_t y = 0; y < uVolumeSideLength; y++) {
+            for (int32_t x = 0; x < uVolumeSideLength; x++) {
+                if ((x == 0) || (x == uVolumeSideLength - 1) || (y == 0) || (y == uVolumeSideLength - 1)) {
+                    volData.setVoxelAt(x, y, z, 100);
+                } else {
+                    volData.setVoxelAt(x, y, z, -100);
+                }
+            }
         }
-      }
     }
-  }
 
-  // Cast rays from the centre. Roughly 2/3 should escape.
-  Vector3DFloat start(uVolumeSideLength / 2, uVolumeSideLength / 2,
-                      uVolumeSideLength / 2);
+    // Cast rays from the centre. Roughly 2/3 should escape.
+    Vector3DFloat start(uVolumeSideLength / 2, uVolumeSideLength / 2, uVolumeSideLength / 2);
 
-  // For demonstration purposes we are using the same function object for all
-  // raycasts. Therefore, the state it maintains (total voxels touched) is
-  // accumulated over all raycsts.
-  RaycastTestFunctor raycastTestFunctor;
+    // For demonstration purposes we are using the same function object for all
+    // raycasts. Therefore, the state it maintains (total voxels touched) is
+    // accumulated over all raycsts.
+    RaycastTestFunctor raycastTestFunctor;
 
-  // We could have counted the total number of hits in the same way as the total
-  // number of voxels touched, but for demonstration and testing purposes we are
-  // making use of the raycast return value and counting them seperatly in this
-  // variable.
-  int hits = 0;
+    // We could have counted the total number of hits in the same way as the total
+    // number of voxels touched, but for demonstration and testing purposes we are
+    // making use of the raycast return value and counting them seperatly in this
+    // variable.
+    int hits = 0;
 
-  // Cast a large number of random rays
-  for (int ct = 0; ct < 1000000; ct++) {
-    RaycastResult result = raycastWithDirection(
-        &volData, start, randomUnitVectors[ct % 1024] * 1000.0f,
-        raycastTestFunctor);
+    // Cast a large number of random rays
+    for (int ct = 0; ct < 1000000; ct++) {
+        RaycastResult result =
+            raycastWithDirection(&volData, start, randomUnitVectors[ct % 1024] * 1000.0f, raycastTestFunctor);
 
-    if (result == RaycastResults::Interupted) {
-      hits++;
+        if (result == RaycastResults::Interupted) {
+            hits++;
+        }
     }
-  }
 
-  // Check the number of hits.
-  QCOMPARE(hits, 687494);
+    // Check the number of hits.
+    QCOMPARE(hits, 687494);
 
-  // Check the total number of voxels touched
-  QCOMPARE(raycastTestFunctor.m_uTotalVoxelsTouched,
-           static_cast<uint32_t>(486219343));
+    // Check the total number of voxels touched
+    QCOMPARE(raycastTestFunctor.m_uTotalVoxelsTouched, static_cast<uint32_t>(486219343));
 }
 
 QTEST_MAIN(TestRaycast)
