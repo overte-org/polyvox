@@ -27,6 +27,7 @@ freely, subject to the following restrictions:
 #include "PolyVoxCore/SimpleVolume.h"
 
 #include <QtTest>
+#include <cstdint>
 
 using namespace PolyVox;
 
