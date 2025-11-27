@@ -25,11 +25,9 @@
 # Also sets LATEST_TEST to point to the output executable of the test for easy
 # ADD_TEST()ing
 MACRO(CREATE_TEST headerfile sourcefile executablename)
-	UNSET(test_moc_SRCS) #clear out the MOCs from previous tests
-	QT4_WRAP_CPP(test_moc_SRCS ${headerfile})
 	LINK_DIRECTORIES(${PolyVoxCore_BINARY_DIR} ${PolyVoxUtil_BINARY_DIR})
-	ADD_EXECUTABLE(${executablename} ${sourcefile} ${test_moc_SRCS})
-	TARGET_LINK_LIBRARIES(${executablename} PolyVoxCore PolyVoxUtil ${QT_QTTEST_LIBRARY} ${QT_QTCORE_LIBRARY})
+	ADD_EXECUTABLE(${executablename} ${sourcefile})
+	TARGET_LINK_LIBRARIES(${executablename} PolyVoxCore PolyVoxUtil Qt::Core Qt::Test)
 	#HACK. This is needed since everything is built in the base dir in Windows. As of 2.8 we should change this.
 	IF(WIN32)
 		SET(LATEST_TEST ${EXECUTABLE_OUTPUT_PATH}/${executablename})
