@@ -25,9 +25,10 @@
 # Also sets LATEST_TEST to point to the output executable of the test for easy
 # ADD_TEST()ing
 MACRO(CREATE_TEST headerfile sourcefile executablename)
-	LINK_DIRECTORIES(${PolyVoxCore_BINARY_DIR} ${PolyVoxUtil_BINARY_DIR})
 	ADD_EXECUTABLE(${executablename} ${sourcefile})
-	TARGET_LINK_LIBRARIES(${executablename} PolyVoxCore PolyVoxUtil Qt::Core Qt::Test)
+	TARGET_INCLUDE_DIRECTORIES(${executablename} PUBLIC ${PolyVox_SOURCE_DIR}/library/PolyVoxCore/include ${CMAKE_CURRENT_BINARY_DIR})
+	TARGET_LINK_DIRECTORIES(${executablename} PRIVATE ${PolyVoxCore_BINARY_DIR} ${PolyVoxUtil_BINARY_DIR})
+	TARGET_LINK_LIBRARIES(${executablename} PRIVATE PolyVoxCore PolyVoxUtil Qt::Core Qt::Test)
 	#HACK. This is needed since everything is built in the base dir in Windows. As of 2.8 we should change this.
 	IF(WIN32)
 		SET(LATEST_TEST ${EXECUTABLE_OUTPUT_PATH}/${executablename})
