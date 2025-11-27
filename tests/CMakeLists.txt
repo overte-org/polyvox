@@ -50,53 +50,53 @@ REMOVE_DEFINITIONS(-DQT_GUI_LIB) #Make sure the tests don't link to the QtGui
 
 # Python tests
 IF(BUILD_BINDINGS)
-	ADD_TEST(PythonSurfaceExtractorTest python ${CMAKE_CURRENT_SOURCE_DIR}/TestSurfaceExtractor.py)
+	ADD_TEST(NAME PythonSurfaceExtractorTest COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/TestSurfaceExtractor.py)
 ENDIF()
 
 # AmbientOcclusionGenerator tests
 CREATE_TEST(TestAmbientOcclusionGenerator.h TestAmbientOcclusionGenerator.cpp TestAmbientOcclusionGenerator)
-ADD_TEST(AmbientOcclusionGeneratorExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME AmbientOcclusionGeneratorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Array tests
 CREATE_TEST(TestArray.h TestArray.cpp TestArray)
-ADD_TEST(ArrayReadWriteTest ${LATEST_TEST} testReadWrite)
+ADD_TEST(NAME ArrayReadWriteTest COMMAND ${LATEST_TEST} testReadWrite)
 
 # AStarPathfinder tests
 CREATE_TEST(TestAStarPathfinder.h TestAStarPathfinder.cpp TestAStarPathfinder)
-ADD_TEST(AStarPathfinderExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME AStarPathfinderExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 CREATE_TEST(TestCubicSurfaceExtractor.h TestCubicSurfaceExtractor.cpp TestCubicSurfaceExtractor)
-ADD_TEST(CubicSurfaceExtractorExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME CubicSurfaceExtractorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Low pass filter tests
 CREATE_TEST(TestLowPassFilter.h TestLowPassFilter.cpp TestLowPassFilter)
-ADD_TEST(LowPassFilterExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME LowPassFilterExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # LargeVolume tests
 CREATE_TEST(testvolume.h testvolume.cpp testvolume)
-ADD_TEST(VolumeSizeTest ${LATEST_TEST} testSize)
+ADD_TEST(NAME VolumeSizeTest COMMAND ${LATEST_TEST} testSize)
 
 # Material tests
 CREATE_TEST(testmaterial.h testmaterial.cpp testmaterial)
-ADD_TEST(MaterialTestCompile ${LATEST_TEST} testCompile)
+ADD_TEST(NAME MaterialTestCompile COMMAND ${LATEST_TEST} testCompile)
 
 # Raycast tests
 CREATE_TEST(TestRaycast.h TestRaycast.cpp TestRaycast)
-ADD_TEST(RaycastExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME RaycastExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 # Region tests
 CREATE_TEST(TestRegion.h TestRegion.cpp TestRegion)
-ADD_TEST(RegionEqualityTest ${LATEST_TEST} testEquality)
+ADD_TEST(NAME RegionEqualityTest COMMAND ${LATEST_TEST} testEquality)
 
 CREATE_TEST(TestSurfaceExtractor.h TestSurfaceExtractor.cpp TestSurfaceExtractor)
-ADD_TEST(SurfaceExtractorExecuteTest ${LATEST_TEST} testExecute)
+ADD_TEST(NAME SurfaceExtractorExecuteTest COMMAND ${LATEST_TEST} testExecute)
 
 #Vector tests
 CREATE_TEST(testvector.h testvector.cpp testvector)
-ADD_TEST(VectorLengthTest ${LATEST_TEST} testLength)
-ADD_TEST(VectorDotProductTest ${LATEST_TEST} testDotProduct)
-ADD_TEST(VectorEqualityTest ${LATEST_TEST} testEquality)
+ADD_TEST(NAME VectorLengthTest COMMAND ${LATEST_TEST} testLength)
+ADD_TEST(NAME VectorDotProductTest COMMAND ${LATEST_TEST} testDotProduct)
+ADD_TEST(NAME VectorEqualityTest COMMAND ${LATEST_TEST} testEquality)
 
 # Volume subclass tests
 CREATE_TEST(TestVolumeSubclass.h TestVolumeSubclass.cpp TestVolumeSubclass)
-ADD_TEST(VolumeSubclassExtractSurfaceTest ${LATEST_TEST} testExtractSurface)
+ADD_TEST(NAME VolumeSubclassExtractSurfaceTest COMMAND ${LATEST_TEST} testExtractSurface)

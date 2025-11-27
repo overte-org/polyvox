@@ -20,7 +20,8 @@
 # 3. This notice may not be removed or altered from any source
 # distribution.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 3.24)
+cmake_policy(VERSION 3.24...3.31)
 
 PROJECT(PolyVoxCore)
 
