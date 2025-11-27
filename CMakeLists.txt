@@ -56,13 +56,6 @@ else()
 	set_package_properties(Qt4 PROPERTIES TYPE OPTIONAL PURPOSE "Building the tests")
 endif()
 
-if(MSVC AND (MSVC_VERSION LESS 1600))
-	# Require boost for older (pre-vc2010) Visual Studio compilers
-	# See library/include/polyvoxcore/impl/TypeDef.h
-	find_package(Boost REQUIRED)
-	include_directories(${Boost_INCLUDE_DIRS})
-endif()
-
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED On)
 

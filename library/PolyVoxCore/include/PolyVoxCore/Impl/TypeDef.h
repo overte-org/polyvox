@@ -60,46 +60,13 @@ freely, subject to the following restrictions:
   #define POLYVOX_LOCAL
 #endif // POLYVOX_SHARED
 
-//Check which compiler we are using and work around unsupported features as necessary.
-#if defined(_MSC_VER) && (_MSC_VER < 1600) 
-	//To support old (pre-vc2010) Microsoft compilers we use boost to replace the
-	//std::shared_ptr and potentially other C++0x features. To use this capability you
-	//will need to make sure you have boost installed on your system.
-	#include <boost/smart_ptr.hpp>
-	#define polyvox_shared_ptr boost::shared_ptr
-
-	#include <boost/function.hpp>
-	#define polyvox_function boost::function
-
-	#include <boost/bind.hpp>
-	#define polyvox_bind boost::bind
-	#define polyvox_placeholder_1 _1
-	#define polyvox_placeholder_2 _2
-	
-	#include <boost/static_assert.hpp>
-	#define static_assert BOOST_STATIC_ASSERT
-
-
-	//As long as we're requiring boost, we'll use it to compensate
-	//for the missing cstdint header too.
-	#include <boost/cstdint.hpp>
-	using boost::int8_t;
-	using boost::int16_t;
-	using boost::int32_t;
-	using boost::uint8_t;
-	using boost::uint16_t;
-	using boost::uint32_t;
-#else
-	//We have a decent compiler - use real C++0x features
-	#include <cstdint>
-	#include <functional>
-	#include <memory>
-	#define polyvox_shared_ptr std::shared_ptr
-	#define polyvox_function std::function
-	#define polyvox_bind std::bind
-	#define polyvox_placeholder_1 std::placeholders::_1
-	#define polyvox_placeholder_2 std::placeholders::_2
-	//#define static_assert static_assert //we can use this
-#endif
+#include <cstdint>
+#include <functional>
+#include <memory>
+#define polyvox_shared_ptr std::shared_ptr
+#define polyvox_function std::function
+#define polyvox_bind std::bind
+#define polyvox_placeholder_1 std::placeholders::_1
+#define polyvox_placeholder_2 std::placeholders::_2
 
 #endif
