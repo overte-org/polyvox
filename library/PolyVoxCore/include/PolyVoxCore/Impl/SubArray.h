@@ -50,7 +50,7 @@ namespace PolyVox
 		const SubArray<noOfDims-1, ElementType> operator [](uint32_t uIndex) const;
 
 	private:
-		SubArray<noOfDims, ElementType>(ElementType * pElements, uint32_t * pDimensions, uint32_t * pOffsets);
+		SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * pOffsets);
 
 		uint32_t * m_pDimensions;
 		uint32_t * m_pOffsets;
@@ -70,7 +70,7 @@ namespace PolyVox
 		const ElementType & operator [] (uint32_t uIndex) const;
 
 	private:
-		SubArray<1, ElementType>(ElementType * pElements, uint32_t * pDimensions, uint32_t * /*pOffsets*/);
+		SubArray(ElementType * pElements, uint32_t * pDimensions, uint32_t * /*pOffsets*/);
 
 		uint32_t * m_pDimensions;
 		ElementType * m_pElements;
